@@ -1,0 +1,16 @@
+/*SOLAMENTE UTILIZAR ESTOS COLORES EN TODA LA PAGINA, ADEMAS DEL BLANCO Y NEGRO PARA TEXTOS*/
+:root{
+    --color-primario: #19456B;
+    --color-secundario: #11698E;
+    --color-terciario: #16C79A;
+    --color-cuaternario: #CBEEF3;
+    --color-quinario: #F8F1F1;
+}
+
+body{
+    background-color: var(--color-quinario);
+}
+
+h1{
+    color: var(--color-primario);
+}
