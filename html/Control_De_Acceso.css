@@ -1,0 +1,70 @@
+:root{
+    --color-primario: #19456B;
+    --color-secundario: #11698E;
+    --color-terciario: #16C79A;
+    --color-cuaternario: #CBEEF3;
+    --color-quinario: #F8F1F1;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, rgba(17, 105, 142, 0.8) 20%, rgba(22, 199, 154, 0.8)), url("../assets/us-pgc7gs7edvs.webp");
+    background-size: cover, 100% auto;
+    background-repeat: no-repeat;
+    background-position: center 2%;
+}
+
+header{
+    background-color: var(--color-quinario);
+    height: 15vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+a{
+    text-decoration: none;
+    color: #19456B;
+}
+
+#section_form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5%;
+}
+
+form{
+    background-color: var(--color-quinario);
+    width: 50vw;
+    height: 60vh;
+    border-radius: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
+}
+
+h2{
+    margin-bottom: 0;
+}
+
+form div input{
+    width: 40vw;
+    height: 4vh;
+    margin-top: 10px;
+}
+
+#acceso{
+    background-color:#00000042;
+    padding: 13px 50px 13px 50px;
+    border-radius: 20px;
+    color: #F8F1F1;
+    margin-top: 1%;
+}

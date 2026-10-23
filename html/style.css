@@ -8,9 +8,56 @@
 }
 
 body{
-    background-color: var(--color-quinario);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, rgba(17, 105, 142, 0.8) 20%, rgba(22, 199, 154, 0.8)), url("../assets/us-pgc7gs7edvs.webp");
+    background-size: cover, 100% auto;
+    background-repeat: no-repeat;
+    background-position: center 2%;
 }
 
-h1{
-    color: var(--color-primario);
+header{
+    background-color: var(--color-quinario);
+    height: 15vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+a{
+    text-decoration: none;
+    color: #19456B;
+}
+
+#contenido{
+    flex: 1;
+}
+
+footer{
+    height: 23vh;
+    display: flex;
+    justify-content: space-between;
+    background-color:rgba(0, 0, 0, 0.445);
+}
+
+footer div{
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#bienvenida{
+    padding-left: 10%;
+    color: #F8F1F1;
+}
+
+#acceder{
+    background-color:#f8f1f134;
+    padding: 13px 50px 13px 50px;
+    border-radius: 20px;
+    color: #F8F1F1;
 }
