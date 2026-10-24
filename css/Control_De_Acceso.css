@@ -1,5 +1,6 @@
-/*SOLAMENTE UTILIZAR ESTOS COLORES EN TODA LA PAGINA, ADEMAS DEL BLANCO Y NEGRO PARA TEXTOS*/
-:root{
+@import url('https://fonts.googleapis.com/css2?family=Asimovian&family=Onest:wght@100..900&display=swap');
+
+:root {
     --color-primario: #19456B;
     --color-secundario: #11698E;
     --color-terciario: #16C79A;
@@ -7,7 +8,7 @@
     --color-quinario: #F8F1F1;
 }
 
-body{
+body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -19,7 +20,7 @@ body{
     background-position: center 2%;
 }
 
-header{
+header {
     background-color: var(--color-quinario);
     height: 15vh;
     display: flex;
@@ -27,37 +28,57 @@ header{
     align-items: center;
 }
 
-a{
+h1,
+h2,
+button {
+    font-family: Asimovian, sans-serif;
+    font-weight: 100;
+}
+
+label {
+    font-family: Onest, sans-serif;
+}
+
+a {
+    font-family: Asimovian, sans-serif;
     text-decoration: none;
     color: #19456B;
 }
 
-#contenido{
-    flex: 1;
-}
-
-footer{
-    height: 23vh;
+#section_form {
     display: flex;
-    justify-content: space-between;
-    background-color:rgba(0, 0, 0, 0.445);
-}
-
-footer div{
-    width: 45%;
-    display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    padding-top: 5%;
 }
 
-#bienvenida{
-    padding-left: 10%;
-    color: #F8F1F1;
+form {
+    background-color: var(--color-quinario);
+    width: 50vw;
+    height: 60vh;
+    border-radius: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
 }
 
-#acceder{
-    background-color:#f8f1f134;
+h2 {
+    margin-bottom: 0;
+}
+
+form div input {
+    width: 40vw;
+    height: 4vh;
+    margin-top: 10px;
+}
+
+#acceso {
+    background-color: #00000042;
     padding: 13px 50px 13px 50px;
     border-radius: 20px;
     color: #F8F1F1;
+    margin-top: 1%;
 }

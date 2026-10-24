@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Asimovian&family=Onest:wght@100..900&display=swap');
+
+/*SOLAMENTE UTILIZAR ESTOS COLORES EN TODA LA PAGINA, ADEMAS DEL BLANCO Y NEGRO PARA TEXTOS*/
+:root {
+    --color-primario: #19456B;
+    --color-secundario: #11698E;
+    --color-terciario: #16C79A;
+    --color-cuaternario: #CBEEF3;
+    --color-quinario: #F8F1F1;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, rgba(17, 105, 142, 0.8) 20%, rgba(22, 199, 154, 0.8)), url("../assets/us-pgc7gs7edvs.webp");
+    background-size: cover, 100% auto;
+    background-repeat: no-repeat;
+    background-position: center 2%;
+}
+
+header {
+    background-color: var(--color-quinario);
+    height: 15vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+h1 {
+    font-family: Asimovian, sans-serif;
+}
+
+#bienvenida {
+    font-weight: 100;
+}
+
+a {
+    text-decoration: none;
+    color: #19456B;
+    font-family: Asimovian, sans-serif;
+}
+
+#contenido {
+    flex: 1;
+}
+
+footer {
+    height: 23vh;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.445);
+}
+
+footer div {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#bienvenida {
+    padding-left: 10%;
+    color: #F8F1F1;
+}
+
+#acceder {
+    background-color: #f8f1f134;
+    padding: 13px 50px 13px 50px;
+    border-radius: 20px;
+    color: #F8F1F1;
+}
+
+ul {
+    list-style-type: none;
+    font-family: Onest, sans-serif;
+    font-weight: 100;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+.menu {
+    background: linear-gradient(var(--color-primario) 30%, var(--color-terciario));
+    color: var(--color-quinario);
+    position: fixed;
+    display: flex;
+    top: 15vh;
+    left: 0;
+    flex-direction: column;
+    width: 260px;
+    box-sizing: border-box;
+    /* Calcula el alto total de la pantalla menos el header */
+    height: calc(100vh - 15vh);
+}
+
+.menu h1 {
+    font-size: 1.2rem;
+}
+
+.menu ul {
+    font-size: 0.7rem;
+}
+
+.contenido {
+    width: calc(100% - 260px);
+    margin-left: 260px;
+    min-height: calc(100vh - 15vh);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.recuadro {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: var(--color-quinario);
+    border-radius: 50px;
+    padding: 50px;
+}
+
+.recuadro p {
+    font-family: Onest, sans-serif;
+    font-size: 1.3rem;
+}
+
+.usuario {
+    display: flex;
+    flex-direction: row;
+}
