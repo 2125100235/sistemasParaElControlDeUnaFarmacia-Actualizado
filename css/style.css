@@ -25,9 +25,22 @@ header {
     background-color: var(--color-quinario);
     height: 15vh;
     display: flex;
-    justify-content: space-around;
     align-items: center;
+    box-sizing: border-box;
 }
+
+header .logo {
+    justify-content: left;
+    padding: 0 5%;
+    width: 10%;
+}
+
+.nav-links {
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+}
+
 
 h1 {
     font-family: Asimovian, sans-serif;
@@ -88,22 +101,56 @@ main {
     background: linear-gradient(var(--color-primario) 30%, var(--color-terciario));
     color: var(--color-quinario);
     position: fixed;
-    display: flex;
     top: 15vh;
     left: 0;
-    flex-direction: column;
     width: 260px;
-    box-sizing: border-box;
-    /* Calcula el alto total de la pantalla menos el header */
     height: calc(100vh - 15vh);
+    box-sizing: border-box;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    /* Permite desplazar solo el menú si la pantalla es muy pequeña */
+    overflow-y: auto;
 }
 
+/* Reducción de márgenes para que todo quepa en la pantalla */
 .menu h1 {
     font-size: 1.2rem;
+    margin: 8px 0 4px 0;
 }
 
 .menu ul {
     font-size: 0.7rem;
+    padding-left: 15px;
+    font-weight: lighter;
+    margin: 0 0 8px 0;
+}
+
+.menu a {
+    color: var(--color-quinario);
+    text-decoration: none;
+    font-family: Onest, sans-serif;
+    display: block;
+}
+
+.menu h1,
+.menu h2,
+.menu a {
+    font-weight: normal;
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    /* Alinea la sección de usuario en la parte inferior */
+    padding-top: 10px;
+    border-top: 1px solid rgba(248, 241, 241, 0.2);
+}
+
+.usuario h1 {
+    margin: 0;
 }
 
 .contenido {
@@ -119,6 +166,7 @@ main {
     padding: 20px;
 }
 
+/* Se aplica a todos los elementos que tengan recuadro */
 .recuadro {
     display: flex;
     flex-direction: column;
@@ -128,7 +176,7 @@ main {
     padding: 50px;
 }
 
-.recuadro p {
+.infoSobreNosotros p {
     font-family: Onest, sans-serif;
     font-size: 1.3rem;
 }
