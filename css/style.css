@@ -27,6 +27,8 @@ header {
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    position: fixed;
+    width: 100vw;
 }
 
 header .logo {
@@ -98,7 +100,7 @@ main {
 }
 
 .menu {
-    background: linear-gradient(var(--color-primario) 30%, var(--color-terciario));
+    background-color: var(--color-primario);
     color: var(--color-quinario);
     position: fixed;
     top: 15vh;
@@ -164,6 +166,7 @@ main {
     text-align: justify;
     box-sizing: border-box;
     padding: 20px;
+    margin-top: 100px;
 }
 
 /* Se aplica a todos los elementos que tengan recuadro */
@@ -184,4 +187,67 @@ main {
 .usuario {
     display: flex;
     flex-direction: row;
+}
+
+.cuadro{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: var(--color-quinario);
+    width: 22vw;
+    padding: 20px;
+    border-radius: 30px;
+    margin-top: 20px;
+}
+
+#cuadroSobreNosotros{
+    display: flex;
+    flex-direction: row;
+    width: 78vw;
+    justify-content: space-around;
+}
+
+#cuadroSobreNosotros p{
+    font-family: Onest, sans-serif;
+    font-size: 18px;
+}
+
+
+.contacto{
+    margin-top: 140px;
+    width: 40vw;
+    display: flex;
+    margin-bottom: 45px;
+}
+
+.contacto h1{
+    font-size: 35px;
+}
+
+.contacto h2{
+    font-size: 20px;
+    font-family: Asimovian, sans-serif;
+}
+
+.contacto p{
+    font-family: Onest, sans-serif;
+    font-size: 15px;
+}
+
+.mainContacto{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+form {
+    background-color: var(--color-quinario);
+    height: 50vh;
+    border-radius: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
 }
