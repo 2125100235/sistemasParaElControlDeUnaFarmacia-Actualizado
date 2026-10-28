@@ -189,7 +189,7 @@ main {
     flex-direction: row;
 }
 
-.cuadro{
+.cuadro {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -200,41 +200,41 @@ main {
     margin-top: 20px;
 }
 
-#cuadroSobreNosotros{
+#cuadroSobreNosotros {
     display: flex;
     flex-direction: row;
     width: 78vw;
     justify-content: space-around;
 }
 
-#cuadroSobreNosotros p{
+#cuadroSobreNosotros p {
     font-family: Onest, sans-serif;
     font-size: 18px;
 }
 
 
-.contacto{
+.contacto {
     margin-top: 140px;
     width: 40vw;
     display: flex;
     margin-bottom: 45px;
 }
 
-.contacto h1{
+.contacto h1 {
     font-size: 35px;
 }
 
-.contacto h2{
+.contacto h2 {
     font-size: 20px;
     font-family: Asimovian, sans-serif;
 }
 
-.contacto p{
+.contacto p {
     font-family: Onest, sans-serif;
     font-size: 15px;
 }
 
-.mainContacto{
+.mainContacto {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -250,4 +250,10 @@ form {
     align-items: center;
     justify-content: space-between;
     padding-bottom: 15px;
+}
+
+.barraBusqueda {
+    width: 100%;
+    border: 1px solid;
+    box-shadow: insetx;
 }
