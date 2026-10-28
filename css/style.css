@@ -19,6 +19,7 @@ body {
     background-size: cover, 100% auto;
     background-repeat: no-repeat;
     background-position: center 2%;
+    background-attachment: fixed;
 }
 
 header {
@@ -37,12 +38,24 @@ header .logo {
     width: 10%;
 }
 
+.inputBusqueda{
+    height: 35px;
+    width: 40vw;
+    box-shadow: inset 0px 1px 4px 0px;
+    border:none;
+    border-radius: 11px;
+}
+
 .nav-links {
     display: flex;
     width: 70%;
     justify-content: space-between;
 }
 
+.aCrud{
+    display: flex;
+    justify-content: space-around;
+}
 
 h1 {
     font-family: Asimovian, sans-serif;
@@ -175,7 +188,7 @@ main {
     flex-direction: column;
     flex-wrap: wrap;
     background-color: var(--color-quinario);
-    border-radius: 50px;
+    border-radius: 30px;
     padding: 50px;
 }
 
@@ -218,6 +231,9 @@ main {
     width: 40vw;
     display: flex;
     margin-bottom: 45px;
+    
+    
+    box-shadow: 4px 4px 10px black;
 }
 
 .contacto h1 {
@@ -233,6 +249,17 @@ main {
     font-family: Onest, sans-serif;
     font-size: 15px;
 }
+
+.contacto label{
+    font-size: 18px;
+    font-family: Onest;
+}
+
+.contacto input{
+    height: 30px;
+    width: 40vw;
+}
+
 
 .mainContacto {
     display: flex;
@@ -256,4 +283,82 @@ form {
     width: 100%;
     border: 1px solid;
     box-shadow: insetx;
+}
+
+#btn_contacto{
+    color: var(--color-quinario);
+    text-decoration: none;
+    font-family: Onest, sans-serif;
+    display: block;
+}
+
+#acceso {
+    background-color: #000000bd;
+    padding: 10px 40px 10px 40px;
+    border-radius: 20px;
+    color: #F8F1F1;
+    margin-top: 1%;
+}
+
+.ventaDia{
+    height: auto;
+    min-height: 35vw;
+    padding: 15px 35px 15px 35px;
+}
+
+.ventaDia input{
+    height: 20px;
+    border-style: none;
+    box-shadow: 0px 0px 3px 0px black;
+}
+
+.nota,
+.pzs,
+.precioUnitario,
+.precioTotal,
+.atendio{
+    width: 115px;
+}
+
+.nombre{
+    width: 350px;
+}
+
+th{
+    font-family: Onest;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.productos{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 18px;
+}
+
+@media (max-width: 952px) {
+    .productos{
+    
+
+}
+}
+
+.producto{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #16C79A;
+    border-radius: 20px;
+    height: 420px;
+    width: 310px;
+}
+
+.producto img{
+    width: 200px;
+}
+
+.producto h2{
+    font-family: Onest;
+    font-size: 17px;
 }
