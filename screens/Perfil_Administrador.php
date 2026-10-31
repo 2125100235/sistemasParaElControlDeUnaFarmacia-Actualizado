@@ -41,33 +41,33 @@
             <a href="Perfil_de_Usuario.html"><h1>Usuario</h1></a>
         </div>
     </aside>
-            <section class="contenido">
-    <div class="recuadro ventaDia">
-        <h1>Venta del día</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nota</th>
-                    <th>Atendió</th>
-                    <th>Nombre del producto</th>
-                    <th>Piezas Vendidas</th>
-                    <th>Precio Unitario</th>
-                    <th>Precio Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" class="nota"></td>
-                    <td><input type="text" class="atendio"></td>
-                    <td><input type="text" class="nombre" ></td>
-                    <td><input type="number" class="pzs" ></td>
-                    <td><input type="text" class="precioUnitario" ></td>
-                    <td><input type="text" class="precioTotal"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+    <section class="contenido">
+        <div class="recuadro ventaDia">
+            <h1>Venta del día</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nota</th>
+                        <th>Atendió</th>
+                        <th>Nombre del producto</th>
+                        <th>Piezas Vendidas</th>
+                        <th>Precio Unitario</th>
+                        <th>Precio Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" class="nota"></td>
+                        <td><input type="text" class="atendio"></td>
+                        <td><input type="text" class="nombre" ></td>
+                        <td><input type="number" class="pzs" ></td>
+                        <td><input type="text" class="precioUnitario" ></td>
+                        <td><input type="text" class="precioTotal"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
     </main>
 </body>
 </html>
