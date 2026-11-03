@@ -38,11 +38,11 @@ header .logo {
     width: 10%;
 }
 
-.inputBusqueda{
+.inputBusqueda {
     height: 35px;
     width: 40vw;
     box-shadow: inset 0px 1px 4px 0px;
-    border:none;
+    border: none;
     border-radius: 11px;
 }
 
@@ -52,7 +52,7 @@ header .logo {
     justify-content: space-between;
 }
 
-.aCrud{
+.aCrud {
     display: flex;
     justify-content: space-around;
 }
@@ -154,18 +154,35 @@ main {
     font-weight: normal;
 }
 
+/* Sección de usuario en la parte inferior del menú */
 .usuario {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     margin-top: auto;
-    /* Alinea la sección de usuario en la parte inferior */
-    padding-top: 10px;
+    padding-top: 12px;
     border-top: 1px solid rgba(248, 241, 241, 0.2);
 }
 
-.usuario h1 {
+.info-usuario {
+    display: flex;
+    flex-direction: column;
+    /* Alinea nombre arriba y rol abajo */
+}
+
+.info-usuario h1 {
+    font-size: 1rem;
     margin: 0;
+    line-height: 1.2;
+}
+
+.info-usuario h2 {
+    font-size: 0.8rem;
+    margin: 2px 0 0 0;
+    color: var(--color-terciario);
+    /* Destaca el rol con color verde menta */
+    font-weight: normal;
+    font-family: Onest, sans-serif;
 }
 
 .contenido {
@@ -197,10 +214,6 @@ main {
     font-size: 1.3rem;
 }
 
-.usuario {
-    display: flex;
-    flex-direction: row;
-}
 
 .cuadro {
     display: flex;
@@ -231,8 +244,8 @@ main {
     width: 40vw;
     display: flex;
     margin-bottom: 45px;
-    
-    
+
+
     box-shadow: 4px 4px 10px black;
 }
 
@@ -250,12 +263,12 @@ main {
     font-size: 15px;
 }
 
-.contacto label{
+.contacto label {
     font-size: 18px;
     font-family: Onest;
 }
 
-.contacto input{
+.contacto input {
     height: 30px;
     width: 40vw;
 }
@@ -285,7 +298,7 @@ form {
     box-shadow: insetx;
 }
 
-#btn_contacto{
+#btn_contacto {
     color: var(--color-quinario);
     text-decoration: none;
     font-family: Onest, sans-serif;
@@ -300,13 +313,13 @@ form {
     margin-top: 1%;
 }
 
-.ventaDia{
+.ventaDia {
     height: auto;
     min-height: 35vw;
     padding: 15px 35px 15px 35px;
 }
 
-.ventaDia input{
+.ventaDia input {
     height: 20px;
     border-style: none;
     box-shadow: 0px 0px 3px 0px black;
@@ -316,34 +329,31 @@ form {
 .pzs,
 .precioUnitario,
 .precioTotal,
-.atendio{
+.atendio {
     width: 115px;
 }
 
-.nombre{
+.nombre {
     width: 350px;
 }
 
-th{
+th {
     font-family: Onest;
     font-weight: 400;
     font-size: 15px;
 }
 
-.productos{
+.productos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
     gap: 18px;
 }
 
 @media (max-width: 952px) {
-    .productos{
-    
-
-}
+    .productos {}
 }
 
-.producto{
+.producto {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -354,11 +364,11 @@ th{
     width: 310px;
 }
 
-.producto img{
+.producto img {
     width: 200px;
 }
 
-.producto h2{
+.producto h2 {
     font-family: Onest;
     font-size: 17px;
 }

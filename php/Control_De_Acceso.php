@@ -7,17 +7,7 @@
     <link rel="stylesheet" href="../css/Control_De_Acceso.css">
 </head>
 <body>
-<header>
-    <a href="../index.php" class="logo">
-        <img src="../assets/logo.svg" alt="FarmaVive Logo" width="60">
-    </a>
-
-    <nav class="nav-links">
-        <a href="../index.php">Inicio</a>
-        <a href="../html/Sobre_Nosotros.html">Sobre nosotros</a>
-        <a href="../html/Contacto.html">Contacto</a>
-    </nav>
-</header>
+<?php include "../php/header.php" ?>
 
 <section id="section_form">
     <form action="inicio_sesion.php" method="POST">

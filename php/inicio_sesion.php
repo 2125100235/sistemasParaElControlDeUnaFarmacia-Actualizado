@@ -15,32 +15,35 @@ if ($conexion->connect_error) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recibir los 3 parámetros de la vista
-    $id         = trim($_POST['id']);
-    $nombre     = trim($_POST['nombre']);
-    $clave = trim($_POST['clave']);
+    $id     = trim($_POST['id']);
+    $nombre = trim($_POST['nombre']);
+    $clave  = trim($_POST['clave']);
 
-    // Consultar el registro exacto por id_empleado y nombre
-    $stmt = $conexion->prepare("SELECT * FROM empleado WHERE id_empleado = ? AND nombre = ?");
-    $stmt->bind_param("is", $id, $nombre);
+    // Consultar el registro exacto por idEmpleado y nombre (compatibilidad camelCase y snake_case)
+    $stmt = $conexion->prepare("SELECT * FROM empleado WHERE (idEmpleado = ? OR id_empleado = ?) AND nombre = ?");
+    $stmt->bind_param("iis", $id, $id, $nombre);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
     if ($resultado->num_rows === 1) {
         $empleado = $resultado->fetch_assoc();
 
-        // Validar contraseña (compara texto plano 'admin123' o hash encriptado)
+        // Validar contraseña (compara texto plano o hash encriptado)
         $claveValida = ($clave === $empleado['clave']) || password_verify($clave, $empleado['clave']);
 
         if ($claveValida) {
-            // Guardar datos en la sesión
-            $_SESSION['id_empleado'] = $empleado['id_empleado'];
-            $_SESSION['nombre']      = $empleado['nombre'];
+            // Guardar TODAS las variables del usuario en $_SESSION
+            $_SESSION['idEmpleado']      = $empleado['idEmpleado'] ?? $empleado['id_empleado'];
+            $_SESSION['nombre']          = $empleado['nombre'];
+            $_SESSION['apellidoPaterno'] = $empleado['apellidoPaterno'] ?? $empleado['apellido_paterno'] ?? '';
+            $_SESSION['apellidoMaterno'] = $empleado['apellidoMaterno'] ?? $empleado['apellido_materno'] ?? '';
+            $_SESSION['correo']          = $empleado['correo'];
+            $_SESSION['telefono']        = $empleado['telefono'] ?? 'Sin registro';
             
-            // Obtener el rol o puesto asignado
             $rol = $empleado['rol'] ?? $empleado['puesto'] ?? 'Administrador';
             $_SESSION['rol'] = $rol;
 
-            // Redireccionar a la pantalla en /html/ según el rol/puesto
+            // Redireccionar según el rol
             switch (mb_strtolower($rol)) {
                 case 'administrador':
                 case 'admin':
@@ -48,15 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
 
                 case 'almacenista':
-                    header("Location: ../screens/Productos_Pantalla_Almacenista.html");
+                    header("Location: ../screens/Productos_Pantalla_Almacenista.php");
                     break;
 
                 case 'cajero':
-                    header("Location: ../screens/Venta.html");
+                    header("Location: ../screens/Venta.php");
                     break;
 
                 default:
-                    header("Location: ../screens/Perfil_Administrador.html");
+                    header("Location: ../screens/Perfil_Administrador.php");
                     break;
             }
             exit();
