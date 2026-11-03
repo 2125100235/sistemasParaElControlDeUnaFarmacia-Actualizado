@@ -19,26 +19,29 @@
     </nav>
 </header>
     <section id="section_form">
-       <form>
-        <h1>Acceda al sistema</h1>
-        <div>
-            <label for="id">ID</label><br>
-            <input type="text" id="id" name="id">
-        </div>
-        <br>
-        <div>
-            <label for="nombre">Nombre</label><br>
-            <input type="text" id="nombre" name="nombre">
-        </div>
-        <br>
-        <div>
-            <label for="c|xontrasena">Contraseña</label><br>
-            <input type="password" id="contrasena" name="contrasena">
-        </div>
-        <br>
-    </form>
+        <form id="formAcceso" novalidate>
+            <h1>Acceda al sistema</h1>
+            <div>
+                <label for="correo">Correo electrónico</label><br>
+                <input type="email" id="correo" name="correo">
+            </div>
+            <br>
+            <div>
+                <label for="nombre">Nombre</label><br>
+                <input type="text" id="nombre" name="nombre">
+            </div>
+            <br>
+            <div>
+                <label for="contrasena">Contraseña</label><br>
+                <input type="password" id="contrasena" name="contrasena">
+            </div>
+            <br>
+        </form>
 
-    <a href="" id="acceso">Iniciar sesión</a>
+        <a href="#" id="acceso">Iniciar sesión</a>
+
+        <p id="mensajeError" style="color: red; font-weight: bold; margin-top: 15px;"></p>
     </section>
+    <script src="../JS/script.js"></script>
 </body>
 </html>
