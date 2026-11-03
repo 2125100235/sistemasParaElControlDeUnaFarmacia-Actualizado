@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Acceso</title>
+    <link rel="stylesheet" href="../css/Control_De_Acceso.css">
+</head>
+<body>
+<header>
+    <a href="index.html" class="logo">
+        <img src="../assets/logo.svg" alt="FarmaVive Logo" width="60">
+    </a>
+
+    <nav class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="Sobre_Nosotros.html">Sobre nosotros</a>
+        <a href="Contacto.html">Contacto</a>
+    </nav>
+</header>
+    <section id="section_form">
+        <form id="formAcceso" novalidate>
+            <h1>Acceda al sistema</h1>
+            <div>
+                <label for="correo">Correo electrónico</label><br>
+                <input type="email" id="correo" name="correo">
+            </div>
+            <br>
+            <div>
+                <label for="nombre">Nombre</label><br>
+                <input type="text" id="nombre" name="nombre">
+            </div>
+            <br>
+            <div>
+                <label for="contrasena">Contraseña</label><br>
+                <input type="password" id="contrasena" name="contrasena">
+            </div>
+            <br>
+        </form>
+
+        <a href="#" id="acceso">Iniciar sesión</a>
+
+        <p id="mensajeError" style="color: red; font-weight: bold; margin-top: 15px;"></p>
+    </section>
+    <script src="../JS/script.js"></script>
+</body>
+</html>
