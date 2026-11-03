@@ -26,28 +26,7 @@
         <button type="button">Registrar</button>
     </header>
     <main>
-    <aside class="menu">
-        <a href="#"><h1>Productos e Inventario</h1></a>
-        
-        <a href="#"><h1>Proveedores</h1></a>
-        <ul>
-            <li><a href="#"><h2>Directorio de laboratorios</h2></a></li>
-            <li><a href="#"><h2>Recepciones pendientes</h2></a></li>
-        </ul>
-
-        <a href="#"><h1>Protocolos</h1></a>
-        <ul>
-            <li><a href="#"><h2>Protocolo de medicamentos refrigerados</h2></a></li>
-            <li><a href="#"><h2>Normativa de almacenamiento</h2></a></li>
-        </ul>
-
-        <a href="#"><h1>Contactar a soporte técnico</h1></a>
-
-        <div class="usuario"> 
-            <img src="../assets/placeholderFotoUsuario.png" alt="Usuario" width="30">
-            <a href="Perfil_de_Usuario.html"><h1>Usuario</h1></a>
-        </div>
-    </aside>
+    <?php include "../php/menu.php" ?>
         <section class="contenido">
             <div class="recuadro">
                 <table>

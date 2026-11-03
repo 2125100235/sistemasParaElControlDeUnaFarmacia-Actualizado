@@ -154,18 +154,35 @@ main {
     font-weight: normal;
 }
 
+/* Sección de usuario en la parte inferior del menú */
 .usuario {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     margin-top: auto;
-    /* Alinea la sección de usuario en la parte inferior */
-    padding-top: 10px;
+    padding-top: 12px;
     border-top: 1px solid rgba(248, 241, 241, 0.2);
 }
 
-.usuario h1 {
+.info-usuario {
+    display: flex;
+    flex-direction: column;
+    /* Alinea nombre arriba y rol abajo */
+}
+
+.info-usuario h1 {
+    font-size: 1rem;
     margin: 0;
+    line-height: 1.2;
+}
+
+.info-usuario h2 {
+    font-size: 0.8rem;
+    margin: 2px 0 0 0;
+    color: var(--color-terciario);
+    /* Destaca el rol con color verde menta */
+    font-weight: normal;
+    font-family: Onest, sans-serif;
 }
 
 .contenido {
@@ -197,10 +214,6 @@ main {
     font-size: 1.3rem;
 }
 
-.usuario {
-    display: flex;
-    flex-direction: row;
-}
 
 .cuadro {
     display: flex;
