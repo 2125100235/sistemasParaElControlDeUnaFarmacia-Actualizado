@@ -37,12 +37,11 @@ $telefono = $_SESSION['telefono'] ?? 'Sin número';
         <section class="contenido">
             <div class="recuadro">
                 <h1>Ficha del Empleado</h1>
-                <p><b>ID de Empleado:</b> #<?php echo htmlspecialchars($idEmpleado); ?></p>
-                <p><b>Nombre Completo:</b> <?php echo htmlspecialchars($nombreCompleto); ?></p>
-                <p><b>Rol Asignado:</b> <?php echo htmlspecialchars(ucfirst($rol)); ?></p>
+                <p><b>ID:</b> #<?php echo htmlspecialchars($idEmpleado); ?></p>
+                <p><b>Nombre:</b> <?php echo htmlspecialchars($nombreCompleto); ?></p>
+                <p><b>Rol:</b> <?php echo htmlspecialchars(ucfirst($rol)); ?></p>
                 <p><b>Correo Electrónico:</b> <?php echo htmlspecialchars($correo); ?></p>
                 <p><b>Teléfono:</b> <?php echo htmlspecialchars($telefono); ?></p>
-                <br>
                 <a href="../php/cerrar_sesion.php" id="acceder" style="text-align: center; text-decoration: none;">Cerrar Sesión</a>
             </div>
         </section>

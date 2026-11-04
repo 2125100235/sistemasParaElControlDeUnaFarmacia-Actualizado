@@ -10,6 +10,7 @@ $base = "/sistemasParaElControlDeUnaFarmacia-Actualizado/";
     <title>Farmacia FarmaVive</title>
     <!-- Ruta absoluta para el archivo CSS -->
     <link rel="stylesheet" href="<?php echo $base; ?>css/style.css">
+    <link rel="stylesheet" href="<?php echo $base; ?>css/Control_De_Acceso.css">
 </head>
 <body>
 <header>

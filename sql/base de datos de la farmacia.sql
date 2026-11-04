@@ -24,12 +24,12 @@ CREATE TABLE producto (
     fecha_ingreso DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fecha_caducidad DATE NOT NULL,
     existencia INT NOT NULL DEFAULT 0 CHECK (existencia >= 0),
-    precio_costo DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     precio_venta DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     id_proveedor INT,
     estado TINYINT(1) NOT NULL DEFAULT 1, -- 1: Disponible, 0: Deshabilitado
     CONSTRAINT fk_producto_proveedor FOREIGN KEY (id_proveedor) 
         REFERENCES proveedor(id_proveedor) ON DELETE SET NULL ON UPDATE CASCADE
+    imagen varchar(255) not null
 ) 
 
 -- 3. TABLA CLIENTE

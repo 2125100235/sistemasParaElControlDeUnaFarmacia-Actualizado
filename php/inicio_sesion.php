@@ -1,17 +1,5 @@
 <?php
-session_start();
-
-// Conexión a MySQL
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "farmacia";
-
-$conexion = new mysqli($host, $user, $pass, $db);
-
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
-}
+require_once "conexion.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recibir los 3 parámetros de la vista
@@ -19,9 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = trim($_POST['nombre']);
     $clave  = trim($_POST['clave']);
 
-    // Consultar el registro exacto por idEmpleado y nombre (compatibilidad camelCase y snake_case)
-    $stmt = $conexion->prepare("SELECT * FROM empleado WHERE (idEmpleado = ? OR id_empleado = ?) AND nombre = ?");
-    $stmt->bind_param("iis", $id, $id, $nombre);
+    // Consultar el registro exacto por idEmpleado y nombre
+    $stmt = $conexion->prepare("SELECT * FROM empleado WHERE (id_empleado = ?) AND nombre = ?");
+    $stmt->bind_param("is", $id, $nombre);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
