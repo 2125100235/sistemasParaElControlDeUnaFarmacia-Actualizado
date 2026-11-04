@@ -99,6 +99,12 @@ footer div {
     padding: 13px 50px 13px 50px;
     border-radius: 20px;
     color: #F8F1F1;
+    transition: ease-in .1s;
+}
+
+#acceder:hover {
+    background-color: #11698E;
+    transition: ease-in .1s;
 }
 
 ul {
@@ -350,7 +356,15 @@ th {
 }
 
 @media (max-width: 952px) {
-    .productos {}
+    .menu {
+        display: none;
+    }
+
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        min-height: calc(100vh - 15vh);
+    }
 }
 
 .producto {
@@ -371,4 +385,45 @@ th {
 .producto h2 {
     font-family: Onest;
     font-size: 17px;
+}
+
+.bannerUsuario {
+    display: flex;
+    width: 100%;
+    position: absolute;
+    height: 30%;
+    margin-top: 15vh;
+    z-index: -1;
+    border-radius: 0px 0px 40px 0px;
+    background-color: var(--color-primario);
+}
+
+.contenidoBannerUsuario {
+    margin-left: 300px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.bannerFoto {
+    width: 150px;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.contenidoPerfil {
+    display: flex;
+    flex-direction: column;
+    margin-top: 300px;
+    margin-left: 300px;
+    color: var(--color-quinario);
+    text-shadow: 3px 3px 1px rgba(0, 0, 0, 0.2);
+}
+
+.contenidoPerfil h1 {
+    font-family: Asimovian, sans-serif;
+}
+
+.contenidoPerfil p {
+    font-family: Onest, sans-serif;
 }

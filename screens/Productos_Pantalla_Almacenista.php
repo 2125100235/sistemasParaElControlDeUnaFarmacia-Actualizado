@@ -9,7 +9,7 @@
 </head>
 <body>
     <header class="crud">
-        <a href="index.html" class="logo">
+        <a href="../index.php" class="logo">
             <img src="../assets/logo.svg" alt="FarmaVive Logo" width="60">
         </a>
         <div class="contenedorBusqueda">

@@ -62,19 +62,23 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 5%;
+    margin-top: 15vh;
+    min-height: calc(100vh - 15vh);
+    box-sizing: border-box;
+    padding: 20px 0;
 }
 
-form {
+#section_form form {
     background-color: var(--color-quinario);
-    width: 50vw;
-    height: 60vh;
+    width: 45vw;
+    min-width: 320px;
+    height: auto;
     border-radius: 35px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 15px;
+    padding: 35px 25px;
 }
 
 h2 {
