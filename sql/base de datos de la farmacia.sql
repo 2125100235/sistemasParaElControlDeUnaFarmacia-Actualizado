@@ -57,7 +57,6 @@ CREATE TABLE empleado (
 CREATE TABLE venta (
     numero_nota INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    metodo_pago ENUM('Efectivo', 'Tarjeta', 'Transferencia') NOT NULL DEFAULT 'Efectivo',
     total_pagar DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     codigo_cliente INT NULL, -- NULL permite ventas a "Público en General"
     id_empleado INT NOT NULL,
