@@ -35,7 +35,6 @@
         if (!empty($productos)): ?>
         <?php foreach ($productos as $producto): ?>
             <?php 
-
                 $precio = $producto['precio_venta'] ?? 0.00;
             ?>
 

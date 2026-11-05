@@ -80,6 +80,6 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
         <h2><?php echo htmlspecialchars(ucfirst($rol)); ?></h2>
     </div>
 </aside>
-</aside>
+<script src="../js/menuToggle.js"></script>
 </body>
 </html>

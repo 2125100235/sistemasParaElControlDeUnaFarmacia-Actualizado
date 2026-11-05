@@ -25,4 +25,9 @@ $base = "/sistemasParaElControlDeUnaFarmacia-Actualizado/";
         <a href="<?php echo $base; ?>screens/Sobre_Nosotros.php">Sobre nosotros</a>
         <a href="<?php echo $base; ?>screens/Contacto.php">Contacto</a>
     </nav>
+        <div class="menuToggle">
+        <button id="menuToggleBtn">☰</button>
+    </div>
 </header>
+</body>
+</html>

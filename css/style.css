@@ -355,15 +355,34 @@ th {
     gap: 18px;
 }
 
+.menuToggle {
+    display: none;
+}
+
 @media (max-width: 952px) {
     .menu {
         display: none;
+        z-index: 999;
+        transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .menu.active {
+        display: flex !important;
+        transition: ease-in .05s;
+        visibility: visible;
+        opacity: 1;
     }
 
     .contenido {
         width: 100%;
         margin-left: 0;
         min-height: calc(100vh - 15vh);
+    }
+
+    .menuToggle {
+        display: flex;
     }
 }
 
@@ -426,4 +445,83 @@ th {
 
 .contenidoPerfil p {
     font-family: Onest, sans-serif;
+}
+
+.puntoVenta {
+    display: flex;
+    flex-wrap: wrap;
+    /* Ocupa todo el espacio restante a la derecha del logo */
+    flex: 1;
+    /* Centra los campos de entrada y botones horizontalmente */
+    justify-content: center;
+    /* Centra todos los elementos verticalmente */
+    align-items: center;
+    gap: 20px;
+    font-family: Asimovian;
+    font-weight: lighter;
+    color: var(--color-primario);
+    font-size: 1.02em;
+}
+
+.puntoVenta div {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.puntoVenta input {
+    font-family: Onest, sans-serif;
+    border-radius: 4px;
+    font-size: 1em;
+    border: 1px solid;
+    box-shadow: inset 0px 0.8px 4px rgba(0, 0, 0, 0.2);
+}
+
+#registrarBtn,
+#deshacerBtn {
+    border-radius: 30px;
+    border: none;
+    font-family: Asimovian, sans-serif;
+    font-size: 1em;
+    padding: 5px;
+    width: 10%;
+    transition: ease-in .05s;
+}
+
+#registrarBtn {
+    background-color: rgba(17, 105, 142, 0.2);
+    color: var(--color-secundario);
+}
+
+#deshacerBtn {
+    background-color: rgba(142, 17, 17, 0.2);
+    color: var(--color-secundario);
+}
+
+#registrarBtn:hover {
+    background-color: #11698E;
+    color: var(--color-quinario);
+    transition: ease-in .05s;
+}
+
+#deshacerBtn:hover {
+    background-color: rgba(142, 17, 17);
+    color: var(--color-quinario);
+    transition: ease-in .05s;
+}
+
+.recuadroVenta {
+    width: 80%;
+    height: 70%;
+}
+
+.totales {
+    font-family: Asimovian, sans-serif;
+}
+
+.contenidoMensaje {
+    background-color: var(--color-quinario);
+    border-radius: 30px;
+    margin-top: 40px;
+    position: absolute;
 }
