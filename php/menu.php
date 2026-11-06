@@ -63,7 +63,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
     <!-- Ficha del usuario dinámico -->
     <div class="usuario"> 
         <div class="info-usuario">
-            <img src="../assets/placeholderFotoUsuario.png" alt="Usuario" width="40">
+            <img src="../assets/placeholderFotoUsuario.png" alt="Foto de perfil del usuario" width="40">
             <a href="Perfil_de_Usuario.php">
                 <h1><?php echo htmlspecialchars($nombre); ?></h1>
             </a>

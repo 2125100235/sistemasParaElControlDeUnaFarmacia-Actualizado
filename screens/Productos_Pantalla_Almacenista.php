@@ -10,7 +10,7 @@
 <body>
     <header class="crud">
         <a href="../index.php" class="logo">
-            <img src="../assets/logo.svg" alt="FarmaVive Logo" width="60">
+            <img src="../assets/logo.svg" alt="FarmaVive Logo, volver al inicio" width="60">
         </a>
         <div class="contenedorBusqueda">
             <input class="inputBusqueda" type="text">
@@ -39,7 +39,7 @@
             ?>
 
             <div class="producto">
-                <img src="<?php echo $imagenLocal; ?>" alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
+                <img alt="Imagen del producto" src="<?php echo $imagenLocal; ?>" alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
                 <h2>Nombre: <?php echo htmlspecialchars($producto['nombre']); ?></h2>
                 <h2>Precio: $<?php echo number_format($precio, 2); ?></h2>
                 <h2>Existencia: <?php echo htmlspecialchars($producto['existencia']); ?></h2>

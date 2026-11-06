@@ -16,7 +16,7 @@ $base = "/sistemasParaElControlDeUnaFarmacia-Actualizado/";
 <header>
 
     <a href="<?php echo $base; ?>index.php" class="logo">
-        <img src="<?php echo $base; ?>assets/logo.svg" alt="FarmaVive Logo" width="60">
+        <img src="<?php echo $base; ?>assets/logo.svg" alt="FarmaVive Logo, volver al inicio" width="60">
     </a>
 
     <nav class="nav-links">
@@ -26,7 +26,7 @@ $base = "/sistemasParaElControlDeUnaFarmacia-Actualizado/";
         <a href="<?php echo $base; ?>screens/Contacto.php">Contacto</a>
     </nav>
         <div class="menuToggle">
-        <button id="menuToggleBtn">☰</button>
+        <button alt="Botón desplegable" id="menuToggleBtn">☰</button>
     </div>
 </header>
 </body>
