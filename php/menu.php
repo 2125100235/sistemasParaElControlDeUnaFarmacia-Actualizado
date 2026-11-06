@@ -23,10 +23,6 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
         <a href="#"><h1>Control de usuarios</h1></a>
 
         <a href="#"><h1>Ventas y facturación</h1></a>
-        <ul>
-            <li><a href="#"><h2>Historial de ventas</h2></a></li>
-            <li><a href="#"><h2>Cortes de caja</h2></a></li>
-        </ul>
 
         <a href="#"><h1>Políticas del sistema</h1></a>
 
@@ -40,10 +36,6 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
         <a href="#"><h1>Productos e Inventario</h1></a>
         
         <a href="#"><h1>Proveedores</h1></a>
-        <ul>
-            <li><a href="#"><h2>Directorio de laboratorios</h2></a></li>
-            <li><a href="#"><h2>Recepciones pendientes</h2></a></li>
-        </ul>
 
         <a href="#"><h1>Protocolos</h1></a>
         <ul>
@@ -55,8 +47,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
 
     <?php elseif ($rol === 'cajero'): ?>
         <a href="#"><h1>Punto de Venta</h1></a>
-        <a href="#"><h1>Registro de Clientes</h1></a>
-        <a href="#"><h1>Cierre y Arqueo de Caja</h1></a>
+        <a href="#"><h1>Control de Clientes</h1></a>
         <a href="#"><h1>Protocolos</h1></a>
         <ul>
             <li><a href="#">Guía de atención al cliente</a></li>
@@ -72,7 +63,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
     <!-- Ficha del usuario dinámico -->
     <div class="usuario"> 
         <div class="info-usuario">
-            <img src="../assets/placeholderFotoUsuario.png" alt="Usuario" width="40">
+            <img src="../assets/placeholderFotoUsuario.png" alt="Foto de perfil del usuario" width="40">
             <a href="Perfil_de_Usuario.php">
                 <h1><?php echo htmlspecialchars($nombre); ?></h1>
             </a>
