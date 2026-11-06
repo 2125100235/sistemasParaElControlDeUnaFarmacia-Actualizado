@@ -1,20 +1,18 @@
 -- Creación e inicialización de la base de datos
-DROP DATABASE IF EXISTS farmacia;
-CREATE DATABASE farmacia;
+CREATE DATABASE IF NOT EXISTS farmacia;
 USE farmacia;
 
--- 1. TABLA PROVEEDOR (Normalización para laboratorios/surtidores)
+-- 1. TABLA PROVEEDOR
 CREATE TABLE proveedor (
     id_proveedor INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL,
     telefono VARCHAR(15),
     correo VARCHAR(100),
     direccion VARCHAR(255),
-    estado TINYINT(1) NOT NULL DEFAULT 1 -- 1: Activo, 0: Inactivo
-) 
+    estado TINYINT(1) NOT NULL DEFAULT 1
+);
 
 -- 2. TABLA PRODUCTO
-
 CREATE TABLE producto (
     codigo INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL,
@@ -26,11 +24,11 @@ CREATE TABLE producto (
     existencia INT NOT NULL DEFAULT 0 CHECK (existencia >= 0),
     precio_venta DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     id_proveedor INT,
-    estado TINYINT(1) NOT NULL DEFAULT 1, -- 1: Disponible, 0: Deshabilitado
+    estado TINYINT(1) NOT NULL DEFAULT 1,
     CONSTRAINT fk_producto_proveedor FOREIGN KEY (id_proveedor) 
-        REFERENCES proveedor(id_proveedor) ON DELETE SET NULL ON UPDATE CASCADE
-    imagen varchar(255) not null
-) 
+        REFERENCES proveedor(id_proveedor) ON DELETE SET NULL ON UPDATE CASCADE,
+    imagen VARCHAR(255) NOT NULL
+);
 
 -- 3. TABLA CLIENTE
 CREATE TABLE cliente (
@@ -38,9 +36,9 @@ CREATE TABLE cliente (
     nombre VARCHAR(150) NOT NULL,
     telefono VARCHAR(15),
     rfc VARCHAR(13),
-    direccion VARCHAR(255)
+    direccion VARCHAR(255),
     estado TINYINT(1) NOT NULL DEFAULT 1
-) 
+);
 
 -- 4. TABLA EMPLEADO
 CREATE TABLE empleado (
@@ -53,7 +51,7 @@ CREATE TABLE empleado (
     telefono VARCHAR(15),
     rol ENUM('Administrador', 'Cajero', 'Almacenista') NOT NULL,
     estado TINYINT(1) NOT NULL DEFAULT 1 -- 1: Activo, 0: Inactivo (Baja lógica)
-) 
+);
 
 -- 5. TABLA VENTA (Encabezado de Transacción)
 CREATE TABLE venta (
@@ -67,7 +65,7 @@ CREATE TABLE venta (
         REFERENCES cliente(codigo) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT fk_venta_empleado FOREIGN KEY (id_empleado) 
         REFERENCES empleado(id_empleado) ON UPDATE CASCADE
-) 
+);
 
 -- 6. TABLA DETALLE_VENTA
 CREATE TABLE detalle_venta (
@@ -81,7 +79,7 @@ CREATE TABLE detalle_venta (
         REFERENCES venta(numero_nota) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_detalle_producto FOREIGN KEY (codigo_producto) 
         REFERENCES producto(codigo) ON UPDATE CASCADE
-) 
+);
 
 -- 7. TABLA ABASTECIMIENTO (Entradas de Almacén)
 CREATE TABLE abastecimiento (
@@ -97,4 +95,4 @@ CREATE TABLE abastecimiento (
         REFERENCES empleado(id_empleado) ON UPDATE CASCADE,
     CONSTRAINT fk_abast_proveedor FOREIGN KEY (id_proveedor) 
         REFERENCES proveedor(id_proveedor) ON DELETE SET NULL ON UPDATE CASCADE
-) 
+);
