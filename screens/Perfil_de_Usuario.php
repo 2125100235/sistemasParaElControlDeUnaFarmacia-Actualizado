@@ -5,13 +5,13 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Verificar que exista un usuario logueado; si no, redirigir al login
-if (!isset($_SESSION['idEmpleado']) && !isset($_SESSION['id_empleado'])) {
+if (!isset($_SESSION['id_empleado']) && !isset($_SESSION['id_empleado'])) {
     header("Location: ../php/Control_De_Acceso.php");
     exit();
 }
 
 // Recuperar las variables de la sesión
-$idEmpleado = $_SESSION['idEmpleado'] ?? $_SESSION['id_empleado'] ?? 'N/A';
+$id_empleado = $_SESSION['id_empleado'] ?? $_SESSION['id_empleado'] ?? 'N/A';
 $nombre = $_SESSION['nombre'] ?? '';
 $apellidoPaterno = $_SESSION['apellidoPaterno'] ?? '';
 $apellidoMaterno = $_SESSION['apellidoMaterno'] ?? '';
@@ -41,7 +41,7 @@ $telefono = $_SESSION['telefono'] ?? 'Sin número';
         </div>
         <section class="contenidoPerfil">
                 <h1><?php echo htmlspecialchars($nombreCompleto); ?></h1>
-                <p><b>ID:</b> #<?php echo htmlspecialchars($idEmpleado); ?></p>
+                <p><b>ID:</b> #<?php echo htmlspecialchars($id_empleado); ?></p>
                 <p><b>Rol:</b> <?php echo htmlspecialchars(ucfirst($rol)); ?></p>
                 <p><b>Correo Electrónico:</b> <?php echo htmlspecialchars($correo); ?></p>
                 <p><b>Teléfono:</b> <?php echo htmlspecialchars($telefono); ?></p>
