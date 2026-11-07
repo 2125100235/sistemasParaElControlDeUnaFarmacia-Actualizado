@@ -119,8 +119,9 @@ function buscarProductoCatalogo() {
 
 // Clase que define cada elemento (Nodo) que se agregará a la tabla de la venta
 class NodoVenta {
-    // Recibe el nombre, el precio unitario y la cantidad a vender
-    constructor(nombre, precio, cantidad) {
+    // Recibe el nombre, el codigo, el precio unitario y la cantidad a vender
+    constructor(codigo, nombre, precio, cantidad) {
+        this.codigo = codigo;
         this.nombre = nombre;
         this.precio = parseFloat(precio);
         this.cantidad = parseInt(cantidad);
@@ -138,9 +139,9 @@ class PilaVenta {
     }
 
     // Agrega un nuevo nodo en la cima de la pila
-    push(nombre, precio, cantidad) {
+    push(codigo, nombre, precio, cantidad) {
         // Creamos una nueva instancia del nodo de venta
-        const nuevoNodo = new NodoVenta(nombre, precio, cantidad);
+        const nuevoNodo = new NodoVenta(codigo, nombre, precio, cantidad);
 
         // El nuevo nodo apunta hacia el antiguo tope (quedando posicionado arriba de él)
         nuevoNodo.siguiente = this.tope;
@@ -219,6 +220,31 @@ class PilaVenta {
         subtotalElem.innerText = subtotalAcumulado.toFixed(2);
         totalElem.innerText = totalConIVA.toFixed(2);
     }
+
+    //Creamos un nuevo metodo, este metodo lo que hara es trabajar directamente con los datos de la pila, pasandolos a una array para poder
+    // posteriormente enviarlos a php
+    obtenerArrayProductos(){
+        const productos = []; //creamos un nuevo array llamado productos, aqui iremos guardando producto por producto
+        let actual = this.tope; //creamos una variable auxiliar "actual" la cual indicará siempre al producto que está hasta arriba de la pila
+        while (actual !== null) { //ciclo while con la condicion de que: mientras actual no apunte a nulo, haz lo siguiente.
+        productos.push({ //productos es el array que creamos, entonces agregará siempre al final del array el codigo, nombre, etc. del producto el cual "actual" este señalando
+            codigo: actual.codigo,
+            nombre: actual.nombre,
+            precio: actual.precio,
+            cantidad: actual.cantidad,
+            subtotal: actual.subtotal
+            });
+            actual = actual.siguiente; //Mueve el indicador al elemento que esta justo abajo de la pila, esto hace que se recorra producto por producto
+        }
+        return productos; //una vez que se termina la pila, retornamos la lista completa con todos los productos de la pila
+    }
+
+    // Vacía la pila al terminar la venta, "reseta" el punto de venta lista para atender el siguiente cliente
+    limpiar() {
+        this.tope = null;
+        this.tamano = 0;
+        this.actualizarUI();
+    }
 }
 
 // Instancia global de la pila de productos en la nota de venta
@@ -249,8 +275,8 @@ function agregarProducto() {
         return;
     }
 
-    // Insertamos en la pila de la nota de venta el nombre del nodo hallado en la BD
-    ventaPila.push(nodoEncontrado.nombre, precio, cantidad);
+    // Insertamos en la pila de la nota de venta el nombre y codigo del nodo hallado en la BD
+    ventaPila.push(nodoEncontrado.codigo, nodoEncontrado.nombre, precio, cantidad);
 
     // Reseteamos los campos del formulario para la siguiente venta
     inputBusqueda.value = "";
@@ -263,4 +289,45 @@ function agregarProducto() {
 // Función ejecutada al hacer clic en el botón "Deshacer"
 function deshacerUltimo() {
     ventaPila.pop();
+}
+
+//declaramos la funcion, es la funcion que se ejecuta cuando el cajero da al boton de cobrar
+function finalizarVenta() { 
+    //si la pila esta vacia, muestra un mensaje al cajero de agregar por lo menos un producto
+    if (ventaPila.isEmpty()) {
+        alert("Agregue al menos un producto a la lista antes de cobrar.");
+        return;
+    }
+
+    const totalConIVA = parseFloat(document.getElementById("total-val").innerText); //lee el texto del monto total con IVA que esta en la pantalla y lo convierte en decimal 
+    const productos = ventaPila.obtenerArrayProductos(); //llama al metodo del array de los productos y los guarda en la variable productos
+
+    // Empaquetamos los datos que enviaremos a PHP dentro del objeto datosVenta, el total a pagar y los productos que se vendieron
+    const datosVenta = {
+        total: totalConIVA,
+        productos: productos
+    };
+
+    // Enviamos los datos mediante una petición fetch al archivo guardar_venta en PHP 
+    fetch('../php/guardar_venta.php', {
+        method: 'POST', //indicamos el metodo en lo que lo estamos pasando, post significa que estamos pasando datos nuevos, a diferencia de get que es solo para leer.
+        headers: { 'Content-Type': 'application/json' }, //le avisa a php que le estamos pasando un JSON
+        body: JSON.stringify(datosVenta) //JSON.stringify toma nuestro paquete y lo convierte a una cadena de texto lista para viajar por la red sin errores.
+    })
+    .then(respuesta => respuesta.json()) //Espera la respuesta de php, y a esa respuesta la convierte en JSON
+    .then(data => { //recibe los datos ya procesados y los guarda en la varuable data
+
+        //si la venta se guardo con exito en mysql, manda un aviso, y limpia la pantalla para la siguiente venta
+        if (data.success) {
+            alert(`¡Venta guardada con éxito! Nota #${data.numero_nota}`);
+            ventaPila.limpiar(); // Limpia la pantalla para la siguiente venta
+        } else {
+            alert("Error al guardar: " + data.message); //si no se guardo exitosamente, muestra la causa
+        }
+    })
+
+    //catch atrapa errores de red, e imprime en la consola el error. 
+    .catch(error => {
+        console.error("Error en la conexión:", error);
+    });
 }

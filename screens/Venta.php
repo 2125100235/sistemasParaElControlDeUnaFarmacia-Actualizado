@@ -36,6 +36,7 @@ $productos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
         </div>
             <button id="registrarBtn" type="button" onclick="agregarProducto()">Registrar</button>
             <button id="deshacerBtn" type="button" onclick="deshacerUltimo()">Deshacer</button>
+            <button id="cobrarBtn" type="button" onclick="finalizarVenta()">Cobrar</button> <!--Agregamos el nuevo boton para cobrar-->
         </div>
                 <div class="menuToggle">
         <button id="menuToggleBtn">☰</button>
