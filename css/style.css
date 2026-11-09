@@ -215,9 +215,20 @@ main {
     padding: 50px;
 }
 
+.infoSobreNosotros img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
 .infoSobreNosotros p {
     font-family: Onest, sans-serif;
     font-size: 1.3rem;
+}
+
+.infoSobreNosotros h3 {
+    font-family: Onest, sans-serif;
 }
 
 
