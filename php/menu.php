@@ -28,7 +28,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
 
         <a href="#"><h1>Contactos</h1></a>
         <ul>
-            <li><a href="#"><h2>Soporte Técnico TI</h2></a></li>
+            <li><a href="<?php echo $base; ?>screens/Soporte_tecnico.php"><h2>Soporte Técnico </h2></a></li>
             <li><a href="#"><h2>Directorio de proveedores</h2></a></li>
         </ul>
 
@@ -43,7 +43,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
             <li><a href="#"><h2>Normativa de almacenamiento</h2></a></li>
         </ul>
 
-        <a href="#"><h1>Contactar a soporte técnico</h1></a>
+        <a href="<?php echo $base; ?>screens/Soporte_tecnico.php"><h1>Contactar a soporte técnico</h1></a>
 
     <?php elseif ($rol === 'cajero'): ?>
         <a href="#"><h1>Punto de Venta</h1></a>
@@ -53,7 +53,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
             <li><a href="#">Guía de atención al cliente</a></li>
             <li><a href="#">Políticas de cobro y garantías</a></li>
         </ul>
-        <a href="#"><h1>Contactar a soporte técnico</h1></a>
+        <a href="<?php echo $base; ?>screens/Soporte_tecnico.php"><h1>Contactar a soporte técnico</h1></a>
 
     <?php else: ?>
         <!-- Mensaje de respaldo si no hay sesión activa -->
