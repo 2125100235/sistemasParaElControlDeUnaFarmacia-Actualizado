@@ -1,10 +1,8 @@
 <?php 
-//Conectamos con la base de datos
+// Conectamos con la base de datos
 require_once "../php/conexion.php"; 
 
 // Guardamos en la variable queryVentasDia la consulta sql.
-//Guardamos numero de folio, concatenamos el nombre y apellido del cajero en una misma linea
-//guardamos el nombre del producto, piezas vendidas, subtotal y total. 
 $queryVentasDia = "
     SELECT 
         v.numero_nota, 
@@ -13,7 +11,6 @@ $queryVentasDia = "
         dv.cantidad_salida AS piezas_vendidas,
         dv.precio_venta,
         dv.subtotal AS precio_total
-    
     FROM venta v
     INNER JOIN empleado e ON v.id_empleado = e.id_empleado
     INNER JOIN detalle_venta dv ON v.numero_nota = dv.numero_nota
@@ -21,23 +18,11 @@ $queryVentasDia = "
     WHERE DATE(v.fecha) = CURDATE()
     ORDER BY v.numero_nota DESC
 ";
-//Usamos la tabla venta con apodo "v"
-//Inner join lo que hace es juntar informacion de distintas tablas, para mostrar la informacion junta
-//INNER JOIN empleado e, asigno el apodo "e"  a la tabla de empleado 
-//ON v.id_empleado (donde el id de empleado en la tabla de venta) = e.id_empleado (sea el mismo en la tabla de empleado)
 
-//Concecta cada ticket con su info correspondiente donde el numero de nota sea el mismo
-//Toma el codigo de producto del ticket y busca el precio y nombre en la tabla de productos mediante su codigo
-
-//WHERE DATE : Filtra para recuperar unicamente las ventas de la fecha del dia actual (hoy) CURRENT DAY
-// ORDER BY: Ordena los resultados para que la venta mas reciente se pomga hasta arriba
-
-
-// Ejecutamos la consulta en MySQL y la guardamos en la variable resultadoVentas
 $resultadoVentas = $conexion->query($queryVentasDia);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,6 +34,8 @@ $resultadoVentas = $conexion->query($queryVentasDia);
     <main>
     <?php include "../php/menu.php" ?>
     <section class="contenido">
+        
+        <!-- Tabla Venta del día -->
         <div class="recuadro ventaDia">
             <h1>Venta del día</h1>
             <table>
@@ -63,18 +50,18 @@ $resultadoVentas = $conexion->query($queryVentasDia);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($resultadoVentas && $resultadoVentas->num_rows > 0): ?> <!--Si la consulta fue exitosa y hay almenos una fila-->
-                        <?php while ($fila = $resultadoVentas->fetch_assoc()): ?> <!--Extraemos los registros devueltos en uno en uno dentro de la variable fila-->
+                    <?php if ($resultadoVentas && $resultadoVentas->num_rows > 0): ?>
+                        <?php while ($fila = $resultadoVentas->fetch_assoc()): ?>
                             <tr>
-                                <td>#<?php echo $fila['numero_nota']; ?></td> <!--Imprimimos el numero de nota despues del simbolo #-->
+                                <td>#<?php echo $fila['numero_nota']; ?></td>
                                 <td><?php echo htmlspecialchars($fila['atendio']); ?></td>
-                                <td><?php echo htmlspecialchars($fila['producto']); ?></td> <!--Imprimimos el cajero y el producto, htmlspecialchars evita que textos con caracteres especiales rompan la estructura html-->
-                                <td><?php echo $fila['piezas_vendidas']; ?></td> <!--Imprime la cantidad de piezas vendidas-->
+                                <td><?php echo htmlspecialchars($fila['producto']); ?></td>
+                                <td><?php echo $fila['piezas_vendidas']; ?></td>
                                 <td>$<?php echo number_format($fila['precio_venta'], 2); ?></td>
-                                <td>$<?php echo number_format($fila['precio_total'], 2); ?></td> <!--Imprime precio uitario y precio total, el number format 2, asegura que siempre muestre dos decimales "25.00"-->
+                                <td>$<?php echo number_format($fila['precio_total'], 2); ?></td>
                             </tr>
-                        <?php endwhile; ?> <!--Termina el while-->
-                    <?php else: ?> <!--Si no hay al menos una linea en la consulta, muestra un mensaje-->
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
                             <td colspan="6" style="text-align: center; color: #777; padding: 15px;">
                                 No se han registrado ventas el día de hoy.
@@ -84,7 +71,60 @@ $resultadoVentas = $conexion->query($queryVentasDia);
                 </tbody>
             </table>
         </div>
+        
+        <!-- Carrusel Circular de Ventas -->
+        <div class="recuadro carrusel-seccion">
+            <h2>Detalle General de Ventas</h2>
+            
+            <div class="carrusel-ventas-container">
+                <button id="btn-anterior" class="btn-carrusel" title="Venta anterior">◀</button>
+
+                <!-- Tarjeta Grande de Detalle -->
+                <div id="tarjeta-venta-grande" class="tarjeta-venta">
+                    <div class="tarjeta-header">
+                        <h3 id="venta-folio">Venta #--</h3>
+                        <span id="venta-fecha" class="badge-fecha">--/--/---- --:--</span>
+                    </div>
+
+                    <div class="tarjeta-body">
+                        <p class="cajero-info">
+                            <strong>Atendido por:</strong> <span id="venta-cajero">--</span>
+                        </p>
+
+                        <h4>Productos comprados:</h4>
+                        <div class="tabla-scroll">
+                            <table class="tabla-productos-detalle">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cant.</th>
+                                        <th>P. Unitario</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="venta-productos-cuerpo">
+                                    <!-- Se llenará dinámicamente con JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-footer">
+                        <span id="indicador-posicion" class="badge-posicion">Venta 0 de 0</span>
+                        <div class="total-box">
+                            <span>Total:</span>
+                            <strong id="venta-total">$0.00</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btn-siguiente" class="btn-carrusel" title="Siguiente venta">▶</button>
+            </div>
+        </div>
+
     </section>
     </main>
+
+    <script src="../js/carrusel_ventas.js"></script>
 </body>
 </html>

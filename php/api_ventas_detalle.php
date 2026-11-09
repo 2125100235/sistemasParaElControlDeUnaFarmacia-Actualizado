@@ -1,5 +1,7 @@
 <?php
-session_start(); //reanuda la sesión del servidor
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); //reanuda la sesión del servidor
+}
 header('Content-Type: application/json; charset=utf-8'); //Envia un encabezado http indicando que la respuesta que espera son datos en un JSON
 
 // Valida que haya una sesion activa de un empleado autorizado
@@ -15,7 +17,7 @@ if (!isset($_SESSION['id_empleado'])) {
 require_once "conexion.php";
 
 // Obtiene todas las ventas registradas junto con el nombre del cajero de la mas reciente a la mas antigua ORDER BY v.fecha DESC
-$sqlVentas = "SELECT v.id_venta, v.fecha, v.total, e.nombre AS cajero 
+$sqlVentas = "SELECT v.numero_nota AS id_venta, v.fecha, CONCAT(e.nombre, ' ', e.apellido_paterno) AS cajero 
               FROM venta v
               INNER JOIN empleado e ON v.id_empleado = e.id_empleado
               ORDER BY v.fecha DESC";
@@ -32,10 +34,10 @@ if ($resVentas && $resVentas->num_rows > 0) {
         $id_venta = $venta['id_venta']; //extrae la id de la venta actual en esta nueva variable
         
         //Es una cadena de texto para extraer, son las instrucciones sql que utilizaremos mas adelante
-        $sqlDetalle = "SELECT p.nombre AS producto, dv.cantidad, dv.precio_unitario, (dv.cantidad * dv.precio_unitario) AS subtotal
+        $sqlDetalle = "SELECT p.nombre AS producto, dv.cantidad_salida AS cantidad, dv.precio_venta AS precio_unitario, dv.subtotal
                        FROM detalle_venta dv
-                       INNER JOIN producto p ON dv.id_producto = p.id_producto
-                       WHERE dv.id_venta = ?";
+                       INNER JOIN producto p ON dv.codigo_producto = p.codigo
+                       WHERE dv.numero_nota = ?";
                        
         $stmtDetalle = $conexion->prepare($sqlDetalle); //manda las instrucciones a mysql
         $stmtDetalle->bind_param("i", $id_venta); //Cambia el ? por el id de la venta actual
@@ -44,12 +46,16 @@ if ($resVentas && $resVentas->num_rows > 0) {
         
         //creamos el arreglo productos, donde se ira guardando cada producto de la venta actual, convirtiendolo a entero o flotante de manera segura.
         $productos = [];
+        $totalVenta = 0;
         while ($prod = $resDetalle->fetch_assoc()) {
+            $subtotal = (float)$prod['subtotal'];
+            $totalVenta += $subtotal;
+
             $productos[] = [
                 'producto'        => $prod['producto'],
                 'cantidad'        => (int)$prod['cantidad'],
                 'precio_unitario' => (float)$prod['precio_unitario'],
-                'subtotal'        => (float)$prod['subtotal']
+                'subtotal'        => $subtotal
             ];
         }
         $stmtDetalle->close(); //cierra la subconsulta al terminar
@@ -59,7 +65,7 @@ if ($resVentas && $resVentas->num_rows > 0) {
             'id_venta'  => (int)$venta['id_venta'],
             'fecha'     => date("d/m/Y h:i A", strtotime($venta['fecha'])),
             'cajero'    => $venta['cajero'],
-            'total'     => (float)$venta['total'],
+            'total'     => $totalVenta,
             'productos' => $productos
         ];
     }

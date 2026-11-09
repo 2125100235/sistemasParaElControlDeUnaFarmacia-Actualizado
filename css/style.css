@@ -536,3 +536,113 @@ th {
     margin-top: 40px;
     position: absolute;
 }
+
+/* Contenedor flexible para centrar la tarjeta entre los botones */
+.carrusel-ventas-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px auto;
+    max-width: 750px;
+}
+
+/* Botones de navegación (Flechas) */
+.btn-carrusel {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    padding: 12px 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-carrusel:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+/* Tarjeta Grande */
+.tarjeta-venta {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Encabezado del ticket */
+.tarjeta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.tarjeta-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.badge-fecha {
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+/* Cuerpo con tabla con scroll */
+.tabla-scroll {
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+.tabla-productos-detalle {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tabla-productos-detalle th, 
+.tabla-productos-detalle td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.tabla-productos-detalle th {
+    background-color: #f8f9fa;
+    position: sticky;
+    top: 0;
+}
+
+/* Pie de la tarjeta */
+.tarjeta-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid #e9ecef;
+    padding-top: 10px;
+}
+
+.badge-posicion {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.total-box {
+    font-size: 1.2rem;
+    color: #28a745;
+}
