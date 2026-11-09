@@ -22,9 +22,9 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
     <?php if ($rol === 'administrador' || $rol === 'admin'): ?>
         <a href="#"><h1>Control de usuarios</h1></a>
 
-        <a href="#"><h1>Ventas y facturación</h1></a>
+        <a href="../screens/Perfil_administrador.php"><h1>Ventas y facturación</h1></a>
 
-        <a href="#"><h1>Políticas del sistema</h1></a>
+        <a href="../screens/Politicas_Sistema.php"><h1>Políticas del sistema</h1></a>
 
         <a href="#"><h1>Contactos</h1></a>
         <ul>
@@ -33,25 +33,25 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
         </ul>
 
     <?php elseif ($rol === 'almacenista'): ?>
-        <a href="#"><h1>Productos e Inventario</h1></a>
+        <a href="../screens/Productos_Pantalla_Almacenista.php"><h1>Productos e Inventario</h1></a>
         
         <a href="#"><h1>Proveedores</h1></a>
 
         <a href="#"><h1>Protocolos</h1></a>
         <ul>
-            <li><a href="#"><h2>Protocolo de medicamentos refrigerados</h2></a></li>
-            <li><a href="#"><h2>Normativa de almacenamiento</h2></a></li>
+            <li><a href="../screens/Protocolos_Medicamentos_Refrigerados.php"><h2>Protocolo de medicamentos refrigerados</h2></a></li>
+            <li><a href="../screens/Normativa_Almacenamiento.php"><h2>Normativa de almacenamiento</h2></a></li>
         </ul>
 
         <a href="../screens/Soporte_tecnico.php"><h1>Contactar a soporte técnico</h1></a>
 
     <?php elseif ($rol === 'cajero'): ?>
-        <a href="#"><h1>Punto de Venta</h1></a>
+        <a href="../screens/Punto_de_Venta.php"><h1>Punto de Venta</h1></a>
         <a href="#"><h1>Control de Clientes</h1></a>
         <a href="#"><h1>Protocolos</h1></a>
         <ul>
-            <li><a href="#">Guía de atención al cliente</a></li>
-            <li><a href="#">Políticas de cobro y garantías</a></li>
+            <li><a href="../screens/Atencion_Cliente.php">Guía de atención al cliente</a></li>
+            <li><a href="../screens/Politicas_de_cobro_y_garantias.php">Políticas de cobro y garantías</a></li>
         </ul>
         <a href="../screens/Soporte_tecnico.php"><h1>Contactar a soporte técnico</h1></a>
 

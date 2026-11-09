@@ -14,7 +14,6 @@
                 <div class="infoSobreNosotros recuadro">
                 <h2><b>Contactar con soporte tecnico</b></h2>
                 <img src="../assets/logo_logimedtech.png" alt="Logo de la desarrolladora LogiMed Tech" width="300px">
-                 
                 <h3> Correo: logimedtech@gmail.com</h3>
                 <h3> Telefono: 55-12-34-56-78</h3>
                 <h3>Horario de atención:  8:00 AM - 11:00 PM</h3>
