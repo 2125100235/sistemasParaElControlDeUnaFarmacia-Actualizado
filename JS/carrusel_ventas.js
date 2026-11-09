@@ -1,68 +1,58 @@
-// 1. Definición del Nodo
+// 1. Nodo: guarda la venta y su número de posición
 class NodoVenta {
-    constructor(venta) {
-        this.venta = venta;        // Guarda los datos del JSON de la venta
-        this.siguiente = null;    // Puntero al siguiente nodo
-        this.anterior = null;     // Puntero al nodo anterior
+    constructor(venta, posicion) {
+        this.venta = venta;        
+        this.posicion = posicion;  // Guarda si es la venta 1, 2, 3...
+        this.siguiente = null;    
+        this.anterior = null;     
     }
 }
 
-// 2. Definición de la Lista Doblemente Enlazada Circular
+// 2. Lista Doblemente Enlazada Circular
 class ListaCircularVentas {
     constructor() {
-        this.cabeza = null;         // Apunta al primer nodo de la lista
-        this.actual = null;         // Apunta al nodo que se está mostrando actualmente
-        this.totalNodos = 0;        // Contador total de nodos
-        this.indiceActual = 0;      // Posición numérica para el indicador gráfico
+        this.cabeza = null;
+        this.actual = null;
+        this.totalNodos = 0;
     }
 
-    // Insertar un nuevo nodo al final de la lista circular
     insertar(venta) {
-        const nuevoNodo = new NodoVenta(venta);
+        this.totalNodos++;
+        // Le asignamos su número de posición directamente al nodo
+        const nuevoNodo = new NodoVenta(venta, this.totalNodos);
 
         if (this.cabeza === null) {
-            // Caso 1: La lista está vacía. El nodo se apunta a sí mismo
             this.cabeza = nuevoNodo;
             this.cabeza.siguiente = this.cabeza;
             this.cabeza.anterior = this.cabeza;
             this.actual = this.cabeza;
-            this.indiceActual = 1;
         } else {
-            // Caso 2: Ya existen nodos. Insertamos al final y reajustamos punteros
-            const ultimo = this.cabeza.anterior; // El anterior a la cabeza siempre es el último
-
+            const ultimo = this.cabeza.anterior;
             ultimo.siguiente = nuevoNodo;
             nuevoNodo.anterior = ultimo;
             nuevoNodo.siguiente = this.cabeza;
             this.cabeza.anterior = nuevoNodo;
         }
-
-        this.totalNodos++;
     }
 
-    // Avanzar al siguiente nodo (Puntero -> siguiente)
+    // Mover puntero al siguiente nodo
     avanzar() {
-        if (!this.actual) return;
-        this.actual = this.actual.siguiente;
-        
-        // Actualizar número de posición
-        this.indiceActual = (this.indiceActual % this.totalNodos) + 1;
+        if (this.actual) {
+            this.actual = this.actual.siguiente;
+        }
     }
 
-    // Retroceder al nodo anterior (Puntero -> anterior)
+    // Mover puntero al nodo anterior
     retroceder() {
-        if (!this.actual) return;
-        this.actual = this.actual.anterior;
-        
-        // Actualizar número de posición
-        this.indiceActual = (this.indiceActual - 2 + this.totalNodos) % this.totalNodos + 1;
+        if (this.actual) {
+            this.actual = this.actual.anterior;
+        }
     }
 }
 
-// Instancia global de nuestra lista circular
+// Instancia global
 const listaVentas = new ListaCircularVentas();
 
-// Inicialización de eventos al cargar el documento
 document.addEventListener("DOMContentLoaded", () => {
     obtenerVentas();
 
@@ -81,20 +71,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-/**
- * Petición a la API y conversión del JSON en Nodos de la Lista
- */
 async function obtenerVentas() {
     try {
         const respuesta = await fetch("../php/api_ventas_detalle.php");
         const datos = await respuesta.json();
 
         if (datos.status === "success" && datos.data.length > 0) {
-            // Convertimos cada objeto en un nodo de nuestra Lista Enlazada
-            datos.data.forEach(venta => {
-                listaVentas.insertar(venta);
-            });
-
+            datos.data.forEach(venta => listaVentas.insertar(venta));
             renderizarTarjeta();
         } else {
             mostrarMensajeVacio();
@@ -105,21 +88,16 @@ async function obtenerVentas() {
     }
 }
 
-/**
- * Muestra en pantalla el contenido del nodo apuntado por 'actual'
- */
 function renderizarTarjeta() {
     const nodoActual = listaVentas.actual;
     if (!nodoActual) return;
 
     const venta = nodoActual.venta;
 
-    // Encabezado
     document.getElementById("venta-folio").textContent = `Venta #${venta.id_venta}`;
     document.getElementById("venta-fecha").textContent = venta.fecha;
     document.getElementById("venta-cajero").textContent = venta.cajero;
 
-    // Tabla de productos
     const tbody = document.getElementById("venta-productos-cuerpo");
     tbody.innerHTML = "";
 
@@ -134,9 +112,9 @@ function renderizarTarjeta() {
         tbody.appendChild(fila);
     });
 
-    // Indicador y Total
+    // Leemos la posición directamente del nodo sin fórmulas
     document.getElementById("indicador-posicion").textContent = 
-        `Venta ${listaVentas.indiceActual} de ${listaVentas.totalNodos}`;
+        `Venta ${nodoActual.posicion} de ${listaVentas.totalNodos}`;
     document.getElementById("venta-total").textContent = `$${venta.total.toFixed(2)}`;
 }
 
