@@ -308,7 +308,7 @@ function finalizarVenta() {
         productos: productos
     };
 
-    // Enviamos los datos mediante una petición fetch al archivo guardar_venta en PHP 
+    //Enviamos los datos mediante una petición fetch al archivo guardar_venta en PHP 
     fetch('../php/guardar_venta.php', {
         method: 'POST', //indicamos el metodo en lo que lo estamos pasando, post significa que estamos pasando datos nuevos, a diferencia de get que es solo para leer.
         headers: { 'Content-Type': 'application/json' }, //le avisa a php que le estamos pasando un JSON
