@@ -646,3 +646,115 @@ th {
     font-size: 1.2rem;
     color: #28a745;
 }
+
+/* Cabecera alineada horizontalmente */
+.header-recuadro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+/* Contenedor del menú flotante */
+.menu-hamburguesa-container {
+    position: relative;
+}
+
+/* Botón Hamburguesa (☰) */
+.btn-hamburguesa {
+    background: none;
+    border: none;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.btn-hamburguesa:hover {
+    background-color: #f0f0f0;
+}
+
+/* Menú flotante estilo tarjeta */
+.dropdown-menu-ventas {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background: #ffffff;
+    border: 1px solid #002b5b;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    min-width: 170px;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+/* Mostrar menú cuando esté activo */
+.dropdown-menu-ventas.mostrar {
+    display: flex;
+}
+
+/* Opciones dentro del menú */
+.dropdown-menu-ventas .opcion-filtro {
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    text-align: left;
+    font-size: 14px;
+    color: #1a2b4c;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s ease;
+}
+
+.dropdown-menu-ventas .opcion-filtro:hover {
+    background-color: #eef4ff;
+    font-weight: bold;
+}
+
+.dropdown-menu-ventas .opcion-filtro:not(:last-child) {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.dropdown-titulo {
+    font-size: 11px;
+    font-weight: bold;
+    color: #888;
+    text-transform: uppercase;
+    padding: 8px 12px 4px 12px;
+}
+
+.dropdown-separador {
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 6px 0;
+}
+
+.grupo-input-filtro {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 12px;
+}
+
+.grupo-input-filtro label {
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.input-fecha-filtro {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 13px;
+    outline: none;
+}
+
+.input-fecha-filtro:focus {
+    border-color: #002b5b;
+}

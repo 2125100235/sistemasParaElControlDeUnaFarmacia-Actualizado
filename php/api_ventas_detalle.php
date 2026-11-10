@@ -1,56 +1,123 @@
 <?php
+// Inicia la sesión si aún no está activa en el servidor
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); //reanuda la sesión del servidor
+    session_start();
 }
-header('Content-Type: application/json; charset=utf-8'); //Envia un encabezado http indicando que la respuesta que espera son datos en un JSON
 
-// Valida que haya una sesion activa de un empleado autorizado
+// Le avisa al navegador que la respuesta será un JSON en texto UTF-8
+header('Content-Type: application/json; charset=utf-8');
+
+// Comprueba que el usuario tenga una sesión válida de empleado
 if (!isset($_SESSION['id_empleado'])) {
+    // Si no inició sesión, devuelve un mensaje de error en formato JSON
     echo json_encode([
         'status' => 'error',
         'message' => 'Acceso denegado: Sesión no iniciada'
     ]);
-    exit();
+    exit(); // Detiene la ejecución del código
 }
 
-//importa el archivo de conexion a MYSQL para poder hacer uso de la variable "conexion"
+// Incluye el archivo que conecta con la base de datos MySQL
 require_once "conexion.php";
 
-// Obtiene todas las ventas registradas junto con el nombre del cajero de la mas reciente a la mas antigua ORDER BY v.fecha DESC
+// Lee el tipo de filtro enviado por la URL (si no hay, usa 'hoy')
+$tipo  = isset($_GET['tipo']) ? $_GET['tipo'] : 'hoy';
+// Lee la fecha enviada por la URL (si no hay, usa la fecha de hoy)
+$fecha = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
+
+// Evalúa qué opción de filtro seleccionó el usuario
+switch ($tipo) {
+    case 'dia':
+        // Filtra las ventas de un día específico elegido
+        $filtroSql = "WHERE DATE(v.fecha) = ?";
+        $parametro = $fecha;
+        break;
+
+    case 'semana':
+        // Filtra las ventas de la semana completa del día elegido
+        $filtroSql = "WHERE YEARWEEK(v.fecha, 1) = YEARWEEK(?, 1)";
+        $parametro = $fecha;
+        break;
+
+    case 'mes':
+        // Filtra las ventas del mes y año elegidos (ejemplo: '2026-11')
+        $filtroSql = "WHERE DATE_FORMAT(v.fecha, '%Y-%m') = ?";
+        $parametro = $fecha;
+        break;
+
+    case 'semana_actual':
+        // Filtra las ventas de la semana en curso (hoy)
+        $filtroSql = "WHERE YEARWEEK(v.fecha, 1) = YEARWEEK(CURDATE(), 1)";
+        $parametro = null;
+        break;
+
+    case 'mes_actual':
+        // Filtra las ventas del mes y año actuales (hoy)
+        $filtroSql = "WHERE MONTH(v.fecha) = MONTH(CURDATE()) AND YEAR(v.fecha) = YEAR(CURDATE())";
+        $parametro = null;
+        break;
+
+    case 'hoy':
+    default:
+        // Filtra únicamente las ventas del día de hoy
+        $filtroSql = "WHERE DATE(v.fecha) = CURDATE()";
+        $parametro = null;
+        break;
+}
+
+// Instrucción SQL para traer el folio de venta, fecha y nombre del cajero
 $sqlVentas = "SELECT v.numero_nota AS id_venta, v.fecha, CONCAT(e.nombre, ' ', e.apellido_paterno) AS cajero 
               FROM venta v
               INNER JOIN empleado e ON v.id_empleado = e.id_empleado
+              $filtroSql
               ORDER BY v.fecha DESC";
 
-//almacena el resultado general de las ventas en la variable resVentas
-$resVentas = $conexion->query($sqlVentas);
+// Prepara la consulta para evitar inyecciones SQL
+$stmtVentas = $conexion->prepare($sqlVentas);
 
-//Crea un arreglo vacio llamado ventas, este nos servira como contenedor final
+// Si se envió un parámetro de fecha, lo asigna a la consulta de forma segura
+if ($parametro !== null) {
+    $stmtVentas->bind_param("s", $parametro);
+}
+
+// Ejecuta la consulta de ventas en la base de datos
+$stmtVentas->execute();
+// Obtiene el resultado con las ventas encontradas
+$resVentas = $stmtVentas->get_result();
+
+// Arreglo vacío donde guardaremos todas las ventas procesadas
 $ventas = [];
 
-//si hubo al menos un registro, comienza un bucle while que ira recorriendo registro por registro de la base de datos gracias a fetch_assoc
+// Comprueba si la consulta devolvió al menos una venta
 if ($resVentas && $resVentas->num_rows > 0) {
+    // Recorre cada venta encontrada una por una
     while ($venta = $resVentas->fetch_assoc()) {
-        $id_venta = $venta['id_venta']; //extrae la id de la venta actual en esta nueva variable
+        $id_venta = $venta['id_venta']; // Guarda el número de nota actual
         
-        //Es una cadena de texto para extraer, son las instrucciones sql que utilizaremos mas adelante
+        // Consulta SQL para traer los productos de la venta actual
         $sqlDetalle = "SELECT p.nombre AS producto, dv.cantidad_salida AS cantidad, dv.precio_venta AS precio_unitario, dv.subtotal
                        FROM detalle_venta dv
                        INNER JOIN producto p ON dv.codigo_producto = p.codigo
                        WHERE dv.numero_nota = ?";
                        
-        $stmtDetalle = $conexion->prepare($sqlDetalle); //manda las instrucciones a mysql
-        $stmtDetalle->bind_param("i", $id_venta); //Cambia el ? por el id de la venta actual
-        $stmtDetalle->execute(); //busca los productos de esta venta en la base de datos 
-        $resDetalle = $stmtDetalle->get_result(); //obtenemos los resultados de la consulta. (la lista de productos)
+        // Prepara la subconsulta de productos
+        $stmtDetalle = $conexion->prepare($sqlDetalle);
+        // Sustituye el signo '?' por la ID de la venta actual
+        $stmtDetalle->bind_param("i", $id_venta);
+        // Ejecuta la búsqueda de productos
+        $stmtDetalle->execute();
+        // Guarda los productos encontrados
+        $resDetalle = $stmtDetalle->get_result();
         
-        //creamos el arreglo productos, donde se ira guardando cada producto de la venta actual, convirtiendolo a entero o flotante de manera segura.
-        $productos = [];
-        $totalVenta = 0;
-        while ($prod = $resDetalle->fetch_assoc()) {
-            $subtotal = (float)$prod['subtotal'];
-            $totalVenta += $subtotal;
+        $productos = []; // Arreglo para meter los productos de esta nota
+        $totalVenta = 0; // Variable para ir sumando el costo total de la venta
 
+        // Recorre los productos de la venta actual
+        while ($prod = $resDetalle->fetch_assoc()) {
+            $subtotal = (float)$prod['subtotal']; // Convierte el subtotal a número decimal
+            $totalVenta += $subtotal;             // Suma el subtotal al total general
+
+            // Guarda los datos de cada producto
             $productos[] = [
                 'producto'        => $prod['producto'],
                 'cantidad'        => (int)$prod['cantidad'],
@@ -58,22 +125,26 @@ if ($resVentas && $resVentas->num_rows > 0) {
                 'subtotal'        => $subtotal
             ];
         }
-        $stmtDetalle->close(); //cierra la subconsulta al terminar
+        // Cierra la subconsulta de productos
+        $stmtDetalle->close();
 
-        //Guardamos las ventas completas en su arreglo ventas, cuando nos referimos a la variable producto, quiere decir que guardamos el arreglo completo con todos los productos listos. 
+        // Guarda la estructura completa de la venta en el arreglo final
         $ventas[] = [
             'id_venta'  => (int)$venta['id_venta'],
-            'fecha'     => date("d/m/Y h:i A", strtotime($venta['fecha'])),
+            'fecha'     => date("d/m/Y h:i A", strtotime($venta['fecha'])), // Da formato bonito a la fecha
             'cajero'    => $venta['cajero'],
-            'total'     => $totalVenta,
-            'productos' => $productos
+            'total'     => $totalVenta, // Asigna el total calculado
+            'productos' => $productos   // Asigna la lista de productos
         ];
     }
 }
 
-$conexion->close(); //Cierra la conexion con base de datos
+// Cierra la consulta principal de ventas
+$stmtVentas->close();
+// Cierra la conexión a la base de datos MySQL
+$conexion->close();
 
-// Convierte la estructura completa en JSON, respetando acentos y con formato limpio y legible
+// Devuelve el arreglo final de ventas en formato JSON ordenado
 echo json_encode([
     'status' => 'success',
     'total_ventas' => count($ventas),

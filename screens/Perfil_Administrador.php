@@ -2,7 +2,7 @@
 // Conectamos con la base de datos
 require_once "../php/conexion.php"; 
 
-// Guardamos en la variable queryVentasDia la consulta sql.
+// Guardamos en la variable queryVentasDia la consulta sql para la tabla principal.
 $queryVentasDia = "
     SELECT 
         v.numero_nota, 
@@ -35,9 +35,45 @@ $resultadoVentas = $conexion->query($queryVentasDia);
     <?php include "../php/menu.php" ?>
     <section class="contenido">
         
-        <!-- Tabla Venta del día -->
+        <!-- Tabla Venta del día con menú de hamburguesa y filtros históricos -->
         <div class="recuadro ventaDia">
-            <h1>Venta del día</h1>
+            <div class="header-recuadro">
+                <h1 id="titulo-tabla-ventas">Venta del día</h1>
+                
+                <!-- Menú de hamburguesa con selección rápida e historial -->
+                <div class="menu-hamburguesa-container">
+                    <button id="btn-hamburguesa" class="btn-hamburguesa" title="Filtrar ventas">☰</button>
+                    
+                    <div id="dropdown-ventas" class="dropdown-menu-ventas">
+                        <span class="dropdown-titulo">Filtros Rápidos</span>
+                        <button type="button" class="opcion-filtro" data-tipo="hoy">Hoy</button>
+                        <button type="button" class="opcion-filtro" data-tipo="semana_actual">Esta Semana</button>
+                        <button type="button" class="opcion-filtro" data-tipo="mes_actual">Este Mes</button>
+
+                        <hr class="dropdown-separador">
+                        <span class="dropdown-titulo">Buscar Histórico</span>
+
+                        <!-- Selección por Día específico -->
+                        <div class="grupo-input-filtro">
+                            <label for="filtro-dia">Día específico:</label>
+                            <input type="date" id="filtro-dia" class="input-fecha-filtro">
+                        </div>
+
+                        <!-- Selección por Semana de una fecha -->
+                        <div class="grupo-input-filtro">
+                            <label for="filtro-semana">Semana del día:</label>
+                            <input type="date" id="filtro-semana" class="input-fecha-filtro">
+                        </div>
+
+                        <!-- Selección por Mes y Año -->
+                        <div class="grupo-input-filtro">
+                            <label for="filtro-mes">Mes completo:</label>
+                            <input type="month" id="filtro-mes" class="input-fecha-filtro">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <table>
                 <thead>
                     <tr>
@@ -49,7 +85,7 @@ $resultadoVentas = $conexion->query($queryVentasDia);
                         <th>Precio Total</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tabla-ventas-cuerpo">
                     <?php if ($resultadoVentas && $resultadoVentas->num_rows > 0): ?>
                         <?php while ($fila = $resultadoVentas->fetch_assoc()): ?>
                             <tr>
@@ -125,6 +161,7 @@ $resultadoVentas = $conexion->query($queryVentasDia);
     </section>
     </main>
 
+    <!-- Script de lógica del carrusel y menú flotante -->
     <script src="../js/carrusel_ventas.js"></script>
 </body>
 </html>
