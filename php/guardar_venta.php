@@ -14,7 +14,17 @@ if (!$data || empty($data['productos'])) {
 
 // Tomamos el ID del cajero, si la sesion esta cerrada, por defecto tomamos el 3 que es la primera cajera registrada
 $id_empleado = $_SESSION['id_empleado'] ?? 3;
-$total_pagar = $data['total']; //extraemos del paquete recibido el total con IVA y  lo guardamos en la variable total_pagar
+//  Funcion recursiva para calcular la suma de los subtotales en el servidor
+function calcularSubtotalRecursivoPHP(array $productos, int $indice = 0): float {
+    if ($indice >= count($productos)) {
+        return 0.0;
+    }
+    return (float)$productos[$indice]['subtotal'] + calcularSubtotalRecursivoPHP($productos, $indice + 1);
+}
+
+// --- CÁLCULO RECURSIVO DEL TOTAL CON IVA ---
+$subtotalBase = calcularSubtotalRecursivoPHP($data['productos']);
+$total_pagar  = $subtotalBase * 1.16;
 
 // En esta linea inicia el modo transaccion, es decir, lo guarda de manera temporal hasta que se le confirme
 $conexion->begin_transaction();

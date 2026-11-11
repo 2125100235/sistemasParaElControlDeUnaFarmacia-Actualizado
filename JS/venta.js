@@ -178,43 +178,46 @@ class PilaVenta {
         return this.tope === null;
     }
 
+    // Método RECURSIVO que recorre la pila nodo por nodo acumulando el subtotal
+    calcularSubtotalRecursivo(nodo) {
+        // 1. Caso base: si llegamos al final de la pila
+        if (nodo === null) {
+            return 0;
+        }
+        // 2. Caso recursivo: subtotal del nodo actual + subtotal del resto de nodos
+        return nodo.subtotal + this.calcularSubtotalRecursivo(nodo.siguiente);
+    }
+
     // Método que recorre los nodos de la pila para mostrarlos en la interfaz
     actualizarUI() {
         const tbody = document.getElementById("cuerpoTablaVenta");
         const subtotalElem = document.getElementById("subtotal-val");
         const totalElem = document.getElementById("total-val");
 
-        // Limpiamos el contenido anterior del cuerpo de la tabla
+        // Limpiamos el contenido anterior de la tabla
         tbody.innerHTML = "";
-        // Puntero auxiliar empezando en el tope de la pila
+
+        // --- CÁLCULO RECURSIVO DEL SUBTOTAL ---
+        const subtotalAcumulado = this.calcularSubtotalRecursivo(this.tope);
+
+        // Puntero auxiliar para renderizar los elementos en la tabla HTML
         let actual = this.tope;
-        // Acumulador para la suma total de los subtotales
-        let subtotalAcumulado = 0;
 
-        // Recorremos la pila desde el tope hacia abajo hasta encontrar un nodo null
         while (actual !== null) {
-            // Sumamos el subtotal del nodo actual al acumulador
-            subtotalAcumulado += actual.subtotal;
-
-            // Creamos un elemento <tr> (fila de tabla) en la página
             const fila = document.createElement("tr");
 
-            // Rellenamos la fila HTML con los datos extraídos del nodo actual
             fila.innerHTML = `
-                <td style="font-family: Onest, sans-serif";>${actual.nombre}</td>
-                <td style="font-family: Onest, sans-serif";>${actual.cantidad}</td>
-                <td style="font-family: Onest, sans-serif";>$${actual.precio.toFixed(2)}</td>
-                <td style="font-family: Onest, sans-serif";>$${actual.subtotal.toFixed(2)}</td>
+                <td style="font-family: Onest, sans-serif">${actual.nombre}</td>
+                <td style="font-family: Onest, sans-serif">${actual.cantidad}</td>
+                <td style="font-family: Onest, sans-serif">$${actual.precio.toFixed(2)}</td>
+                <td style="font-family: Onest, sans-serif">$${actual.subtotal.toFixed(2)}</td>
             `;
 
-            // Insertamos la fila dentro del cuerpo de la tabla
             tbody.appendChild(fila);
-
-            // Avanzamos el puntero auxiliar al nodo de abajo
             actual = actual.siguiente;
         }
 
-        // Calculamos el total agregando el 16% de IVA
+        // Calculamos el total con el 16% de IVA sobre el subtotal recursivo
         const totalConIVA = subtotalAcumulado * 1.16;
 
         subtotalElem.innerText = subtotalAcumulado.toFixed(2);

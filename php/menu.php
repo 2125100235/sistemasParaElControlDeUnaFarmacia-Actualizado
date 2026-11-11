@@ -46,7 +46,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
         <a href="../screens/Soporte_tecnico.php"><h1>Contactar a soporte técnico</h1></a>
 
     <?php elseif ($rol === 'cajero'): ?>
-        <a href="../screens/Punto_de_Venta.php"><h1>Punto de Venta</h1></a>
+        <a href="../screens/Venta.php"><h1>Punto de Venta</h1></a>
         <a href="#"><h1>Control de Clientes</h1></a>
         <a href="#"><h1>Protocolos</h1></a>
         <ul>
