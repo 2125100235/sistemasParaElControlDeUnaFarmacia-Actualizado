@@ -88,7 +88,7 @@ $resultadoVentas = $conexion->query($queryVentasDia);
                 <tbody id="tabla-ventas-cuerpo">
                     <?php if ($resultadoVentas && $resultadoVentas->num_rows > 0): ?>
                         <?php while ($fila = $resultadoVentas->fetch_assoc()): ?>
-                            <tr>
+                            <tr data-id-venta="<?php echo $fila['numero_nota']; ?>">
                                 <td>#<?php echo $fila['numero_nota']; ?></td>
                                 <td><?php echo htmlspecialchars($fila['atendio']); ?></td>
                                 <td><?php echo htmlspecialchars($fila['producto']); ?></td>
@@ -108,9 +108,9 @@ $resultadoVentas = $conexion->query($queryVentasDia);
             </table>
         </div>
         
-        <!-- Carrusel Circular de Ventas -->
-        <div class="recuadro carrusel-seccion">
-            <h2>Detalle General de Ventas</h2>
+        <!-- Modal Flotante del Carrusel de Ventas (OCULTO POR DEFECTO) -->
+        <div class="recuadro carrusel-seccion oculto">
+            <button id="btn-cerrar-carrusel" class="btn-cerrar-carrusel" title="Cerrar vista detallada">✕</button>
             
             <div class="carrusel-ventas-container">
                 <button id="btn-anterior" class="btn-carrusel" title="Venta anterior">◀</button>
@@ -139,7 +139,7 @@ $resultadoVentas = $conexion->query($queryVentasDia);
                                     </tr>
                                 </thead>
                                 <tbody id="venta-productos-cuerpo">
-                                    <!-- Se llenará dinámicamente con JS -->
+                                    <!-- Se llena dinámicamente con JS -->
                                 </tbody>
                             </table>
                         </div>

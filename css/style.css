@@ -758,3 +758,236 @@ th {
 .input-fecha-filtro:focus {
     border-color: #002b5b;
 }
+
+/* 1. Fondo completo oscuro y borroso (Modal) */
+/* 1. Fondo completo oscuro sin bordes redondeados */
+.carrusel-seccion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65); /* Fondo oscuro */
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;  /* Quita los bordes redondos de la sombra */
+    box-shadow: none;   /* Elimina cualquier sombra exterior */
+    border: none;
+}
+
+/* 2. Estado oculto del modal */
+.carrusel-seccion.oculto {
+    display: none !important;
+}
+
+/* 3. Contenedor flex sin fondo (para separar las flechas del cuadro blanco) */
+.carrusel-ventas-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px; /* Separación entre las flechas flotantes y la tarjeta */
+    max-width: 650px;
+    width: 100%;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* 4. ÚNICAMENTE la tarjeta central lleva el fondo blanco y la sombra */
+.tarjeta-venta {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    padding: 24px;
+    width: 100%;
+    max-width: 480px;
+    box-sizing: border-box;
+}
+
+/* 5. Flechas circulares flotando completamente sobre el fondo oscuro */
+.btn-carrusel {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    flex-shrink: 0; /* Evita que las flechas se aplasten en pantallas pequeñas */
+}
+
+.btn-carrusel:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+/* 6. Cursor y resaltado en la tabla superior */
+#tabla-ventas-cuerpo tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#tabla-ventas-cuerpo tr:hover {
+    background-color: #eef4ff;
+}
+
+/* 7. Botón flotante para cerrar (✕) arriba a la derecha de la pantalla */
+.btn-cerrar-carrusel {
+    background: none;
+    border: none;
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-cerrar-carrusel:hover {
+    color: #ff5555;
+    transform: scale(1.15);
+}
+
+/* 1. CSS de lo de productos, el formulario de editar*/
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 0 !important;
+}
+
+.modal-overlay.hidden {
+    display: none !important;
+}
+
+/* 2. Tarjeta del modal expandida sin barras de scroll */
+.modal-contenido {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    padding: 28px 34px 32px; /* 32px abajo para dar espacio suficiente a los botones */
+    width: 100%;
+    max-width: 680px;
+    height: auto !important;   /* Crece automáticamente según el contenido */
+    box-sizing: border-box;
+    position: relative;
+}
+/* 3. Estructura interna de 2 columnas con CSS Grid */
+.form-grid-producto {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+}
+
+/* 4. Elementos que abarcan todo el ancho */
+.campo-full {
+    grid-column: span 2;
+}
+
+/* 5. Inputs y select con estilo uniforme */
+.campo-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo-form label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 0.88rem;
+    color: #444;
+}
+
+.campo-form input,
+.campo-form select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.campo-form input:focus,
+.campo-form select:focus {
+    border-color: #007bff;
+}
+
+/* 6. Encabezado y acciones */
+#modal-titulo {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+    color: #333;
+    text-align: center;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+.modal-cerrar {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer;
+}
+
+.modal-cerrar:hover {
+    color: #ff5555;
+}
+
+.modal-acciones {
+    grid-column: span 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 18px;          /* Separación limpia respecto a los inputs */
+    padding-bottom: 5px;
+}
+
+.btn-guardar {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-cancelar {
+    background-color: #6c757d;
+    color: #ffffff;
+    border: none;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
