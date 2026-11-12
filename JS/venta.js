@@ -179,26 +179,26 @@ class PilaVenta {
     }
 
     // Método RECURSIVO que recorre la pila nodo por nodo acumulando el subtotal
-    calcularSubtotalRecursivo(nodo) {
-        // 1. Caso base: si llegamos al final de la pila
-        if (nodo === null) {
+    calcularSubtotalRecursivo(nodo) { // Recibe como parámetro el nodo actual desde donde iniciar la suma acumulada 
+        //  Caso base: si llegamos al final de la pila
+        if (nodo === null) {// Verifica si el puntero nodo está vacío (null), lo cual ocurre cuando la función llega al final de la pila o si la venta no tiene ningún producto registrado.
             return 0;
         }
-        // 2. Caso recursivo: subtotal del nodo actual + subtotal del resto de nodos
-        return nodo.subtotal + this.calcularSubtotalRecursivo(nodo.siguiente);
+        //  Caso recursivo: subtotal del nodo actual + subtotal del resto de nodos
+        return nodo.subtotal + this.calcularSubtotalRecursivo(nodo.siguiente);//Toma el valor numérico de la propiedad subtotal del nodo actual y le suma el valor retornado por una nueva llamada a la propia función
     }
 
     // Método que recorre los nodos de la pila para mostrarlos en la interfaz
     actualizarUI() {
-        const tbody = document.getElementById("cuerpoTablaVenta");
-        const subtotalElem = document.getElementById("subtotal-val");
-        const totalElem = document.getElementById("total-val");
+        const tbody = document.getElementById("cuerpoTablaVenta");//Busca en el HTML el elemento con la ID "cuerpoTablaVenta" y guarda la referencia en la constante tbody para manipularlo después
+        const subtotalElem = document.getElementById("subtotal-val");//Localiza el elemento HTML con la ID "subtotal-val" y guarda su referencia en la constante subtotalElem
+        const totalElem = document.getElementById("total-val");//Localiza el elemento HTML con la ID "total-val" (donde se muestra el precio final con IVA) y guarda su referencia en la constante totalElem
 
         // Limpiamos el contenido anterior de la tabla
         tbody.innerHTML = "";
 
         // --- CÁLCULO RECURSIVO DEL SUBTOTAL ---
-        const subtotalAcumulado = this.calcularSubtotalRecursivo(this.tope);
+        const subtotalAcumulado = this.calcularSubtotalRecursivo(this.tope);//Ejecuta la función recursiva pasando como nodo inicial el elemento ubicado en la cima de la pila (this.tope). Al finalizar todas las llamadas recursivas, el total obtenido se almacena en la constante
 
         // Puntero auxiliar para renderizar los elementos en la tabla HTML
         let actual = this.tope;
@@ -220,8 +220,8 @@ class PilaVenta {
         // Calculamos el total con el 16% de IVA sobre el subtotal recursivo
         const totalConIVA = subtotalAcumulado * 1.16;
 
-        subtotalElem.innerText = subtotalAcumulado.toFixed(2);
-        totalElem.innerText = totalConIVA.toFixed(2);
+        subtotalElem.innerText = subtotalAcumulado.toFixed(2);//Toma el número decimal en subtotalAcumulado, lo convierte a texto fijando 2 decimales (toFixed(2)), y lo imprime en el elemento de la pantalla subtotalElem
+        totalElem.innerText = totalConIVA.toFixed(2);//Toma el valor numérico de totalConIVA, lo formatea a 2 decimales y actualiza el texto del elemento totalElem en la pantalla.
     }
 
     //Creamos un nuevo metodo, este metodo lo que hara es trabajar directamente con los datos de la pila, pasandolos a una array para poder

@@ -16,15 +16,15 @@ if (!$data || empty($data['productos'])) {
 $id_empleado = $_SESSION['id_empleado'] ?? 3;
 //  Funcion recursiva para calcular la suma de los subtotales en el servidor
 function calcularSubtotalRecursivoPHP(array $productos, int $indice = 0): float {
-    if ($indice >= count($productos)) {
+    if ($indice >= count($productos)) {// verifica si ya no quiedan mas elementos en el arreglo, si es asi, retorna 0.0 para que la suma no se vea afectada
         return 0.0;
     }
-    return (float)$productos[$indice]['subtotal'] + calcularSubtotalRecursivoPHP($productos, $indice + 1);
+    return (float)$productos[$indice]['subtotal'] + calcularSubtotalRecursivoPHP($productos, $indice + 1);// Toma el subtotal del producto actual y le suma el resultado de la llamada recursiva para el siguiente producto
 }
 
 // --- CÁLCULO RECURSIVO DEL TOTAL CON IVA ---
-$subtotalBase = calcularSubtotalRecursivoPHP($data['productos']);
-$total_pagar  = $subtotalBase * 1.16;
+$subtotalBase = calcularSubtotalRecursivoPHP($data['productos']);// Llama a la función recursiva para calcular el subtotal de todos los productos en el arreglo $data['productos']
+$total_pagar  = $subtotalBase * 1.16;// Calcula el total a pagar aplicando el 16% de IVA sobre el subtotal base
 
 // En esta linea inicia el modo transaccion, es decir, lo guarda de manera temporal hasta que se le confirme
 $conexion->begin_transaction();
