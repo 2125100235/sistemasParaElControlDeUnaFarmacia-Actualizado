@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------------------------------------------
     async function cargarProductos(terminoBusqueda = '') {
         try {
-            // Construye la URL hacia el backend enviando la acción y el filtro de búsqueda
-            const url = `../php/api_productos.php?accion=leer&buscar=${encodeURIComponent(terminoBusqueda)}`;
+            // Construye la URL hacia el controlador enviando la acción y el filtro de búsqueda
+            const url = `../controllers/ProductoController.php?accion=leer&buscar=${encodeURIComponent(terminoBusqueda)}`;
 
             // Realiza la petición asíncrona GET utilizando Fetch API
             const respuesta = await fetch(url);
@@ -51,13 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             // Captura errores de red o servidor en la consola
-            console.error('Error al conectar con la API:', error);
+            console.error('Error al conectar con el controlador:', error);
             contenedorProductos.innerHTML = `<p class="mensaje-vacio">Error de conexión al cargar los productos.</p>`;
         }
     }
 
+    // --------------------------------------------------------------------------
     // 3. DIBUJAR TARJETAS EN EL DOM (RENDER)
-
+    // --------------------------------------------------------------------------
     function renderizarProductos(productos) {
         // Limpia el contenido anterior del contenedor de productos
         contenedorProductos.innerHTML = '';
@@ -102,7 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
         asignarEventosTarjetas();
     }
 
+    // --------------------------------------------------------------------------
     // 4. ASIGNAR LISTENERS A BOTONES DINÁMICOS (EDITAR Y ELIMINAR)
+    // --------------------------------------------------------------------------
     function asignarEventosTarjetas() {
         // Recorre todos los botones con la clase .btn-editar-card
         document.querySelectorAll('.btn-editar-card').forEach(boton => {
@@ -141,8 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function abrirModalEditar(codigo) {
         try {
-            // Solicita a la API los datos del producto específico mediante su ID
-            const respuesta = await fetch(`../php/api_productos.php?accion=obtener_uno&id=${codigo}`);
+            // Solicita al controlador los datos del producto específico mediante su ID
+            const respuesta = await fetch(`../controllers/ProductoController.php?accion=obtener_uno&id=${codigo}`);
             const resultado = await respuesta.json();
 
             // Comprueba si se recuperó el registro exitosamente
@@ -194,8 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const accion = esEdicion ? 'actualizar' : 'crear';
 
         try {
-            // Realiza la petición POST asíncrona hacia la API en PHP
-            const respuesta = await fetch(`../php/api_productos.php?accion=${accion}`, {
+            // Realiza la petición POST asíncrona hacia el controlador en PHP
+            const respuesta = await fetch(`../controllers/ProductoController.php?accion=${accion}`, {
                 method: 'POST',
                 body: formData
             });
@@ -231,8 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('codigo', codigo);
 
         try {
-            // Envía la solicitud de eliminación a la API PHP
-            const respuesta = await fetch('../php/api_productos.php?accion=eliminar', {
+            // Envía la solicitud de eliminación al controlador PHP
+            const respuesta = await fetch('../controllers/ProductoController.php?accion=eliminar', {
                 method: 'POST',
                 body: formData
             });
@@ -249,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error al intentar eliminar:', error);
             alert('Error en el servidor al intentar eliminar el producto.');
         }
-    } // <-- Corrección: Se cierra únicamente la función con }
+    }
 
     // --------------------------------------------------------------------------
     // 8. ESCUCHADORES DE EVENTOS DE INTERFAZ FIJOS
@@ -266,8 +269,10 @@ document.addEventListener('DOMContentLoaded', () => {
         cargarProductos(e.target.value);
     });
 
+    // --------------------------------------------------------------------------
     // 9. INICIALIZACIÓN
+    // --------------------------------------------------------------------------
     // Ejecuta la consulta inicial de productos al cargar la pantalla
     cargarProductos();
 
-}); // <-- Cierra el evento DOMContentLoaded inicial
+});

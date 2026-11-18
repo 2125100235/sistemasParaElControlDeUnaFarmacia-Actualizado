@@ -5,20 +5,20 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Verificar que exista un usuario logueado; si no, redirigir al login
-if (!isset($_SESSION['id_empleado']) && !isset($_SESSION['id_empleado'])) {
-    header("Location: ../php/Control_De_Acceso.php");
+if (!isset($_SESSION['id_empleado'])) {
+    header("Location: Control_De_Acceso.php");
     exit();
 }
 
 // Recuperar las variables de la sesión
-$id_empleado = $_SESSION['id_empleado'] ?? $_SESSION['id_empleado'] ?? 'N/A';
-$nombre = $_SESSION['nombre'] ?? '';
+$id_empleado     = $_SESSION['id_empleado'] ?? 'N/A';
+$nombre          = $_SESSION['nombre'] ?? '';
 $apellidoPaterno = $_SESSION['apellidoPaterno'] ?? '';
 $apellidoMaterno = $_SESSION['apellidoMaterno'] ?? '';
 $nombreCompleto  = trim("$nombre $apellidoPaterno $apellidoMaterno");
 
-$rol = $_SESSION['rol'] ?? 'Sin rol asignado';
-$correo = $_SESSION['correo'] ?? 'No registrado';
+$rol      = $_SESSION['rol'] ?? 'Sin rol asignado';
+$correo   = $_SESSION['correo'] ?? 'No registrado';
 $telefono = $_SESSION['telefono'] ?? 'Sin número';
 ?>
 <!DOCTYPE html>
@@ -30,22 +30,22 @@ $telefono = $_SESSION['telefono'] ?? 'Sin número';
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<?php include "../php/header.php"; ?>
+<?php include "partials/header.php"; ?>
 
     <main>
-<?php include "../php/menu.php"; ?>
+<?php include "partials/menu.php"; ?>
         <div class="bannerUsuario">
             <div class="contenidoBannerUsuario">
                 <img class="bannerFoto" src="../assets/placeholderFotoUsuario.png" alt="Foto de perfil del usuario">
             </div>
         </div>
         <section class="contenidoPerfil">
-                <h1><?php echo htmlspecialchars($nombreCompleto); ?></h1>
-                <p><b>ID:</b> #<?php echo htmlspecialchars($id_empleado); ?></p>
-                <p><b>Rol:</b> <?php echo htmlspecialchars(ucfirst($rol)); ?></p>
-                <p><b>Correo Electrónico:</b> <?php echo htmlspecialchars($correo); ?></p>
-                <p><b>Teléfono:</b> <?php echo htmlspecialchars($telefono); ?></p>
-                <a href="../php/cerrar_sesion.php" id="acceder" style="text-align: center; text-decoration: none;">Cerrar Sesión</a>
+            <h1><?php echo htmlspecialchars($nombreCompleto); ?></h1>
+            <p><b>ID:</b> #<?php echo htmlspecialchars($id_empleado); ?></p>
+            <p><b>Rol:</b> <?php echo htmlspecialchars(ucfirst($rol)); ?></p>
+            <p><b>Correo Electrónico:</b> <?php echo htmlspecialchars($correo); ?></p>
+            <p><b>Teléfono:</b> <?php echo htmlspecialchars($telefono); ?></p>
+            <a href="../controllers/AuthController.php?accion=cerrar" id="acceder" style="text-align: center; text-decoration: none;">Cerrar Sesión</a>
         </section>
     </main>
 </body>

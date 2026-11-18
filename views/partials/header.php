@@ -20,12 +20,11 @@ $base = "/sistemasParaElControlDeUnaFarmacia-Actualizado/";
     </a>
 
     <nav class="nav-links">
-
         <a href="<?php echo $base; ?>index.php">Inicio</a>
-        <a href="<?php echo $base; ?>screens/Sobre_Nosotros.php">Sobre nosotros</a>
-        <a href="<?php echo $base; ?>screens/Contacto.php">Contacto</a>
+        <a href="<?php echo $base; ?>views/Sobre_Nosotros.php">Sobre nosotros</a>
+        <a href="<?php echo $base; ?>views/Contacto.php">Contacto</a>
     </nav>
-        <div class="menuToggle">
+    <div class="menuToggle">
         <button alt="Botón desplegable" id="menuToggleBtn">☰</button>
     </div>
 </header>
