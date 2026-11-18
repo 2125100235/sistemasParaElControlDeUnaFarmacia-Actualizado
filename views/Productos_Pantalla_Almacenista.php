@@ -1,6 +1,6 @@
 <?php 
 // Requerimos la conexión principal a la base de datos MySQL
-require_once "../php/conexion.php"; 
+require_once "../config/conexion.php"; 
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -34,7 +34,7 @@ require_once "../php/conexion.php";
 
     <main>
       <!-- Incluye la barra lateral del menú existente -->
-      <?php include "../php/menu.php"; ?>
+      <?php include "partials/menu.php"; ?>
 
       <!-- Área vacía donde JavaScript inyectará las tarjetas de productos desde la BD -->
       <section class="contenido productos" id="contenedor-productos">

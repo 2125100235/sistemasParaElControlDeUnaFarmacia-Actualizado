@@ -73,7 +73,7 @@ class ListaProductosCatalogo {
 // Se crea la instancia global de la Lista Enlazada Simple para el catálogo de productos
 const catalogoLista = new ListaProductosCatalogo();
 
-// Se verifica que la variable 'productosDesdeBD' (puesta por medio de PHP) exista y sea un arreglo[
+// Se verifica que la variable 'productosDesdeBD' (puesta por medio de PHP) exista y sea un arreglo
 if (typeof productosDesdeBD !== 'undefined' && Array.isArray(productosDesdeBD)) {
     // Recorremos cada registro proveniente de la base de datos
     productosDesdeBD.forEach(prod => {
@@ -180,25 +180,25 @@ class PilaVenta {
 
     // Método RECURSIVO que recorre la pila nodo por nodo acumulando el subtotal
     calcularSubtotalRecursivo(nodo) { // Recibe como parámetro el nodo actual desde donde iniciar la suma acumulada 
-        //  Caso base: si llegamos al final de la pila
-        if (nodo === null) {// Verifica si el puntero nodo está vacío (null), lo cual ocurre cuando la función llega al final de la pila o si la venta no tiene ningún producto registrado.
+        // Caso base: si llegamos al final de la pila
+        if (nodo === null) { // Verifica si el puntero nodo está vacío (null), lo cual ocurre cuando la función llega al final de la pila o si la venta no tiene ningún producto registrado.
             return 0;
         }
-        //  Caso recursivo: subtotal del nodo actual + subtotal del resto de nodos
-        return nodo.subtotal + this.calcularSubtotalRecursivo(nodo.siguiente);//Toma el valor numérico de la propiedad subtotal del nodo actual y le suma el valor retornado por una nueva llamada a la propia función
+        // Caso recursivo: subtotal del nodo actual + subtotal del resto de nodos
+        return nodo.subtotal + this.calcularSubtotalRecursivo(nodo.siguiente); // Toma el valor numérico de la propiedad subtotal del nodo actual y le suma el valor retornado por una nueva llamada a la propia función
     }
 
     // Método que recorre los nodos de la pila para mostrarlos en la interfaz
     actualizarUI() {
-        const tbody = document.getElementById("cuerpoTablaVenta");//Busca en el HTML el elemento con la ID "cuerpoTablaVenta" y guarda la referencia en la constante tbody para manipularlo después
-        const subtotalElem = document.getElementById("subtotal-val");//Localiza el elemento HTML con la ID "subtotal-val" y guarda su referencia en la constante subtotalElem
-        const totalElem = document.getElementById("total-val");//Localiza el elemento HTML con la ID "total-val" (donde se muestra el precio final con IVA) y guarda su referencia en la constante totalElem
+        const tbody = document.getElementById("cuerpoTablaVenta"); // Busca en el HTML el elemento con la ID "cuerpoTablaVenta" y guarda la referencia en la constante tbody para manipularlo después
+        const subtotalElem = document.getElementById("subtotal-val"); // Localiza el elemento HTML con la ID "subtotal-val" y guarda su referencia en la constante subtotalElem
+        const totalElem = document.getElementById("total-val"); // Localiza el elemento HTML con la ID "total-val" (donde se muestra el precio final con IVA) y guarda su referencia en la constante totalElem
 
         // Limpiamos el contenido anterior de la tabla
         tbody.innerHTML = "";
 
         // --- CÁLCULO RECURSIVO DEL SUBTOTAL ---
-        const subtotalAcumulado = this.calcularSubtotalRecursivo(this.tope);//Ejecuta la función recursiva pasando como nodo inicial el elemento ubicado en la cima de la pila (this.tope). Al finalizar todas las llamadas recursivas, el total obtenido se almacena en la constante
+        const subtotalAcumulado = this.calcularSubtotalRecursivo(this.tope); // Ejecuta la función recursiva pasando como nodo inicial el elemento ubicado en la cima de la pila (this.tope). Al finalizar todas las llamadas recursivas, el total obtenido se almacena en la constante
 
         // Puntero auxiliar para renderizar los elementos en la tabla HTML
         let actual = this.tope;
@@ -220,26 +220,26 @@ class PilaVenta {
         // Calculamos el total con el 16% de IVA sobre el subtotal recursivo
         const totalConIVA = subtotalAcumulado * 1.16;
 
-        subtotalElem.innerText = subtotalAcumulado.toFixed(2);//Toma el número decimal en subtotalAcumulado, lo convierte a texto fijando 2 decimales (toFixed(2)), y lo imprime en el elemento de la pantalla subtotalElem
-        totalElem.innerText = totalConIVA.toFixed(2);//Toma el valor numérico de totalConIVA, lo formatea a 2 decimales y actualiza el texto del elemento totalElem en la pantalla.
+        subtotalElem.innerText = subtotalAcumulado.toFixed(2); // Toma el número decimal en subtotalAcumulado, lo convierte a texto fijando 2 decimales (toFixed(2)), y lo imprime en el elemento de la pantalla subtotalElem
+        totalElem.innerText = totalConIVA.toFixed(2); // Toma el valor numérico de totalConIVA, lo formatea a 2 decimales y actualiza el texto del elemento totalElem en la pantalla.
     }
 
-    //Creamos un nuevo metodo, este metodo lo que hara es trabajar directamente con los datos de la pila, pasandolos a una array para poder
+    // Creamos un nuevo metodo, este metodo lo que hara es trabajar directamente con los datos de la pila, pasandolos a una array para poder
     // posteriormente enviarlos a php
-    obtenerArrayProductos(){
-        const productos = []; //creamos un nuevo array llamado productos, aqui iremos guardando producto por producto
-        let actual = this.tope; //creamos una variable auxiliar "actual" la cual indicará siempre al producto que está hasta arriba de la pila
-        while (actual !== null) { //ciclo while con la condicion de que: mientras actual no apunte a nulo, haz lo siguiente.
-        productos.push({ //productos es el array que creamos, entonces agregará siempre al final del array el codigo, nombre, etc. del producto el cual "actual" este señalando
-            codigo: actual.codigo,
-            nombre: actual.nombre,
-            precio: actual.precio,
-            cantidad: actual.cantidad,
-            subtotal: actual.subtotal
+    obtenerArrayProductos() {
+        const productos = []; // creamos un nuevo array llamado productos, aqui iremos guardando producto por producto
+        let actual = this.tope; // creamos una variable auxiliar "actual" la cual indicará siempre al producto que está hasta arriba de la pila
+        while (actual !== null) { // ciclo while con la condicion de que: mientras actual no apunte a nulo, haz lo siguiente.
+            productos.push({ // productos es el array que creamos, entonces agregará siempre al final del array el codigo, nombre, etc. del producto el cual "actual" este señalando
+                codigo: actual.codigo,
+                nombre: actual.nombre,
+                precio: actual.precio,
+                cantidad: actual.cantidad,
+                subtotal: actual.subtotal
             });
-            actual = actual.siguiente; //Mueve el indicador al elemento que esta justo abajo de la pila, esto hace que se recorra producto por producto
+            actual = actual.siguiente; // Mueve el indicador al elemento que esta justo abajo de la pila, esto hace que se recorra producto por producto
         }
-        return productos; //una vez que se termina la pila, retornamos la lista completa con todos los productos de la pila
+        return productos; // una vez que se termina la pila, retornamos la lista completa con todos los productos de la pila
     }
 
     // Vacía la pila al terminar la venta, "reseta" el punto de venta lista para atender el siguiente cliente
@@ -294,16 +294,16 @@ function deshacerUltimo() {
     ventaPila.pop();
 }
 
-//declaramos la funcion, es la funcion que se ejecuta cuando el cajero da al boton de cobrar
+// declaramos la funcion, es la funcion que se ejecuta cuando el cajero da al boton de cobrar
 function finalizarVenta() { 
-    //si la pila esta vacia, muestra un mensaje al cajero de agregar por lo menos un producto
+    // si la pila esta vacia, muestra un mensaje al cajero de agregar por lo menos un producto
     if (ventaPila.isEmpty()) {
         alert("Agregue al menos un producto a la lista antes de cobrar.");
         return;
     }
 
-    const totalConIVA = parseFloat(document.getElementById("total-val").innerText); //lee el texto del monto total con IVA que esta en la pantalla y lo convierte en decimal 
-    const productos = ventaPila.obtenerArrayProductos(); //llama al metodo del array de los productos y los guarda en la variable productos
+    const totalConIVA = parseFloat(document.getElementById("total-val").innerText); // lee el texto del monto total con IVA que esta en la pantalla y lo convierte en decimal 
+    const productos = ventaPila.obtenerArrayProductos(); // llama al metodo del array de los productos y los guarda en la variable productos
 
     // Empaquetamos los datos que enviaremos a PHP dentro del objeto datosVenta, el total a pagar y los productos que se vendieron
     const datosVenta = {
@@ -311,25 +311,25 @@ function finalizarVenta() {
         productos: productos
     };
 
-    //Enviamos los datos mediante una petición fetch al archivo guardar_venta en PHP 
-    fetch('../php/guardar_venta.php', {
-        method: 'POST', //indicamos el metodo en lo que lo estamos pasando, post significa que estamos pasando datos nuevos, a diferencia de get que es solo para leer.
-        headers: { 'Content-Type': 'application/json' }, //le avisa a php que le estamos pasando un JSON
-        body: JSON.stringify(datosVenta) //JSON.stringify toma nuestro paquete y lo convierte a una cadena de texto lista para viajar por la red sin errores.
+    // Enviamos los datos mediante una petición fetch al controlador de ventas en PHP 
+    fetch('../controllers/VentaController.php?accion=guardar', {
+        method: 'POST', // indicamos el metodo en lo que lo estamos pasando, post significa que estamos pasando datos nuevos, a diferencia de get que es solo para leer.
+        headers: { 'Content-Type': 'application/json' }, // le avisa a php que le estamos pasando un JSON
+        body: JSON.stringify(datosVenta) // JSON.stringify toma nuestro paquete y lo convierte a una cadena de texto lista para viajar por la red sin errores.
     })
-    .then(respuesta => respuesta.json()) //Espera la respuesta de php, y a esa respuesta la convierte en JSON
-    .then(data => { //recibe los datos ya procesados y los guarda en la varuable data
+    .then(respuesta => respuesta.json()) // Espera la respuesta de php, y a esa respuesta la convierte en JSON
+    .then(data => { // recibe los datos ya procesados y los guarda en la varuable data
 
-        //si la venta se guardo con exito en mysql, manda un aviso, y limpia la pantalla para la siguiente venta
+        // si la venta se guardo con exito en mysql, manda un aviso, y limpia la pantalla para la siguiente venta
         if (data.success) {
             alert(`¡Venta guardada con éxito! Nota #${data.numero_nota}`);
             ventaPila.limpiar(); // Limpia la pantalla para la siguiente venta
         } else {
-            alert("Error al guardar: " + data.message); //si no se guardo exitosamente, muestra la causa
+            alert("Error al guardar: " + data.message); // si no se guardo exitosamente, muestra la causa
         }
     })
 
-    //catch atrapa errores de red, e imprime en la consola el error. 
+    // catch atrapa errores de red, e imprime en la consola el error. 
     .catch(error => {
         console.error("Error en la conexión:", error);
     });

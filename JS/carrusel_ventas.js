@@ -25,7 +25,7 @@ class ListaCircularVentas {
             this.cabeza = nuevoNodo;           // Asigna la cabeza
             this.cabeza.siguiente = nuevoNodo; // Conecta a sí mismo adelante
             this.cabeza.anterior = nuevoNodo;  // Conecta a sí mismo atrás
-            this.actual = nuevoNodo;          // Marca como nodo activo
+            this.actual = nuevoNodo;           // Marca como nodo activo
         } else {
             const ultimo = this.cabeza.anterior; // Encuentra la última tarjeta
             ultimo.siguiente = nuevoNodo;        // Apunta a la nueva tarjeta
@@ -191,7 +191,7 @@ function actualizarVista(tipo, fecha, titulo) {
 // Consulta las ventas a PHP sin mostrar el modal automáticamente
 async function obtenerVentas(tipo = "hoy", fecha = "") {
     try {
-        const respuesta = await fetch(`../php/api_ventas_detalle.php?tipo=${tipo}&fecha=${fecha}`);
+        const respuesta = await fetch(`../controllers/VentaController.php?accion=listar&tipo=${tipo}&fecha=${fecha}`);
         const datos = await respuesta.json();
 
         // Si hay ventas registradas en la respuesta

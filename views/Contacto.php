@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<?php include "../php/header.php" ?>
+<?php include "partials/header.php" ?>
 <main class="mainContacto">
     <section class="contacto recuadro">
       <form>

@@ -1,6 +1,6 @@
 <?php 
 // Requiere de la conexión a la base de datos
-require_once "../php/conexion.php"; 
+require_once "../config/conexion.php"; 
 // Realiza la consulta a la base de datos MySQL
 $consulta = "SELECT codigo, nombre, precio_venta, existencia FROM producto WHERE estado = 1";
 // Ejecutamos la consulta
@@ -44,7 +44,7 @@ $productos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
     </header>
 
     <main>
-    <?php include "../php/menu.php"; ?>
+    <?php include "partials/menu.php"; ?>
         <section class="contenido">
             <div class="contenidoMensaje">
                 <p id="mensaje-busqueda" style="font-family: Asimovian; font-weight: lighter; color: #11698E; margin-bottom: 10px;"></p>

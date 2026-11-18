@@ -1,8 +1,12 @@
 <?php
-require_once "./php/conexion.php";
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once "./config/conexion.php";
 
 // Verificar si existe un empleado en sesión
-$haySesion = !empty($_SESSION['idEmpleado']);
+$haySesion = !empty($_SESSION['id_empleado']);
 $nombre    = $_SESSION['nombre'] ?? '';
 $rol       = $_SESSION['rol'] ?? '';
 
@@ -11,24 +15,24 @@ if ($haySesion) {
     switch (mb_strtolower($rol)) {
         case 'administrador':
         case 'admin':
-            $urlAcceso = "./screens/Perfil_Administrador.php";
+            $urlAcceso = "./views/Perfil_Administrador.php";
             break;
 
         case 'almacenista':
-            $urlAcceso = "./screens/Productos_Pantalla_Almacenista.php";
+            $urlAcceso = "./views/Productos_Pantalla_Almacenista.php";
             break;
 
         case 'cajero':
-            $urlAcceso = "./screens/Venta.php";
+            $urlAcceso = "./views/Venta.php";
             break;
 
         default:
-            $urlAcceso = "./screens/Perfil_Administrador.php";
+            $urlAcceso = "./views/Perfil_Administrador.php";
             break;
     }
 } else {
     // Si no hay sesión, el botón lleva a la pantalla de login
-    $urlAcceso = "./php/Control_De_Acceso.php";
+    $urlAcceso = "./views/Control_De_Acceso.php";
 }
 ?>
 <!DOCTYPE html>
@@ -40,7 +44,7 @@ if ($haySesion) {
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-<?php include "./php/header.php"; ?>
+<?php include "./views/partials/header.php"; ?>
 
     <section id="contenido">
         

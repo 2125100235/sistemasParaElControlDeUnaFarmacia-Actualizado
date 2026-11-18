@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<?php include "../php/header.php" ?>
+<?php include "partials/header.php" ?>
     <main>
-    <?php include "../php/menu.php" ?>
+    <?php include "partials/menu.php" ?>
             <section class="contenido">
                 <div class="infoSobreNosotros recuadro">
                 <h1><b>Control De Acceso</b></h1>

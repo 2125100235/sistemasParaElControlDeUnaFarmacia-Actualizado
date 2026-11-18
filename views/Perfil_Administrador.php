@@ -1,6 +1,6 @@
 <?php 
 // Conectamos con la base de datos
-require_once "../php/conexion.php"; 
+require_once "../config/conexion.php"; 
 
 // Guardamos en la variable queryVentasDia la consulta sql para la tabla principal.
 $queryVentasDia = "
@@ -30,9 +30,9 @@ $resultadoVentas = $conexion->query($queryVentasDia);
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<?php include "../php/header.php" ?>
+<?php include "partials/header.php" ?>
     <main>
-    <?php include "../php/menu.php" ?>
+    <?php include "partials/menu.php" ?>
     <section class="contenido">
         
         <!-- Tabla Venta del día con menú de hamburguesa y filtros históricos -->

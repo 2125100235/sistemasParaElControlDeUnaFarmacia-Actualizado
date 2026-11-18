@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="../css/Control_De_Acceso.css">
 </head>
 <body>
-<?php include "../php/header.php" ?>
+<?php include "partials/header.php"; ?>
 
 <section id="section_form">
-    <form action="inicio_sesion.php" method="POST">
+    <form action="../controllers/AuthController.php?accion=login" method="POST">
         <h1>Acceda al sistema</h1>
         <div>
             <label for="id">ID</label><br>
@@ -23,7 +23,7 @@
         </div>
         <br>
         <div>
-            <label for="contrasena">Contraseña</label><br>
+            <label for="clave">Contraseña</label><br>
             <input type="password" id="clave" name="clave" required placeholder="••••••••">
         </div>
         <br>
