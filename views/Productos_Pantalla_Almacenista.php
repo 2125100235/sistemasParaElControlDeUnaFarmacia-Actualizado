@@ -26,7 +26,7 @@ require_once "../config/conexion.php";
             <input class="inputBusqueda" id="input-buscar" type="text" placeholder="Buscar producto por nombre o código...">
         </div>
 
-        <!-- NUEVO: Selector para elegir cómo ordenar usando el método de inserción -->
+        <!--  Selector para elegir cómo ordenar usando el método de inserción -->
         <select id="select-ordenar" class="select-ordenar" title="Ordenar productos">
             <option value="defecto">Orden: Más recientes</option>
             <option value="precio_asc">Precio: Menor a Mayor</option>
