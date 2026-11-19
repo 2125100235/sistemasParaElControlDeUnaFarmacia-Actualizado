@@ -1,26 +1,53 @@
-// Clase que define la estructura individual (Nodo) para cada producto del catálogo
-class NodoCatalogo {
-    // El constructor recibe las propiedades del producto traídas de la base de datos
-    constructor(codigo, nombre, precio, existencia) {
-        this.codigo = codigo; // Guarda el código o ID único del producto
-        this.nombre = nombre; // Guarda el nombre oficial del producto
-        this.precio = parseFloat(precio) || 0.0; // Convierte el precio a un número decimal flotante
-        this.existencia = parseInt(existencia) || 0; // Convierte el stock/existencia a un número entero
-        this.siguiente = null; // Puntero que apunta al siguiente nodo en la lista (inicia en null)
+// Definimos la estructura de datos que tendrá cada producto del catálogo (reemplazará a T en la lista)
+/**
+ * @typedef {Object} ProductoCatalogo
+ * @property {string|number} codigo
+ * @property {string} nombre
+ * @property {number} precio
+ * @property {number} existencia
+ */
+
+// Definimos la estructura de datos que tendrá cada artículo en la nota de venta (reemplazará a T en la pila)
+/**
+ * @typedef {Object} ItemVenta
+ * @property {string|number} codigo
+ * @property {string} nombre
+ * @property {number} precio
+ * @property {number} cantidad
+ * @property {number} subtotal
+ */
+
+// Clase genérica Nodo<T>: el @template T indica que puede guardar cualquier tipo de dato (ProductoCatalogo, ItemVenta, etc.)
+/**
+ * @template T
+ */
+class Nodo {
+    // El constructor recibe un dato genérico de tipo T
+    /**
+     * @param {T} dato
+     */
+    constructor(dato) {
+        this.dato = dato; // Guarda el objeto completo (producto o item de venta) dentro del nodo
+        /** @type {Nodo<T> | null} */
+        this.siguiente = null; // Puntero que apunta al siguiente nodo en memoria (inicia en null)
     }
 }
 
-// Clase que gestiona la Lista Enlazada Simple del Catálogo
+// Clase que gestiona la Lista Enlazada Simple del Catálogo usando nodos genéricos Nodo<ProductoCatalogo>
 class ListaProductosCatalogo {
     // Constructor de la lista
     constructor() {
+        /** @type {Nodo<ProductoCatalogo> | null} */
         this.cabeza = null; // Puntero al primer nodo de la lista (nulo al inicializar)
     }
 
     // Método para insertar un nuevo producto al final de la lista enlazada
-    insertar(codigo, nombre, precio, existencia) {
-        // Instancia un nuevo nodo con la información del producto
-        const nuevoNodo = new NodoCatalogo(codigo, nombre, precio, existencia);
+    /**
+     * @param {ProductoCatalogo} producto
+     */
+    insertar(producto) {
+        // Instancia un nuevo nodo genérico guardando el objeto producto en su interior
+        const nuevoNodo = new Nodo(producto);
 
         // Si la lista está vacía, el nuevo nodo se convierte en la cabeza de la lista
         if (this.cabeza === null) {
@@ -40,8 +67,12 @@ class ListaProductosCatalogo {
     }
 
     // Algoritmo de Búsqueda Secuencial a través de los nodos de la lista
+    /**
+     * @param {string} criterio
+     * @returns {Nodo<ProductoCatalogo> | null}
+     */
     buscarSecuencial(criterio) {
-        // Si el término introducido está vacío o no es válido, retorna que es nulo
+        // Si el término introducido está vacío o no es válido, retorna null
         if (!criterio || criterio.trim() === "") return null;
 
         // Limpiamos espacios laterales y convertimos el texto ingresado a minúsculas
@@ -52,13 +83,13 @@ class ListaProductosCatalogo {
 
         // El recorrido secuencial se seguirá ejecutando mientras el nodo actual no sea null
         while (actual !== null) {
-            // Convertimos el código y nombre del nodo actual a minúsculas para comparar
-            const codigoStr = String(actual.codigo).toLowerCase();
-            const nombreStr = String(actual.nombre).toLowerCase();
+            // Entramos a 'actual.dato' para leer el código y el nombre del producto guardado en el nodo
+            const codigoStr = String(actual.dato.codigo).toLowerCase();
+            const nombreStr = String(actual.dato.nombre).toLowerCase();
 
-            // Verificamos coincidencia exacta por código O coincidencia parcial en el nombre (usando indexOf)
+            // Verificamos coincidencia exacta por código o coincidencia parcial en el nombre (usando indexOf)
             if (codigoStr === termino || nombreStr.indexOf(termino) !== -1) {
-                return actual; // Si coincide, retorna el objeto Nodo encontrado y detiene la búsqueda
+                return actual; // Si coincide, retorna el nodo encontrado y detiene la búsqueda
             }
 
             // Si no coincide, movemos el puntero al siguiente nodo en memoria
@@ -73,15 +104,22 @@ class ListaProductosCatalogo {
 // Se crea la instancia global de la Lista Enlazada Simple para el catálogo de productos
 const catalogoLista = new ListaProductosCatalogo();
 
-// Se verifica que la variable 'productosDesdeBD' (puesta por medio de PHP) exista y sea un arreglo
+// Se verifica que la variable 'productosDesdeBD' (enviada por PHP) exista y sea un arreglo
 if (typeof productosDesdeBD !== 'undefined' && Array.isArray(productosDesdeBD)) {
     // Recorremos cada registro proveniente de la base de datos
     productosDesdeBD.forEach(prod => {
-        // Determinamos el precio
-        const precio = prod.precio_venta ?? 0.00;
+        // Convertimos el precio a decimal flotante o usamos 0.0 si viene vacío
+        const precio = parseFloat(prod.precio_venta) || 0.0;
+        // Convertimos la existencia a número entero o usamos 0 si viene vacía
+        const existencia = parseInt(prod.existencia) || 0;
 
-        // Insertamos cada producto como un nodo en nuestra lista enlazada 'catalogoLista'
-        catalogoLista.insertar(prod.codigo, prod.nombre, precio, prod.existencia);
+        // Insertamos el objeto producto dentro de un Nodo<ProductoCatalogo> en la lista
+        catalogoLista.insertar({
+            codigo: prod.codigo,
+            nombre: prod.nombre,
+            precio: precio,
+            existencia: existencia
+        });
     });
 }
 
@@ -98,10 +136,10 @@ function buscarProductoCatalogo() {
     const nodoEncontrado = catalogoLista.buscarSecuencial(inputBusqueda);
 
     if (nodoEncontrado !== null) {
-        // Asignamos el precio del nodo al input de precio formateado a 2 decimales
-        inputPrecio.value = nodoEncontrado.precio.toFixed(2);
-        // Mostramos el nombre y el stock disponible del producto encontrado
-        msgBusqueda.innerText = `Producto encontrado: ${nodoEncontrado.nombre} (Stock: ${nodoEncontrado.existencia})`;
+        // Asignamos el precio desde 'nodoEncontrado.dato.precio' formateado a 2 decimales
+        inputPrecio.value = nodoEncontrado.dato.precio.toFixed(2);
+        // Mostramos el nombre y el stock disponible leyendo 'nodoEncontrado.dato'
+        msgBusqueda.innerText = `Producto encontrado: ${nodoEncontrado.dato.nombre} (Stock: ${nodoEncontrado.dato.existencia})`;
         msgBusqueda.style.color = "#16C79A";
     } else {
         // Si no lo encuentra, vaciamos el campo de precio
@@ -117,37 +155,29 @@ function buscarProductoCatalogo() {
     }
 }
 
-// Clase que define cada elemento (Nodo) que se agregará a la tabla de la venta
-class NodoVenta {
-    // Recibe el nombre, el codigo, el precio unitario y la cantidad a vender
-    constructor(codigo, nombre, precio, cantidad) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.precio = parseFloat(precio);
-        this.cantidad = parseInt(cantidad);
-        this.subtotal = this.precio * this.cantidad;
-        this.siguiente = null; // Puntero al nodo que estará debajo en la pila
-    }
-}
-
-// Clase que gestiona la pila
+// Clase que gestiona la Pila (LIFO) de la nota de venta reutilizando el mismo Nodo<ItemVenta> genérico
 class PilaVenta {
     // Constructor de la pila
     constructor() {
+        /** @type {Nodo<ItemVenta> | null} */
         this.tope = null; // Puntero que señala al elemento superior (cima) de la pila
         this.tamano = 0;  // Contador de elementos insertados en la pila
     }
 
     // Agrega un nuevo nodo en la cima de la pila
-    push(codigo, nombre, precio, cantidad) {
-        // Creamos una nueva instancia del nodo de venta
-        const nuevoNodo = new NodoVenta(codigo, nombre, precio, cantidad);
+    /**
+     * @param {ItemVenta} item
+     */
+    push(item) {
+        // Creamos una nueva instancia del nodo genérico guardando el artículo de venta
+        const nuevoNodo = new Nodo(item);
 
         // El nuevo nodo apunta hacia el antiguo tope (quedando posicionado arriba de él)
         nuevoNodo.siguiente = this.tope;
 
         // El tope de la pila se actualiza para apuntar al nuevo nodo recién creado
         this.tope = nuevoNodo;
+        // Incrementamos el contador de elementos en la pila
         this.tamano++;
 
         // Redibujamos la tabla HTML para reflejar los cambios en pantalla
@@ -155,7 +185,11 @@ class PilaVenta {
     }
 
     // Elimina y desvincula el nodo ubicado en el tope de la pila
+    /**
+     * @returns {Nodo<ItemVenta> | null}
+     */
     pop() {
+        // Verificamos si la pila está vacía antes de intentar sacar un elemento
         if (this.isEmpty()) {
             alert("No hay productos en la nota de venta para deshacer.");
             return null;
@@ -166,10 +200,12 @@ class PilaVenta {
 
         // Movemos el tope hacia el nodo que estaba inmediatamente abajo ('siguiente')
         this.tope = this.tope.siguiente;
+        // Reducimos el contador de elementos en la pila
         this.tamano--;
 
         // Redibujamos la tabla HTML sin el elemento eliminado
         this.actualizarUI();
+        // Retornamos el nodo que fue extraído de la cima
         return nodoExtraido;
     }
 
@@ -179,74 +215,97 @@ class PilaVenta {
     }
 
     // Método RECURSIVO que recorre la pila nodo por nodo acumulando el subtotal
-    calcularSubtotalRecursivo(nodo) { // Recibe como parámetro el nodo actual desde donde iniciar la suma acumulada 
-        // Caso base: si llegamos al final de la pila
-        if (nodo === null) { // Verifica si el puntero nodo está vacío (null), lo cual ocurre cuando la función llega al final de la pila o si la venta no tiene ningún producto registrado.
+    /**
+     * @param {Nodo<ItemVenta> | null} nodo
+     * @returns {number}
+     */
+    calcularSubtotalRecursivo(nodo) {
+        // Caso base: si llegamos al final de la pila (puntero nulo), retornamos 0
+        if (nodo === null) {
             return 0;
         }
-        // Caso recursivo: subtotal del nodo actual + subtotal del resto de nodos
-        return nodo.subtotal + this.calcularSubtotalRecursivo(nodo.siguiente); // Toma el valor numérico de la propiedad subtotal del nodo actual y le suma el valor retornado por una nueva llamada a la propia función
+        // Caso recursivo: sumamos 'nodo.dato.subtotal' más el resultado de llamar a la función con el siguiente nodo
+        return nodo.dato.subtotal + this.calcularSubtotalRecursivo(nodo.siguiente);
     }
 
     // Método que recorre los nodos de la pila para mostrarlos en la interfaz
     actualizarUI() {
-        const tbody = document.getElementById("cuerpoTablaVenta"); // Busca en el HTML el elemento con la ID "cuerpoTablaVenta" y guarda la referencia en la constante tbody para manipularlo después
-        const subtotalElem = document.getElementById("subtotal-val"); // Localiza el elemento HTML con la ID "subtotal-val" y guarda su referencia en la constante subtotalElem
-        const totalElem = document.getElementById("total-val"); // Localiza el elemento HTML con la ID "total-val" (donde se muestra el precio final con IVA) y guarda su referencia en la constante totalElem
+        // Referencia al cuerpo de la tabla HTML donde se dibujan las filas
+        const tbody = document.getElementById("cuerpoTablaVenta");
+        // Referencia al elemento HTML donde se imprime el subtotal
+        const subtotalElem = document.getElementById("subtotal-val");
+        // Referencia al elemento HTML donde se imprime el total con IVA
+        const totalElem = document.getElementById("total-val");
 
         // Limpiamos el contenido anterior de la tabla
         tbody.innerHTML = "";
 
-        // --- CÁLCULO RECURSIVO DEL SUBTOTAL ---
-        const subtotalAcumulado = this.calcularSubtotalRecursivo(this.tope); // Ejecuta la función recursiva pasando como nodo inicial el elemento ubicado en la cima de la pila (this.tope). Al finalizar todas las llamadas recursivas, el total obtenido se almacena en la constante
+        // Ejecutamos la función recursiva pasando la cima de la pila (this.tope) para obtener el subtotal
+        const subtotalAcumulado = this.calcularSubtotalRecursivo(this.tope);
 
-        // Puntero auxiliar para renderizar los elementos en la tabla HTML
+        // Puntero auxiliar para recorrer los nodos desde la cima hasta el fondo
         let actual = this.tope;
 
+        // Mientras queden nodos por recorrer en la pila
         while (actual !== null) {
+            // Creamos una fila HTML <tr>
             const fila = document.createElement("tr");
 
+            // Llenamos las celdas leyendo las propiedades dentro de 'actual.dato'
             fila.innerHTML = `
-                <td style="font-family: Onest, sans-serif">${actual.nombre}</td>
-                <td style="font-family: Onest, sans-serif">${actual.cantidad}</td>
-                <td style="font-family: Onest, sans-serif">$${actual.precio.toFixed(2)}</td>
-                <td style="font-family: Onest, sans-serif">$${actual.subtotal.toFixed(2)}</td>
+                <td style="font-family: Onest, sans-serif">${actual.dato.nombre}</td>
+                <td style="font-family: Onest, sans-serif">${actual.dato.cantidad}</td>
+                <td style="font-family: Onest, sans-serif">$${actual.dato.precio.toFixed(2)}</td>
+                <td style="font-family: Onest, sans-serif">$${actual.dato.subtotal.toFixed(2)}</td>
             `;
 
+            // Agregamos la fila creada al cuerpo de la tabla
             tbody.appendChild(fila);
+            // Avanzamos al siguiente nodo de abajo
             actual = actual.siguiente;
         }
 
-        // Calculamos el total con el 16% de IVA sobre el subtotal recursivo
+        // Calculamos el total aplicando el 16% de IVA sobre el subtotal recursivo
         const totalConIVA = subtotalAcumulado * 1.16;
 
-        subtotalElem.innerText = subtotalAcumulado.toFixed(2); // Toma el número decimal en subtotalAcumulado, lo convierte a texto fijando 2 decimales (toFixed(2)), y lo imprime en el elemento de la pantalla subtotalElem
-        totalElem.innerText = totalConIVA.toFixed(2); // Toma el valor numérico de totalConIVA, lo formatea a 2 decimales y actualiza el texto del elemento totalElem en la pantalla.
+        // Imprimimos el subtotal y el total formateados a 2 decimales en la pantalla
+        subtotalElem.innerText = subtotalAcumulado.toFixed(2);
+        totalElem.innerText = totalConIVA.toFixed(2);
     }
 
-    // Creamos un nuevo metodo, este metodo lo que hara es trabajar directamente con los datos de la pila, pasandolos a una array para poder
-    // posteriormente enviarlos a php
+    // Extrae los datos de cada nodo de la pila y los guarda en un arreglo para enviarlos a PHP
+    /**
+     * @returns {ItemVenta[]}
+     */
     obtenerArrayProductos() {
-        const productos = []; // creamos un nuevo array llamado productos, aqui iremos guardando producto por producto
-        let actual = this.tope; // creamos una variable auxiliar "actual" la cual indicará siempre al producto que está hasta arriba de la pila
-        while (actual !== null) { // ciclo while con la condicion de que: mientras actual no apunte a nulo, haz lo siguiente.
-            productos.push({ // productos es el array que creamos, entonces agregará siempre al final del array el codigo, nombre, etc. del producto el cual "actual" este señalando
-                codigo: actual.codigo,
-                nombre: actual.nombre,
-                precio: actual.precio,
-                cantidad: actual.cantidad,
-                subtotal: actual.subtotal
+        // Creamos un arreglo vacío para almacenar los productos vendidos
+        const productos = [];
+        // Puntero auxiliar que inicia en la cima de la pila
+        let actual = this.tope;
+
+        // Recorremos toda la pila mientras el puntero no sea nulo
+        while (actual !== null) {
+            // Extraemos las propiedades de 'actual.dato' y las agregamos al arreglo
+            productos.push({
+                codigo: actual.dato.codigo,
+                nombre: actual.dato.nombre,
+                precio: actual.dato.precio,
+                cantidad: actual.dato.cantidad,
+                subtotal: actual.dato.subtotal
             });
-            actual = actual.siguiente; // Mueve el indicador al elemento que esta justo abajo de la pila, esto hace que se recorra producto por producto
+            // Avanzamos al nodo que está debajo en la pila
+            actual = actual.siguiente;
         }
-        return productos; // una vez que se termina la pila, retornamos la lista completa con todos los productos de la pila
+
+        // Retornamos el arreglo listo para convertirse a JSON
+        return productos;
     }
 
-    // Vacía la pila al terminar la venta, "reseta" el punto de venta lista para atender el siguiente cliente
+    // Vacía la pila al terminar la venta para atender al siguiente cliente
     limpiar() {
-        this.tope = null;
-        this.tamano = 0;
-        this.actualizarUI();
+        this.tope = null; // Desvinculamos todos los nodos apuntando el tope a null
+        this.tamano = 0;  // Reiniciamos el contador de elementos a 0
+        this.actualizarUI(); // Limpiamos la tabla y los totales en pantalla
     }
 }
 
@@ -255,11 +314,12 @@ const ventaPila = new PilaVenta();
 
 // Función ejecutada al hacer clic en el botón "Registrar"
 function agregarProducto() {
+    // Referencias a los campos de entrada del formulario
     const inputBusqueda = document.getElementById("productoInput");
     const inputPrecio = document.getElementById("precioInput");
     const inputCantidad = document.getElementById("cantidadInput");
 
-    // Extraemos los valores de los inputs
+    // Extraemos y limpiamos los valores ingresados por el cajero
     const criterio = inputBusqueda.value.trim();
     const precio = parseFloat(inputPrecio.value);
     const cantidad = parseInt(inputCantidad.value);
@@ -267,70 +327,77 @@ function agregarProducto() {
     // Buscamos el nodo coincidente en la lista enlazada usando la búsqueda secuencial
     const nodoEncontrado = catalogoLista.buscarSecuencial(criterio);
 
-    // Validación: Si el texto introducido no coincide con ningún nodo del catálogo
+    // Validamos que el texto ingresado exista en el catálogo
     if (!nodoEncontrado) {
         alert("Por favor, busque y seleccione un producto válido del catálogo antes de registrar.");
         return;
     }
 
+    // Validamos que el precio y la cantidad sean números mayores a cero
     if (isNaN(precio) || isNaN(cantidad) || cantidad <= 0 || precio <= 0) {
         alert("Ingrese datos válidos de precio y cantidad.");
         return;
     }
 
-    // Insertamos en la pila de la nota de venta el nombre y codigo del nodo hallado en la BD
-    ventaPila.push(nodoEncontrado.codigo, nodoEncontrado.nombre, precio, cantidad);
+    // Insertamos en la pila un objeto ItemVenta usando los datos de 'nodoEncontrado.dato'
+    ventaPila.push({
+        codigo: nodoEncontrado.dato.codigo,
+        nombre: nodoEncontrado.dato.nombre,
+        precio: precio,
+        cantidad: cantidad,
+        subtotal: precio * cantidad
+    });
 
-    // Reseteamos los campos del formulario para la siguiente venta
+    // Reseteamos los campos del formulario para capturar el siguiente producto
     inputBusqueda.value = "";
     inputPrecio.value = "";
     inputCantidad.value = "1";
-    document.getElementById("mensaje-busqueda").innerText = ""; // Limpia la alerta
-    inputBusqueda.focus(); // Coloca el cursor en el buscador automáticamente
+    document.getElementById("mensaje-busqueda").innerText = ""; // Limpia el mensaje de búsqueda
+    inputBusqueda.focus(); // Coloca el cursor automáticamente en el buscador
 }
 
 // Función ejecutada al hacer clic en el botón "Deshacer"
 function deshacerUltimo() {
-    ventaPila.pop();
+    ventaPila.pop(); // Saca el último producto agregado en la cima de la pila
 }
 
-// declaramos la funcion, es la funcion que se ejecuta cuando el cajero da al boton de cobrar
-function finalizarVenta() { 
-    // si la pila esta vacia, muestra un mensaje al cajero de agregar por lo menos un producto
+// Función ejecutada cuando el cajero presiona el botón de cobrar
+function finalizarVenta() {
+    // Verificamos que la pila tenga al menos un producto antes de cobrar
     if (ventaPila.isEmpty()) {
         alert("Agregue al menos un producto a la lista antes de cobrar.");
         return;
     }
 
-    const totalConIVA = parseFloat(document.getElementById("total-val").innerText); // lee el texto del monto total con IVA que esta en la pantalla y lo convierte en decimal 
-    const productos = ventaPila.obtenerArrayProductos(); // llama al metodo del array de los productos y los guarda en la variable productos
+    // Leemos el monto total con IVA desde la pantalla y lo convertimos a decimal
+    const totalConIVA = parseFloat(document.getElementById("total-val").innerText);
+    // Obtenemos el arreglo de productos extraídos de la pila
+    const productos = ventaPila.obtenerArrayProductos();
 
-    // Empaquetamos los datos que enviaremos a PHP dentro del objeto datosVenta, el total a pagar y los productos que se vendieron
+    // Empaquetamos el total y los productos en un solo objeto para enviarlo al servidor
     const datosVenta = {
         total: totalConIVA,
         productos: productos
     };
 
-    // Enviamos los datos mediante una petición fetch al controlador de ventas en PHP 
+    // Enviamos los datos mediante una petición POST al controlador de ventas en PHP
     fetch('../controllers/VentaController.php?accion=guardar', {
-        method: 'POST', // indicamos el metodo en lo que lo estamos pasando, post significa que estamos pasando datos nuevos, a diferencia de get que es solo para leer.
-        headers: { 'Content-Type': 'application/json' }, // le avisa a php que le estamos pasando un JSON
-        body: JSON.stringify(datosVenta) // JSON.stringify toma nuestro paquete y lo convierte a una cadena de texto lista para viajar por la red sin errores.
+        method: 'POST', // Método POST para enviar nuevos datos al servidor
+        headers: { 'Content-Type': 'application/json' }, // Indicamos que el cuerpo viaja en formato JSON
+        body: JSON.stringify(datosVenta) // Convertimos el objeto JavaScript a texto JSON
     })
-    .then(respuesta => respuesta.json()) // Espera la respuesta de php, y a esa respuesta la convierte en JSON
-    .then(data => { // recibe los datos ya procesados y los guarda en la varuable data
-
-        // si la venta se guardo con exito en mysql, manda un aviso, y limpia la pantalla para la siguiente venta
+    .then(respuesta => respuesta.json()) // Convertimos la respuesta del servidor de JSON a objeto JS
+    .then(data => {
+        // Si la venta se registró correctamente en la base de datos
         if (data.success) {
             alert(`¡Venta guardada con éxito! Nota #${data.numero_nota}`);
-            ventaPila.limpiar(); // Limpia la pantalla para la siguiente venta
+            ventaPila.limpiar(); // Vaciamos la pila y limpiamos la pantalla para la siguiente venta
         } else {
-            alert("Error al guardar: " + data.message); // si no se guardo exitosamente, muestra la causa
+            alert("Error al guardar: " + data.message); // Mostramos el motivo si ocurrió un error
         }
     })
-
-    // catch atrapa errores de red, e imprime en la consola el error. 
     .catch(error => {
+        // Capturamos e imprimimos en consola cualquier error de red o conexión
         console.error("Error en la conexión:", error);
     });
 }
