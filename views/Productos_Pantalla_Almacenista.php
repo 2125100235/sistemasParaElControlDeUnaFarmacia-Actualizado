@@ -25,6 +25,16 @@ require_once "../config/conexion.php";
         <div class="contenedorBusqueda">
             <input class="inputBusqueda" id="input-buscar" type="text" placeholder="Buscar producto por nombre o código...">
         </div>
+
+        <!-- NUEVO: Selector para elegir cómo ordenar usando el método de inserción -->
+        <select id="select-ordenar" class="select-ordenar" title="Ordenar productos">
+            <option value="defecto">Orden: Más recientes</option>
+            <option value="precio_asc">Precio: Menor a Mayor</option>
+            <option value="precio_desc">Precio: Mayor a Menor</option>
+            <option value="nombre_asc">Nombre: A - Z</option>
+            <option value="existencia_asc">Existencia: Menor a Mayor</option>
+            <option value="caducidad_asc">Caducidad: Próximos a vencer</option>
+        </select>
         
         <!-- Menú superior con el botón que despliega el formulario flotante para Agregar -->
         <nav class="nav-links aCrud">

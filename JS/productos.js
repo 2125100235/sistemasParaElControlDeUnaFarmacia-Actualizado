@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const contenedorProductos = document.getElementById('contenedor-productos');
     // Entrada de texto de la barra de búsqueda en tiempo real
     const inputBuscar = document.getElementById('input-buscar');
+    // NUEVO: Selector desplegable para elegir el criterio de ordenamiento
+    const selectOrdenar = document.getElementById('select-ordenar');
 
     // Elementos estructurales de la ventana emergente modal
     const modal = document.getElementById('modal-producto');
@@ -28,9 +30,92 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputExistencia = document.getElementById('existencia');
     const inputImagen = document.getElementById('imagen');
 
-    // --------------------------------------------------------------------------
+    //  Variable donde guardamos los productos traídos de la BD para poder reordenarlos sin volver a consultar
+    let productosEnMemoria = [];
+
+   
+    //  MÉTODO DE ORDENAMIENTO POR INSERCIÓN (INSERTION SORT)
+   
+    // Esta función compara dos productos ('a' y 'b') según el criterio elegido.
+    // Devuelve un número mayor a 0 si 'a' debe ir DESPUÉS de 'b'.
+    function compararProductos(a, b, criterio) {
+        // Revisa qué opción seleccionó el usuario en el menú desplegable
+        switch (criterio) {
+            case 'precio_asc':
+                // Resta los precios: si 'a' cuesta más que 'b', el resultado es positivo y 'a' se mueve a la derecha
+                return parseFloat(a.precio_venta) - parseFloat(b.precio_venta);
+
+            case 'precio_desc':
+                // Resta al revés: si 'a' cuesta menos que 'b', el resultado es positivo y 'a' se mueve a la derecha
+                return parseFloat(b.precio_venta) - parseFloat(a.precio_venta);
+
+            case 'nombre_asc':
+                // Compara alfabéticamente los nombres en español (de la A a la Z)
+                return a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' });
+
+            case 'existencia_asc':
+                // Compara las cantidades en stock para dejar primero los que tienen menos piezas
+                return parseInt(a.existencia, 10) - parseInt(b.existencia, 10);
+
+            case 'caducidad_asc':
+                // Convierte las fechas a números para dejar primero los productos más próximos a caducar
+                return new Date(a.fecha_caducidad) - new Date(b.fecha_caducidad);
+
+            case 'defecto':
+            default:
+                // Orden original por código de mayor a menor (los últimos agregados aparecen primero)
+                return parseInt(b.codigo, 10) - parseInt(a.codigo, 10);
+        }
+    }
+
+    // Algoritmo principal de Ordenamiento por Inserción
+    function ordenarPorInsercion(listaProductos, criterio) {
+        // Hace una copia del arreglo original para no modificar directamente los datos guardados
+        const arreglo = [...listaProductos];
+
+        // Guarda la cantidad total de productos que hay en la lista
+        const total = arreglo.length;
+
+        // Inicia un ciclo desde el segundo elemento (posición 1), porque el primero (posición 0) ya se asume ordenado
+        for (let i = 1; i < total; i++) {
+            // Guarda en una variable temporal el producto que vamos a acomodar en esta vuelta
+            const productoActual = arreglo[i];
+
+            // Crea el índice 'j' para mirar el elemento que está justo a la izquierda de 'productoActual'
+            let j = i - 1;
+
+            // Mientras no lleguemos al inicio de la lista (j >= 0) Y el producto de la izquierda deba ir después del actual:
+            while (j >= 0 && compararProductos(arreglo[j], productoActual, criterio) > 0) {
+                // Empuja el producto de la izquierda una posición hacia la derecha para abrir un hueco
+                arreglo[j + 1] = arreglo[j];
+
+                // Retrocede una posición hacia la izquierda para seguir comparando con los anteriores
+                j--;
+            }
+
+            // Cuando el ciclo se detiene, coloca 'productoActual' en el hueco libre que quedó
+            arreglo[j + 1] = productoActual;
+        }
+
+        // Regresa la lista ya ordenada
+        return arreglo;
+    }
+
+    // Función que une el selector, el algoritmo de inserción y el dibujado de tarjetas
+    function ordenarYMostrarProductos() {
+        // Lee qué criterio está seleccionado actualmente en el desplegable
+        const criterio = selectOrdenar ? selectOrdenar.value : 'defecto';
+
+        // Llama al método de inserción para obtener la lista ordenada
+        const productosOrdenados = ordenarPorInsercion(productosEnMemoria, criterio);
+
+        // Envía la lista ya ordenada para que se dibujen las tarjetas en pantalla
+        renderizarProductos(productosOrdenados);
+    }
+
+   
     // 2. CONSULTAR Y OBTENER PRODUCTOS (READ / SEARCH)
-    // --------------------------------------------------------------------------
+    
     async function cargarProductos(terminoBusqueda = '') {
         try {
             // Construye la URL hacia el controlador enviando la acción y el filtro de búsqueda
@@ -42,9 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Convierte la respuesta recibida del servidor de formato JSON a un objeto JavaScript
             const resultado = await respuesta.json();
 
-            // Si la consulta fue exitosa, envía los registros a la función de renderizado
+            // Si la consulta fue exitosa, guarda los registros en memoria, los ordena y los dibuja
             if (resultado.exito) {
-                renderizarProductos(resultado.datos);
+                // Guarda los productos en la variable de memoria
+                productosEnMemoria = resultado.datos;
+                // Ejecuta el ordenamiento por inserción y dibuja las tarjetas
+                ordenarYMostrarProductos();
             } else {
                 // Notifica en pantalla si ocurrió un problema al consultar
                 contenedorProductos.innerHTML = `<p class="mensaje-vacio">No fue posible obtener la lista de productos.</p>`;
@@ -56,9 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --------------------------------------------------------------------------
+    
     // 3. DIBUJAR TARJETAS EN EL DOM (RENDER)
-    // --------------------------------------------------------------------------
+
     function renderizarProductos(productos) {
         // Limpia el contenido anterior del contenedor de productos
         contenedorProductos.innerHTML = '';
@@ -268,6 +356,11 @@ document.addEventListener('DOMContentLoaded', () => {
     inputBuscar.addEventListener('input', (e) => {
         cargarProductos(e.target.value);
     });
+
+    //  Reordena las tarjetas al instante cada vez que cambias la opción del menú desplegable
+    if (selectOrdenar) {
+        selectOrdenar.addEventListener('change', ordenarYMostrarProductos);
+    }
 
     // --------------------------------------------------------------------------
     // 9. INICIALIZACIÓN
