@@ -20,7 +20,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
 
 <aside class="menu">
     <?php if ($rol === 'administrador' || $rol === 'admin'): ?>
-        <a href="#"><h1>Control de usuarios</h1></a>
+        <a href="../views/Control_Usuarios.php"><h1>Control de usuarios</h1></a>
 
         <a href="../views/Perfil_Administrador.php"><h1>Ventas y facturación</h1></a>
 
@@ -29,13 +29,13 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
         <a href="#"><h1>Contactos</h1></a>
         <ul>
             <li><a href="../views/Soporte_tecnico.php"><h2>Soporte Técnico </h2></a></li>
-            <li><a href="#"><h2>Directorio de proveedores</h2></a></li>
+            <li><a href="../views/Directorio_Proveedores.php"><h2>Directorio de proveedores</h2></a></li>
         </ul>
 
     <?php elseif ($rol === 'almacenista'): ?>
         <a href="../views/Productos_Pantalla_Almacenista.php"><h1>Productos e Inventario</h1></a>
         
-        <a href="#"><h1>Proveedores</h1></a>
+        <a href="../views/Directorio_Proveedores.php"><h1>Proveedores</h1></a>
 
         <a href="#"><h1>Protocolos</h1></a>
         <ul>

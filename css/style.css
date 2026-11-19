@@ -991,3 +991,100 @@ th {
     font-weight: bold;
     cursor: pointer;
 }
+
+/* este apartado es de los sistema CRUD de clientes, proveedores y productos */
+/* Botones de Eliminar, Agregar y Editar en el Header (estilo enlace Asimovian) */
+.btn-header-crud {
+    background: none;
+    border: none;
+    color: var(--color-primario);
+    font-family: Asimovian, sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-header-crud:hover {
+    color: var(--color-terciario);
+    transform: scale(1.05);
+}
+
+/* Recuadro blanco principal de Clientes */
+.recuadro-clientes {
+    width: 92%;
+    max-width: 1120px;
+    min-height: 65vh;
+    padding: 30px 40px;
+    box-sizing: border-box;
+    justify-content: flex-start;
+}
+
+.tabla-clientes-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Tabla con encabezados en Asimovian y celdas separadas tipo cajita */
+.tabla-clientes-mockup {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 14px 12px;
+    text-align: center;
+}
+
+.tabla-clientes-mockup th {
+    font-family: Asimovian, sans-serif;
+    color: var(--color-primario);
+    font-size: 1rem;
+    font-weight: normal;
+    padding-bottom: 6px;
+}
+
+.tabla-clientes-mockup tbody tr {
+    cursor: pointer;
+}
+
+/* Cajita individual de cada campo como en el boceto */
+.celda-caja {
+    background-color: #ffffff;
+    border: 1px solid #888;
+    border-radius: 5px;
+    min-height: 28px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Onest, sans-serif;
+    font-size: 0.9rem;
+    color: #222;
+    box-sizing: border-box;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.celda-codigo {
+    min-width: 75px;
+    font-weight: 600;
+}
+
+/* Efecto al pasar el mouse por una fila */
+.tabla-clientes-mockup tbody tr:hover .celda-caja {
+    border-color: var(--color-secundario);
+    background-color: #f4fbfc;
+}
+
+/* Resaltado cuando el usuario hace clic para seleccionar un cliente */
+.tabla-clientes-mockup tbody tr.fila-seleccionada .celda-caja {
+    background-color: var(--color-cuaternario);
+    border: 2px solid var(--color-primario);
+    box-shadow: 0 0 6px rgba(25, 69, 107, 0.35);
+    font-weight: 600;
+}
+
+.mensaje-tabla-vacia {
+    text-align: center;
+    color: #666;
+    font-family: Onest, sans-serif;
+    padding: 20px;
+}
