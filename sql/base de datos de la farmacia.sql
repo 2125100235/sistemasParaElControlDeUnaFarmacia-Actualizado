@@ -50,8 +50,7 @@ CREATE TABLE empleado (
     correo VARCHAR(100) NOT NULL UNIQUE,
     telefono VARCHAR(15),
     rol ENUM('Administrador', 'Cajero', 'Almacenista') NOT NULL,
-    estado TINYINT(1) NOT NULL DEFAULT 1, -- 1: Activo, 0: Inactivo (Baja)
-    foto VARCHAR(255) DEFAULT 'fotoDefectoEmpleado.png'
+    estado TINYINT(1) NOT NULL DEFAULT 1 -- 1: Activo, 0: Inactivo (Baja lógica)
 );
 
 -- 5. TABLA VENTA (Encabezado de Transacción)
