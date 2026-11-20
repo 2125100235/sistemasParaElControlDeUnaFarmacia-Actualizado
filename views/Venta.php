@@ -7,6 +7,11 @@ $consulta = "SELECT codigo, nombre, precio_venta, existencia FROM producto WHERE
 $resultado = $conexion->query($consulta);
 // Verifica si el resultado tiene un valor valido
 $productos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
+
+// Consulta de clientes registrados y activos en la base de datos
+$consultaClientes = "SELECT codigo, nombre, telefono, rfc FROM cliente WHERE estado = 1 ORDER BY nombre ASC";
+$resultadoClientes = $conexion->query($consultaClientes);
+$clientes = $resultadoClientes ? $resultadoClientes->fetch_all(MYSQLI_ASSOC) : [];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -73,7 +78,9 @@ $productos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
 
                     <div class="campo-cliente">
                         <label for="clienteInput">Cliente</label>
-                        <input type="text" id="clienteInput" placeholder="Público general">
+                        <input type="text" id="clienteInput" value="Público en general" readonly onclick="abrirModalClienteVenta()">
+                        <input type="hidden" id="clienteCodigoInput" value="">
+                        <button type="button" id="btnAgregarClienteVenta" onclick="abrirModalClienteVenta()">Agregar cliente</button>
                     </div>
 
                     <button id="cobrarBtn" type="button" onclick="finalizarVenta()">Registrar venta</button>
@@ -82,9 +89,43 @@ $productos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
         </section>
     </main>
 
-    <!-- Pasar la variable $productos correcta a JavaScript -->
+    <!-- MODAL PARA BUSCAR Y SELECCIONAR CLIENTE REGISTRADO -->
+    <div id="modal-seleccionar-cliente" class="modal-overlay hidden">
+        <div class="modal-contenido">
+            <button type="button" class="modal-cerrar" onclick="cerrarModalClienteVenta()">×</button>
+            <h2>Seleccionar Cliente Registrado</h2>
+
+            <div class="campo-form campo-full">
+                <label for="buscarClienteVentaInput">Buscar cliente (nombre, código, teléfono o RFC):</label>
+                <input type="text" id="buscarClienteVentaInput" placeholder="Escribe para filtrar clientes..." oninput="filtrarClientesModal()">
+            </div>
+
+            <div class="tabla-clientes-wrapper" style="max-height: 250px; overflow-y: auto; margin-top: 10px;">
+                <table class="tabla-clientes-mockup">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>RFC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-clientes-venta-cuerpo">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-acciones campo-full" style="margin-top: 15px;">
+                <button type="button" class="btn-cancelar" onclick="seleccionarPublicoGeneral()">Público en general</button>
+                <button type="button" class="btn-cancelar" onclick="cerrarModalClienteVenta()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pasar las variables de BD a JavaScript -->
     <script>
         const productosDesdeBD = <?php echo json_encode($productos); ?>;
+        const clientesDesdeBD = <?php echo json_encode($clientes); ?>;
     </script>
     <script src="../js/venta.js"></script>
 </body>

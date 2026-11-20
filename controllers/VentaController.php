@@ -61,12 +61,13 @@ class VentaController {
                     exit();
                 }
 
-                $id_empleado  = $_SESSION['id_empleado'] ?? 3;
-                $subtotalBase = $this->calcularSubtotalRecursivo($data['productos']);
-                $total_pagar  = $subtotalBase * 1.16;
+                $id_empleado    = $_SESSION['id_empleado'] ?? 3;
+                $codigo_cliente = !empty($data['codigo_cliente']) ? (int)$data['codigo_cliente'] : null;
+                $subtotalBase   = $this->calcularSubtotalRecursivo($data['productos']);
+                $total_pagar    = $subtotalBase * 1.16;
 
                 try {
-                    $numero_nota = $this->modelo->registrarVenta($id_empleado, $total_pagar, $data['productos']);
+                    $numero_nota = $this->modelo->registrarVenta($id_empleado, $total_pagar, $data['productos'], $codigo_cliente);
                     echo json_encode([
                         'success'     => true,
                         'numero_nota' => $numero_nota

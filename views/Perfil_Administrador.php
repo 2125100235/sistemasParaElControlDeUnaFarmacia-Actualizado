@@ -7,12 +7,14 @@ $queryVentasDia = "
     SELECT 
         v.numero_nota, 
         CONCAT(e.nombre, ' ', e.apellido_paterno) AS atendio,
+        COALESCE(c.nombre, 'Público en general') AS cliente,
         p.nombre AS producto,
         dv.cantidad_salida AS piezas_vendidas,
         dv.precio_venta,
         dv.subtotal AS precio_total
     FROM venta v
     INNER JOIN empleado e ON v.id_empleado = e.id_empleado
+    LEFT JOIN cliente c ON v.codigo_cliente = c.codigo
     INNER JOIN detalle_venta dv ON v.numero_nota = dv.numero_nota
     INNER JOIN producto p ON dv.codigo_producto = p.codigo
     WHERE DATE(v.fecha) = CURDATE()
@@ -78,11 +80,11 @@ $resultadoVentas = $conexion->query($queryVentasDia);
                 <thead>
                     <tr>
                         <th>Nota</th>
-                        <th>Atendió</th>
-                        <th>Nombre del producto</th>
+                        <th>Nombre</th>
                         <th>Piezas Vendidas</th>
-                        <th>Precio Unitario</th>
-                        <th>Precio Total</th>
+                        <th>Empleado</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody id="tabla-ventas-cuerpo">
@@ -90,10 +92,10 @@ $resultadoVentas = $conexion->query($queryVentasDia);
                         <?php while ($fila = $resultadoVentas->fetch_assoc()): ?>
                             <tr data-id-venta="<?php echo $fila['numero_nota']; ?>">
                                 <td>#<?php echo $fila['numero_nota']; ?></td>
-                                <td><?php echo htmlspecialchars($fila['atendio']); ?></td>
                                 <td><?php echo htmlspecialchars($fila['producto']); ?></td>
                                 <td><?php echo $fila['piezas_vendidas']; ?></td>
-                                <td>$<?php echo number_format($fila['precio_venta'], 2); ?></td>
+                                <td><?php echo htmlspecialchars($fila['atendio']); ?></td>
+                                <td><?php echo htmlspecialchars($fila['cliente']); ?></td>
                                 <td>$<?php echo number_format($fila['precio_total'], 2); ?></td>
                             </tr>
                         <?php endwhile; ?>
@@ -125,6 +127,9 @@ $resultadoVentas = $conexion->query($queryVentasDia);
                     <div class="tarjeta-body">
                         <p class="cajero-info">
                             <strong>Atendido por:</strong> <span id="venta-cajero">--</span>
+                        </p>
+                        <p class="cajero-info">
+                            <strong>Cliente:</strong> <span id="venta-cliente">Público en general</span>
                         </p>
 
                         <h4>Productos comprados:</h4>

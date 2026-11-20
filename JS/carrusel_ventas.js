@@ -225,8 +225,10 @@ function renderizarTablaSuperior(ventas) {
         return;
     }
 
-    // Genera las filas de la tabla
+    // Genera las filas de la tabla en el orden: Nota, Nombre, Piezas Vendidas, Empleado, Cliente, Total
     ventas.forEach(venta => {
+        const nombreCliente = venta.cliente || "Público en general";
+
         venta.productos.forEach(prod => {
             const fila = document.createElement("tr");
             fila.setAttribute("data-id-venta", venta.id_venta);
@@ -234,10 +236,10 @@ function renderizarTablaSuperior(ventas) {
             
             fila.innerHTML = `
                 <td>#${venta.id_venta}</td>
-                <td>${escapeHTML(venta.cajero)}</td>
                 <td>${escapeHTML(prod.producto)}</td>
                 <td>${prod.cantidad}</td>
-                <td>$${prod.precio_unitario.toFixed(2)}</td>
+                <td>${escapeHTML(venta.cajero)}</td>
+                <td>${escapeHTML(nombreCliente)}</td>
                 <td>$${prod.subtotal.toFixed(2)}</td>
             `;
 
@@ -273,6 +275,11 @@ function renderizarTarjeta() {
     document.getElementById("venta-fecha").textContent = venta.fecha;
     document.getElementById("venta-cajero").textContent = venta.cajero;
 
+    const clienteElem = document.getElementById("venta-cliente");
+    if (clienteElem) {
+        clienteElem.textContent = venta.cliente || "Público en general";
+    }
+
     const tbody = document.getElementById("venta-productos-cuerpo");
     tbody.innerHTML = "";
 
@@ -297,6 +304,10 @@ function mostrarMensajeVacio() {
     document.getElementById("venta-folio").textContent = "Sin Ventas";
     document.getElementById("venta-fecha").textContent = "--/--/----";
     document.getElementById("venta-cajero").textContent = "N/A";
+
+    const clienteElem = document.getElementById("venta-cliente");
+    if (clienteElem) clienteElem.textContent = "N/A";
+
     document.getElementById("venta-productos-cuerpo").innerHTML = `
         <tr><td colspan="4" style="text-align:center;">No hay ventas registradas.</td></tr>
     `;
@@ -317,7 +328,8 @@ function formatearMes(mesAnioStr) {
 }
 
 function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-    );
+    if (str === null || str === undefined) return "";
+    const div = document.createElement("div");
+    div.textContent = String(str);
+    return div.innerHTML;
 }
