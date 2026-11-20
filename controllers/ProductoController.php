@@ -11,6 +11,33 @@ class ProductoController {
         $this->modelo = new ProductoModel($conexion);
     }
 
+    // Valida y guarda la imagen en ../assets/ si se seleccionó un archivo nuevo
+    private function procesarImagen(string $imagenActual): array {
+        if (!isset($_FILES['archivo_imagen']) || $_FILES['archivo_imagen']['error'] === UPLOAD_ERR_NO_FILE) {
+            return ['exito' => true, 'nombre' => $imagenActual];
+        }
+
+        if ($_FILES['archivo_imagen']['error'] !== UPLOAD_ERR_OK) {
+            return ['exito' => false, 'mensaje' => 'Error al recibir la imagen en el servidor.'];
+        }
+
+        $extension  = strtolower(pathinfo($_FILES['archivo_imagen']['name'], PATHINFO_EXTENSION));
+        $permitidas = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+
+        if (!in_array($extension, $permitidas)) {
+            return ['exito' => false, 'mensaje' => 'Formato no válido. Usa JPG, PNG, WEBP o AVIF.'];
+        }
+
+        $nuevoNombre = "prod_" . time() . "_" . mt_rand(100, 999) . "." . $extension;
+        $rutaDestino = __DIR__ . '/../assets/' . $nuevoNombre;
+
+        if (move_uploaded_file($_FILES['archivo_imagen']['tmp_name'], $rutaDestino)) {
+            return ['exito' => true, 'nombre' => $nuevoNombre];
+        }
+
+        return ['exito' => false, 'mensaje' => 'No se pudo guardar la imagen en la carpeta assets.'];
+    }
+
     public function procesarPeticion() {
         $accion = $_REQUEST['accion'] ?? 'leer';
         $respuesta = [
@@ -27,6 +54,14 @@ class ProductoController {
                 break;
 
             case 'crear':
+                $imagenBase = !empty($_POST['imagen']) ? trim($_POST['imagen']) : 'imagenMedicinaDefecto.jpg';
+                $resultadoImagen = $this->procesarImagen($imagenBase);
+
+                if (!$resultadoImagen['exito']) {
+                    $respuesta['mensaje'] = $resultadoImagen['mensaje'];
+                    break;
+                }
+
                 $datos = [
                     'nombre'       => trim($_POST['nombre'] ?? ''),
                     'tipo'         => $_POST['tipo_medicamento'] ?? 'OTC / Libre Venta',
@@ -36,7 +71,7 @@ class ProductoController {
                     'existencia'   => intval($_POST['existencia'] ?? 0),
                     'precio'       => floatval($_POST['precio_venta'] ?? 0.00),
                     'id_proveedor' => !empty($_POST['id_proveedor']) ? intval($_POST['id_proveedor']) : null,
-                    'imagen'       => !empty($_POST['imagen']) ? trim($_POST['imagen']) : 'placeholderFotoUsuario.png'
+                    'imagen'       => $resultadoImagen['nombre']
                 ];
 
                 if (!empty($datos['nombre']) && !empty($datos['laboratorio']) && !empty($datos['caducidad']) && $datos['precio'] >= 0 && $datos['existencia'] >= 0) {
@@ -68,6 +103,14 @@ class ProductoController {
                 break;
 
             case 'actualizar':
+                $imagenBase = !empty($_POST['imagen']) ? trim($_POST['imagen']) : 'imagenMedicinaDefecto.jpg';
+                $resultadoImagen = $this->procesarImagen($imagenBase);
+
+                if (!$resultadoImagen['exito']) {
+                    $respuesta['mensaje'] = $resultadoImagen['mensaje'];
+                    break;
+                }
+
                 $datos = [
                     'codigo'       => intval($_POST['codigo'] ?? 0),
                     'nombre'       => trim($_POST['nombre'] ?? ''),
@@ -78,7 +121,7 @@ class ProductoController {
                     'existencia'   => intval($_POST['existencia'] ?? 0),
                     'precio'       => floatval($_POST['precio_venta'] ?? 0.00),
                     'id_proveedor' => !empty($_POST['id_proveedor']) ? intval($_POST['id_proveedor']) : null,
-                    'imagen'       => !empty($_POST['imagen']) ? trim($_POST['imagen']) : 'placeholderFotoUsuario.png'
+                    'imagen'       => $resultadoImagen['nombre']
                 ];
 
                 if ($datos['codigo'] > 0 && !empty($datos['nombre']) && !empty($datos['laboratorio']) && !empty($datos['caducidad'])) {

@@ -26,7 +26,7 @@ require_once "../config/conexion.php";
             <input class="inputBusqueda" id="input-buscar" type="text" placeholder="Buscar producto por nombre o código...">
         </div>
 
-        <!--  Selector para elegir cómo ordenar usando el método de inserción -->
+        <!-- Selector para elegir cómo ordenar usando el método de inserción -->
         <select id="select-ordenar" class="select-ordenar" title="Ordenar productos">
             <option value="defecto">Orden: Más recientes</option>
             <option value="precio_asc">Precio: Menor a Mayor</option>
@@ -63,7 +63,7 @@ require_once "../config/conexion.php";
         <h2 id="modal-titulo">Agregar Producto</h2>
         
         <!-- Formulario ordenado en cuadrícula de 2 columnas -->
-        <form id="form-producto" class="form-grid-producto">
+        <form id="form-producto" class="form-grid-producto" enctype="multipart/form-data">
             
             <input type="hidden" id="producto-codigo" name="codigo" value="">
 
@@ -115,10 +115,14 @@ require_once "../config/conexion.php";
                 <input type="number" min="0" id="existencia" name="existencia" required placeholder="0" oninput="if(this.value < 0) this.value = 0;">
             </div>
 
-            <!-- Imagen (Ocupa 2 columnas) -->
+            <!-- Imagen con mini botón de selección (Ocupa 2 columnas) -->
             <div class="campo-form campo-full">
                 <label for="imagen">Nombre o archivo de Imagen:</label>
-                <input type="text" id="imagen" name="imagen" placeholder="placeholderFotoUsuario.png">
+                <div class="input-archivo-grupo">
+                    <input type="text" id="imagen" name="imagen" placeholder="imagenMedicinaDefecto.jpg" readonly>
+                    <input type="file" id="archivo_imagen" name="archivo_imagen" accept="image/png, image/jpeg, image/webp, image/avif" hidden>
+                    <label for="archivo_imagen" class="btn-mini-archivo">Seleccionar</label>
+                </div>
             </div>
 
             <!-- Botones de Acción (Ocupan 2 columnas) -->

@@ -1298,24 +1298,32 @@ header.crud .nav-links.aCrud {
     display: none !important;
 }
 
-/* 2. Tarjeta del modal expandida sin barras de scroll */
+
+
+/* 2. Tarjeta blanca exterior del modal */
 .modal-contenido {
     background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    padding: 28px 34px 32px; /* 32px abajo para dar espacio suficiente a los botones */
+    border-radius: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    padding: 24px 32px 28px 32px;
     width: 100%;
     max-width: 680px;
-    height: auto !important; /* Crece automáticamente según el contenido */
+    height: auto;
     box-sizing: border-box;
     position: relative;
 }
 
-/* 3. Estructura interna de 2 columnas con CSS Grid */
-.form-grid-producto {
+/* 3. Contenedor interno gris con cuadrícula de 2 columnas */
+.modal-contenido .form-grid-producto {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px 20px;
+    gap: 12px 22px;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.12);
+    border-radius: 22px;
+    padding: 20px 24px 22px 24px;
+    align-items: stretch;
+    justify-content: normal;
 }
 
 /* 4. Elementos que abarcan todo el ancho */
@@ -1323,26 +1331,31 @@ header.crud .nav-links.aCrud {
     grid-column: span 2;
 }
 
-/* 5. Inputs y select con estilo uniforme */
+/* 5. Etiquetas, inputs y select con fuente Onest */
 .campo-form {
     display: flex;
     flex-direction: column;
 }
 
 .campo-form label {
-    font-weight: 600;
-    margin-bottom: 4px;
-    font-size: 0.88rem;
-    color: #444;
+    font-family: Asimovian, sans-serif;
+    font-weight: normal;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+    color: #111;
 }
 
 .campo-form input,
 .campo-form select {
     width: 100%;
-    padding: 9px 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 0.92rem;
+    height: 35px;
+    padding: 6px 12px;
+    border: 1px solid #666;
+    border-radius: 6px;
+    background-color: #ffffff;
+    font-family: Onest, sans-serif;
+    font-size: 0.9rem;
+    color: #111;
     outline: none;
     box-sizing: border-box;
     transition: border-color 0.2s ease;
@@ -1350,65 +1363,71 @@ header.crud .nav-links.aCrud {
 
 .campo-form input:focus,
 .campo-form select:focus {
-    border-color: #007bff;
+    border-color: var(--color-secundario);
 }
 
-/* 6. Encabezado y acciones */
+/* 6. Título en Asimovian y botones redondeados de la paleta */
 #modal-titulo {
+    font-family: Asimovian, sans-serif;
+    font-weight: normal;
     margin-top: 0;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     font-size: 1.35rem;
-    color: #333;
+    color: var(--color-primario);
     text-align: center;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 8px;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.25);
+    padding-bottom: 12px;
 }
 
 .modal-cerrar {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 16px;
+    right: 22px;
     background: none;
     border: none;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
-    color: #777;
+    color: var(--color-primario);
     cursor: pointer;
+    transition: color 0.15s ease;
 }
 
 .modal-cerrar:hover {
-    color: #ff5555;
+    color: rgba(142, 17, 17);
 }
 
 .modal-acciones {
     grid-column: span 2;
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    margin-top: 18px; /* Separación limpia respecto a los inputs */
-    padding-bottom: 5px;
+    gap: 14px;
+    margin-top: 12px;
+    padding-bottom: 0;
 }
 
-.btn-guardar {
-    background-color: #28a745;
-    color: #ffffff;
-    border: none;
-    padding: 9px 22px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
+.btn-guardar,
 .btn-cancelar {
-    background-color: #6c757d;
-    color: #ffffff;
+    background-color: var(--color-cuaternario);
+    color: var(--color-primario);
     border: none;
-    padding: 9px 22px;
-    border-radius: 8px;
-    font-weight: bold;
+    padding: 8px 26px;
+    border-radius: 30px;
+    font-family: Asimovian, sans-serif;
+    font-size: 0.95rem;
+    font-weight: normal;
     cursor: pointer;
+    transition: ease-in .1s;
 }
 
+.btn-guardar:hover {
+    background-color: var(--color-secundario);
+    color: var(--color-quinario);
+}
+
+.btn-cancelar:hover {
+    background-color: rgba(142, 17, 17);
+    color: var(--color-quinario);
+}
 /* este apartado es de los sistema CRUD de clientes, proveedores y productos */
 /* Botones de Eliminar, Agregar y Editar en el Header (estilo enlace Asimovian) */
 .btn-header-crud {
@@ -1560,4 +1579,164 @@ header.crud .nav-links.aCrud {
 /* Fondo blanco puro para la tarjeta de la tabla como en el mockup */
 .recuadro-clientes {
     background-color: #ffffff;
+}
+
+.bannerFoto {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    border: 4px solid var(--color-quinario);
+}
+
+/* 2. Foto chiquita circular en la esquina inferior del menú lateral */
+main .menu .usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(248, 241, 241, 0.2);
+}
+
+main .menu .usuario .usuario-link-foto {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+main .menu .usuario img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-quinario);
+}
+
+main .menu .info-usuario {
+    display: flex;
+    flex-direction: column;
+}
+
+main .menu .info-usuario a {
+    margin: 0;
+}
+
+main .menu .info-usuario h1 {
+    font-family: Asimovian, sans-serif;
+    font-size: 0.98rem;
+    font-weight: normal;
+    margin: 0;
+    line-height: 1.2;
+    color: var(--color-quinario);
+}
+
+main .menu .info-usuario h2 {
+    font-family: Onest, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 300;
+    margin: 2px 0 0 0;
+    color: var(--color-quinario);
+}
+
+/* 3. Formulario para subir foto en Perfil (quita el cuadro gigante de form) */
+form.form-foto-perfil {
+    background-color: transparent;
+    height: auto;
+    border-radius: 0;
+    padding: 8px 0 14px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+form.form-foto-perfil label {
+    font-family: Asimovian, sans-serif;
+    font-size: 0.95rem;
+    color: var(--color-quinario);
+}
+
+form.form-foto-perfil input[type="file"] {
+    font-family: Onest, sans-serif;
+    font-size: 0.88rem;
+    color: var(--color-quinario);
+}
+
+form.form-foto-perfil input[type="file"]::file-selector-button {
+    background-color: var(--color-cuaternario);
+    color: var(--color-primario);
+    border: none;
+    border-radius: 30px;
+    font-family: Asimovian, sans-serif;
+    font-size: 0.92rem;
+    padding: 8px 22px;
+    margin-right: 12px;
+    cursor: pointer;
+    transition: ease-in .1s;
+}
+
+form.form-foto-perfil input[type="file"]::file-selector-button:hover {
+    background-color: var(--color-primario);
+    color: var(--color-quinario);
+}
+
+form.form-foto-perfil button {
+    background-color: var(--color-cuaternario);
+    color: var(--color-primario);
+    border: none;
+    border-radius: 30px;
+    font-family: Asimovian, sans-serif;
+    font-size: 0.92rem;
+    padding: 8px 22px;
+    cursor: pointer;
+    transition: ease-in .1s;
+}
+
+form.form-foto-perfil button:hover {
+    background-color: var(--color-primario);
+    color: var(--color-quinario);
+}
+
+/* 4. Acomoda el botón de Cerrar Sesión a la izquierda */
+.contenidoPerfil #acceder {
+    align-self: flex-start;
+    text-align: center;
+    text-decoration: none;
+}
+
+.input-archivo-grupo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.input-archivo-grupo input[type="text"] {
+    flex: 1;
+    background-color: #fff;
+    cursor: default;
+}
+
+.campo-form .btn-mini-archivo {
+    background-color: var(--color-cuaternario);
+    color: var(--color-primario);
+    font-family: Asimovian, sans-serif;
+    font-weight: normal;
+    font-size: 0.88rem;
+    padding: 9px 20px;
+    margin-bottom: 0;
+    border-radius: 30px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: ease-in .1s;
+}
+
+.campo-form .btn-mini-archivo:hover {
+    background-color: var(--color-primario);
+    color: var(--color-quinario);
 }

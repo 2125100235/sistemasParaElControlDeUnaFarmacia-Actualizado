@@ -43,6 +43,7 @@ class AuthController {
                 $_SESSION['apellidoMaterno']  = $apMaterno;
                 $_SESSION['correo']           = $empleado['correo'] ?? '';
                 $_SESSION['telefono']         = $empleado['telefono'] ?? 'Sin registro';
+                $_SESSION['foto']             = !empty($empleado['foto']) ? $empleado['foto'] : 'fotoDefectoEmpleado.png';
 
                 $rol = $empleado['rol'] ?? $empleado['puesto'] ?? 'Administrador';
                 $_SESSION['rol'] = $rol;
