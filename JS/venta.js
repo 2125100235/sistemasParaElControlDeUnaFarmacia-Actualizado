@@ -19,16 +19,19 @@
 
 // Clase genérica Nodo<T>: el @template T indica que puede guardar cualquier tipo de dato (ProductoCatalogo, ItemVenta, etc.)
 /**
- * @template T
+ * @template T //Declaramos el comodin generico T
  */
 class Nodo {
-    // El constructor recibe un dato genérico de tipo T
+    // El constructor recibe un dato genérico de tipo T, validando que seal el mismo tipo de dato declarado arriba
     /**
      * @param {T} dato
      */
+
+    //Esto es lo que se usa al momento en el que escribimos new nodo, recibe un solo parametro (dato) 
+    //El dato es el paquete completo de la info, debe recibir o ProductoCatalogo o ItemVenta
     constructor(dato) {
         this.dato = dato; // Guarda el objeto completo (producto o item de venta) dentro del nodo
-        /** @type {Nodo<T> | null} */
+        /** @type {Nodo<T> | null} */ //Validacion o debe guardar un T o un null en caso de que este vacia, para evitar errores
         this.siguiente = null; // Puntero que apunta al siguiente nodo en memoria (inicia en null)
     }
 }
@@ -37,7 +40,7 @@ class Nodo {
 class ListaProductosCatalogo {
     // Constructor de la lista
     constructor() {
-        /** @type {Nodo<ProductoCatalogo> | null} */
+        /** @type {Nodo<ProductoCatalogo> | null} */ //Validacion o guarda un ProductoCatalogo o null para evitar errores
         this.cabeza = null; // Puntero al primer nodo de la lista (nulo al inicializar)
     }
 
@@ -68,8 +71,8 @@ class ListaProductosCatalogo {
 
     // Algoritmo de Búsqueda Secuencial a través de los nodos de la lista
     /**
-     * @param {string} criterio
-     * @returns {Nodo<ProductoCatalogo> | null}
+     * @param {string} criterio //Indicamos que el parametro que se utilizara sera string llamado criterio
+     * @returns {Nodo<ProductoCatalogo> | null} //Validacion, o retorna Nodo o Nulo
      */
     buscarSecuencial(criterio) {
         // Si el término introducido está vacío o no es válido, retorna null
@@ -81,7 +84,7 @@ class ListaProductosCatalogo {
         // Puntero auxiliar para iniciar la búsqueda desde la cabeza
         let actual = this.cabeza;
 
-        // El recorrido secuencial se seguirá ejecutando mientras el nodo actual no sea null
+        // El RECORRIDO SECUENCIAL se seguirá ejecutando mientras el nodo actual no sea null
         while (actual !== null) {
             // Entramos a 'actual.dato' para leer el código y el nombre del producto guardado en el nodo
             const codigoStr = String(actual.dato.codigo).toLowerCase();
@@ -158,15 +161,16 @@ function buscarProductoCatalogo() {
 // Clase que gestiona la Pila (LIFO) de la nota de venta reutilizando el mismo Nodo<ItemVenta> genérico
 class PilaVenta {
     // Constructor de la pila
+    // Se indica en el constructor que se utilizara el ItemVenta
     constructor() {
-        /** @type {Nodo<ItemVenta> | null} */
+        /** @type {Nodo<ItemVenta> | null} */ //Validacion
         this.tope = null; // Puntero que señala al elemento superior (cima) de la pila
         this.tamano = 0;  // Contador de elementos insertados en la pila
     }
 
     // Agrega un nuevo nodo en la cima de la pila
     /**
-     * @param {ItemVenta} item
+     * @param {ItemVenta} item //Indicamos que el parametro que se utilizara debe ser ItemVenta
      */
     push(item) {
         // Creamos una nueva instancia del nodo genérico guardando el artículo de venta
@@ -186,7 +190,7 @@ class PilaVenta {
 
     // Elimina y desvincula el nodo ubicado en el tope de la pila
     /**
-     * @returns {Nodo<ItemVenta> | null}
+     * @returns {Nodo<ItemVenta> | null} //Retorna o Nodo ItemVenta o nulo para evitar errores
      */
     pop() {
         // Verificamos si la pila está vacía antes de intentar sacar un elemento
@@ -216,14 +220,15 @@ class PilaVenta {
 
     // Método RECURSIVO que recorre la pila nodo por nodo acumulando el subtotal
     /**
-     * @param {Nodo<ItemVenta> | null} nodo
-     * @returns {number}
+     * @param {Nodo<ItemVenta> | null} nodo //El parametro que se utilizara es o un ItemVenta o nulo
+     * @returns {number} //Regresa si o si un numero
      */
     calcularSubtotalRecursivo(nodo) {
         // Caso base: si llegamos al final de la pila (puntero nulo), retornamos 0
         if (nodo === null) {
             return 0;
         }
+        //Se utiliza al calcular la recursividad 
         // Caso recursivo: sumamos 'nodo.dato.subtotal' más el resultado de llamar a la función con el siguiente nodo
         return nodo.dato.subtotal + this.calcularSubtotalRecursivo(nodo.siguiente);
     }
@@ -251,6 +256,7 @@ class PilaVenta {
             // Creamos una fila HTML <tr>
             const fila = document.createElement("tr");
 
+            //Se utiliza al momento de estar dibujando la tabla, con dato.(nombre,cantidad,etc.)
             // Llenamos las celdas leyendo las propiedades dentro de 'actual.dato'
             fila.innerHTML = `
                 <td style="font-family: Onest, sans-serif">${actual.dato.nombre}</td>
@@ -285,6 +291,7 @@ class PilaVenta {
 
         // Recorremos toda la pila mientras el puntero no sea nulo
         while (actual !== null) {
+            // Usamos nuevamente el tipo de dato generico al momento de armar el JSON para PHP
             // Extraemos las propiedades de 'actual.dato' y las agregamos al arreglo
             productos.push({
                 codigo: actual.dato.codigo,

@@ -5,7 +5,7 @@ require_once "../config/conexion.php";
 $consulta = "SELECT codigo, nombre, precio_venta, existencia FROM producto WHERE estado = 1";
 // Ejecutamos la consulta
 $resultado = $conexion->query($consulta);
-// Verifica si el resultado tiene un valor valido (es decir, que la consulta haya sido exitosa)
+// Verifica si el resultado tiene un valor valido
 $productos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
 ?>
 <!DOCTYPE html>
@@ -22,51 +22,61 @@ $productos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
             <img src="../assets/logo.svg" alt="FarmaVive Logo" width="60">
         </a>
         <div class="puntoVenta">
-        <div>
-            <label for="productoInput">Producto (Nombre o Código)</label>
-            <input type="text" id="productoInput" placeholder="Ej. 1 o Paracetamol" oninput="buscarProductoCatalogo()">
-        </div>
-        <div>
-            <label for="precioInput">Precio</label>
-            <input type="number" step="0.01" id="precioInput" readonly placeholder="0.00">
-        </div>
-        <div>
-            <label for="cantidadInput">Cantidad</label>
-            <input type="number" id="cantidadInput" value="1" min="1">
-        </div>
+            <div>
+                <label for="productoInput">Producto (Nombre o Código)</label>
+                <input type="text" id="productoInput" placeholder="Ej. 1 o Paracetamol" oninput="buscarProductoCatalogo()">
+            </div>
+            <div>
+                <label for="precioInput">Precio</label>
+                <input type="number" step="0.01" id="precioInput" readonly placeholder="0.00">
+            </div>
+            <div>
+                <label for="cantidadInput">Cantidad</label>
+                <input type="number" id="cantidadInput" value="1" min="1">
+            </div>
             <button id="registrarBtn" type="button" onclick="agregarProducto()">Registrar</button>
             <button id="deshacerBtn" type="button" onclick="deshacerUltimo()">Deshacer</button>
-            <button id="cobrarBtn" type="button" onclick="finalizarVenta()">Cobrar</button> <!--Agregamos el nuevo boton para cobrar-->
         </div>
-                <div class="menuToggle">
-        <button id="menuToggleBtn">☰</button>
-    </div>
+        <div class="menuToggle">
+            <button id="menuToggleBtn">☰</button>
+        </div>
     </header>
 
     <main>
-    <?php include "partials/menu.php"; ?>
+        <?php include "partials/menu.php"; ?>
         <section class="contenido">
             <div class="contenidoMensaje">
-                <p id="mensaje-busqueda" style="font-family: Asimovian; font-weight: lighter; color: #11698E; margin-bottom: 10px;"></p>
+                <p id="mensaje-busqueda"></p>
             </div>
-            <div class="recuadro recuadroVenta">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Precio Unitario</th>
-                            <th>Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cuerpoTablaVenta">
-                        
-                    </tbody>
-                </table>
 
-                <div class="totales">
-                    <p>Subtotal $<span id="subtotal-val">0.00</span></p>
-                    <p>Total c/IVA $<span id="total-val">0.00</span></p>
+            <div class="recuadro recuadroVenta">
+                <div class="tabla-venta-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaVenta">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="footer-venta">
+                    <div class="totales">
+                        <p><span>Subtotal</span> <span>$<span id="subtotal-val">0.00</span></span></p>
+                        <p><span>Total c/IVA</span> <span>$<span id="total-val">0.00</span></span></p>
+                    </div>
+
+                    <div class="campo-cliente">
+                        <label for="clienteInput">Cliente</label>
+                        <input type="text" id="clienteInput" placeholder="Público general">
+                    </div>
+
+                    <button id="cobrarBtn" type="button" onclick="finalizarVenta()">Registrar venta</button>
                 </div>
             </div>
         </section>

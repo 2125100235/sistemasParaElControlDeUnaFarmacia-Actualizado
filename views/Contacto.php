@@ -9,27 +9,28 @@
 <body>
 <?php include "partials/header.php" ?>
 <main class="mainContacto">
-    <section class="contacto recuadro">
-      <form>
+    <form class="contacto" action="" method="POST">
         <h1>Contacto</h1>
-        <div>
-            <label for="Correo">Correo</label><br>
-            <input type="text" id="Correo" name="Correo" placeholder="usuario.correo@gmail.com" >
+
+        <div class="campo-contacto">
+            <label for="id_empleado">ID de empleado</label>
+            <input type="text" id="id_empleado" name="id_empleado" class="input-id-corto">
         </div>
-        <br>
-        <div>
-            <label for="Telefono">Teléfono</label><br>
-            <input type="text" id="Telefono" name="Telefono" placeholder="33 1177 6655" >
+
+        <div class="campo-contacto">
+            <label for="correo">Correo</label>
+            <input type="email" id="correo" name="correo">
         </div>
-        <br>
-        <div>
-            <label for="Direccion">Dirección</label><br>
-            <input type="text" id="Direccion" name="Direccion" placeholder="Av.Casa #321" >
+
+        <div class="campo-contacto">
+            <label for="razon">Razón</label>
+            <textarea id="razon" name="razon" rows="4"></textarea>
         </div>
-        <br>
-        <a href="#" id="acceso">Contactar</a>
-      </form>
-    </section>
+
+        <button type="submit" id="acceso">
+            <span id="btn_contacto">Contactar</span>
+        </button>
+    </form>
 </main>
 
 </body>
