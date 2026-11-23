@@ -7,7 +7,7 @@ class UsuarioModel {
         $this->db = $conexion;
     }
 
-    // Busca un empleado por su ID y nombre exacto (método existente)
+    // Busca un empleado por su ID y nombre exacto (incluye la columna foto con SELECT *)
     public function buscarEmpleadoPorIdYNombre(int $id, string $nombre) {
         $stmt = $this->db->prepare("SELECT * FROM empleado WHERE id_empleado = ? AND nombre = ?");
         $stmt->bind_param("is", $id, $nombre);
@@ -23,6 +23,15 @@ class UsuarioModel {
         return $empleado;
     }
 
+    // ACTUALIZAR FOTO DE PERFIL DEL EMPLEADO
+    public function actualizarFoto(int $id_empleado, string $foto) {
+        $stmt = $this->db->prepare("UPDATE empleado SET foto = ? WHERE id_empleado = ?");
+        $stmt->bind_param("si", $foto, $id_empleado);
+        $ejecutado = $stmt->execute();
+        $stmt->close();
+        return $ejecutado;
+    }
+
     // CASO 1: LEER Y BUSCAR USUARIOS ACTIVOS (READ)
     public function listar($buscar = '') {
         $sqlBase = "SELECT 
@@ -33,7 +42,8 @@ class UsuarioModel {
                         CONCAT_WS(' ', nombre, apellido_paterno, NULLIF(apellido_materno, '')) AS nombre_completo,
                         correo,
                         telefono,
-                        rol
+                        rol,
+                        foto
                     FROM empleado
                     WHERE estado = 1";
 
@@ -100,7 +110,7 @@ class UsuarioModel {
     // CASO 3: OBTENER UN SOLO USUARIO POR SU ID (READ ONE)
     public function obtenerPorId($id) {
         $stmt = $this->db->prepare(
-            "SELECT id_empleado, nombre, apellido_paterno, apellido_materno, correo, telefono, rol 
+            "SELECT id_empleado, nombre, apellido_paterno, apellido_materno, correo, telefono, rol, foto 
              FROM empleado 
              WHERE id_empleado = ? AND estado = 1"
         );

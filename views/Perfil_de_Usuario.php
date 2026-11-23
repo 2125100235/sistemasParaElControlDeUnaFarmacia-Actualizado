@@ -20,6 +20,7 @@ $nombreCompleto  = trim("$nombre $apellidoPaterno $apellidoMaterno");
 $rol      = $_SESSION['rol'] ?? 'Sin rol asignado';
 $correo   = $_SESSION['correo'] ?? 'No registrado';
 $telefono = $_SESSION['telefono'] ?? 'Sin número';
+$foto     = !empty($_SESSION['foto']) ? $_SESSION['foto'] : 'fotoDefectoEmpleado.png';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -36,7 +37,15 @@ $telefono = $_SESSION['telefono'] ?? 'Sin número';
 <?php include "partials/menu.php"; ?>
         <div class="bannerUsuario">
             <div class="contenidoBannerUsuario">
-                <img class="bannerFoto" src="../assets/placeholderFotoUsuario.png" alt="Foto de perfil del usuario">
+                <img class="bannerFoto" 
+                     src="../assets/<?php echo htmlspecialchars($foto); ?>" 
+                     alt="Foto de perfil del usuario"
+                     onerror="this.src='../assets/fotoDefectoEmpleado.png'">
+
+                <form action="../controllers/AuthController.php?accion=actualizar_foto" method="POST" enctype="multipart/form-data" class="form-foto-perfil">
+                    <input type="file" name="foto_perfil" id="foto_perfil" accept="image/png, image/jpeg, image/webp, image/avif" hidden onchange="this.form.submit()">
+                    <label for="foto_perfil" class="btn-cambiar-foto">Cambiar foto</label>
+                </form>
             </div>
         </div>
         <section class="contenidoPerfil">

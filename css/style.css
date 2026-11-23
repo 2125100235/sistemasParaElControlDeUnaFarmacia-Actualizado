@@ -160,37 +160,6 @@ main {
     font-weight: normal;
 }
 
-/* Sección de usuario en la parte inferior del menú */
-.usuario {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: auto;
-    padding-top: 12px;
-    border-top: 1px solid rgba(248, 241, 241, 0.2);
-}
-
-.info-usuario {
-    display: flex;
-    flex-direction: column;
-    /* Alinea nombre arriba y rol abajo */
-}
-
-.info-usuario h1 {
-    font-size: 1rem;
-    margin: 0;
-    line-height: 1.2;
-}
-
-.info-usuario h2 {
-    font-size: 0.8rem;
-    margin: 2px 0 0 0;
-    color: var(--color-terciario);
-    /* Destaca el rol con color verde menta */
-    font-weight: normal;
-    font-family: Onest, sans-serif;
-}
-
 .contenido {
     width: calc(100% - 260px);
     margin-left: 260px;
@@ -454,29 +423,6 @@ th {
     font-size: 17px;
 }
 
-.bannerUsuario {
-    display: flex;
-    width: 100%;
-    position: absolute;
-    height: 30%;
-    margin-top: 15vh;
-    z-index: -1;
-    border-radius: 0px 0px 40px 0px;
-    background-color: var(--color-primario);
-}
-
-.contenidoBannerUsuario {
-    margin-left: 300px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.bannerFoto {
-    width: 150px;
-    border-radius: 50%;
-    position: absolute;
-}
 
 .contenidoPerfil {
     display: flex;
@@ -1566,4 +1512,139 @@ header.crud .nav-links.aCrud {
 .btn-header-crud:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+}
+
+/* Contenedor de nombre de imagen + botón Seleccionar */
+.input-archivo-grupo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.input-archivo-grupo input[type="text"] {
+    flex: 1;
+    background-color: #f8fafc;
+    cursor: default;
+}
+
+.campo-form .btn-mini-archivo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    background-color: #c2d6e8;
+    color: #0f3460;
+    font-family: 'Asimovian', sans-serif;
+    font-size: 0.95rem;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    margin: 0;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.campo-form .btn-mini-archivo:hover {
+    background-color: #a8c5df;
+    transform: translateY(-1px);
+}
+
+/* Mantiene el menú lateral fijo a la izquierda y por encima del banner */
+aside.menu {
+    position: fixed;
+    z-index: 10;
+}
+
+.bannerUsuario {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    height: 28vh;
+    margin-top: 15vh;
+    z-index: 1;
+    border-radius: 0px 0px 40px 0px;
+    background-color: var(--color-primario);
+}
+
+.contenidoBannerUsuario {
+    margin-left: 300px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 22px;
+    position: relative;
+    z-index: 5;
+}
+
+.bannerFoto {
+    width: 145px;
+    height: 145px;
+    border-radius: 35px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    background-color: #ffffff;
+}
+
+.form-foto-perfil {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.btn-cambiar-foto {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #c2d6e8;
+    color: #0f3460;
+    font-family: 'Asimovian', sans-serif;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-cambiar-foto:hover {
+    background-color: #a8c5df;
+    transform: translateY(-1px);
+}
+
+/* Ficha del usuario anclada hasta abajo del menú lateral */
+.usuario {
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.usuario img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.info-usuario {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-usuario h1 {
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.info-usuario h2 {
+    font-size: 0.8rem;
+    margin: 2px 0 0 0;
+    color: var(--color-terciario);
+    font-weight: normal;
+    font-family: Onest, sans-serif;
 }

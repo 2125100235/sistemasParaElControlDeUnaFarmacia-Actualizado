@@ -38,11 +38,11 @@ class AuthController {
                 $_SESSION['nombre']           = $empleado['nombre'];
                 $_SESSION['apellido_paterno'] = $apPaterno;
                 $_SESSION['apellido_materno'] = $apMaterno;
-                // Compatibilidad con vistas que lean en camelCase
                 $_SESSION['apellidoPaterno']  = $apPaterno;
                 $_SESSION['apellidoMaterno']  = $apMaterno;
                 $_SESSION['correo']           = $empleado['correo'] ?? '';
                 $_SESSION['telefono']         = $empleado['telefono'] ?? 'Sin registro';
+                $_SESSION['foto']             = !empty($empleado['foto']) ? $empleado['foto'] : 'fotoDefectoEmpleado.png';
 
                 $rol = $empleado['rol'] ?? $empleado['puesto'] ?? 'Administrador';
                 $_SESSION['rol'] = $rol;
@@ -78,7 +78,43 @@ class AuthController {
         }
     }
 
-    // 2. PROCESAR CIERRE DE SESIÓN
+    // 2. ACTUALIZAR FOTO DE PERFIL DEL EMPLEADO
+    public function actualizarFoto() {
+        if (!isset($_SESSION['id_empleado'])) {
+            header("Location: ../views/Control_De_Acceso.php");
+            exit();
+        }
+
+        if (!isset($_FILES['foto_perfil']) || $_FILES['foto_perfil']['error'] !== UPLOAD_ERR_OK) {
+            echo "<script>alert('Selecciona una imagen válida.'); window.location.href='../views/Perfil_de_Usuario.php';</script>";
+            exit();
+        }
+
+        $extension  = strtolower(pathinfo($_FILES['foto_perfil']['name'], PATHINFO_EXTENSION));
+        $permitidas = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+
+        if (!in_array($extension, $permitidas)) {
+            echo "<script>alert('Formato no permitido. Usa JPG, PNG, WEBP o AVIF.'); window.location.href='../views/Perfil_de_Usuario.php';</script>";
+            exit();
+        }
+
+        $id_empleado = (int) $_SESSION['id_empleado'];
+        $nuevoNombre = "emp_" . $id_empleado . "_" . time() . "." . $extension;
+        $rutaDestino = __DIR__ . '/../assets/' . $nuevoNombre;
+
+        if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $rutaDestino)) {
+            if ($this->modelo->actualizarFoto($id_empleado, $nuevoNombre)) {
+                $_SESSION['foto'] = $nuevoNombre;
+                echo "<script>alert('Foto de perfil actualizada.'); window.location.href='../views/Perfil_de_Usuario.php';</script>";
+                exit();
+            }
+        }
+
+        echo "<script>alert('No se pudo actualizar la foto de perfil.'); window.location.href='../views/Perfil_de_Usuario.php';</script>";
+        exit();
+    }
+
+    // 3. PROCESAR CIERRE DE SESIÓN
     public function cerrarSesion() {
         session_unset();
         session_destroy();
@@ -108,6 +144,10 @@ $auth = new AuthController($conexion);
 switch ($accion) {
     case 'login':
         $auth->iniciarSesion();
+        break;
+
+    case 'actualizar_foto':
+        $auth->actualizarFoto();
         break;
 
     case 'cerrar':

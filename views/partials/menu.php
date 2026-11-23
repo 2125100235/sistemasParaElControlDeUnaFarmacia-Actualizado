@@ -13,9 +13,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Obtener el rol de la sesión y convertirlo a minúsculas para comparar fácil
-$rol = isset($_SESSION['rol']) ? mb_strtolower($_SESSION['rol']) : '';
+// Obtener el rol, nombre y foto de la sesión
+$rol    = isset($_SESSION['rol']) ? mb_strtolower($_SESSION['rol']) : '';
 $nombre = $_SESSION['nombre'] ?? 'Usuario';
+$foto   = !empty($_SESSION['foto']) ? $_SESSION['foto'] : 'fotoDefectoEmpleado.png';
 ?>
 
 <aside class="menu">
@@ -60,15 +61,18 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario';
         <p style="padding: 15px; color: red;">Sesión no detectada. Por favor inicie sesión.</p>
     <?php endif; ?>
 
-    <!-- Ficha del usuario dinámico -->
+<!-- Ficha del usuario dinámico -->
     <div class="usuario"> 
+        <img src="../assets/<?php echo htmlspecialchars($foto); ?>" 
+             alt="Foto de perfil del usuario" 
+             width="40" 
+             onerror="this.src='../assets/fotoDefectoEmpleado.png'">
         <div class="info-usuario">
-            <img src="../assets/placeholderFotoUsuario.png" alt="Foto de perfil del usuario" width="40">
             <a href="../views/Perfil_de_Usuario.php">
                 <h1><?php echo htmlspecialchars($nombre); ?></h1>
             </a>
+            <h2><?php echo htmlspecialchars(ucfirst($rol)); ?></h2>
         </div>
-        <h2><?php echo htmlspecialchars(ucfirst($rol)); ?></h2>
     </div>
 </aside>
 <script src="../js/menuToggle.js"></script>
