@@ -1561,3 +1561,9 @@ header.crud .nav-links.aCrud {
 .recuadro-clientes {
     background-color: #ffffff;
 }
+
+/* Estado deshabilitado para botones del header (ej. al seleccionar un Administrador) */
+.btn-header-crud:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}

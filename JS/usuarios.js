@@ -29,8 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputClave = document.getElementById('clave');
     const labelClave = document.getElementById('label-clave');
 
-    // Guarda el ID del usuario seleccionado al hacer clic en una fila
+    // Guarda el ID y el Rol del usuario seleccionado al hacer clic en una fila
     let usuarioSeleccionadoId = null;
+    let usuarioSeleccionadoRol = null;
 
     function escaparHTML(texto) {
         if (!texto) return '';
@@ -44,6 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------------------------------------------
     async function cargarUsuarios(terminoBusqueda = '') {
         usuarioSeleccionadoId = null;
+        usuarioSeleccionadoRol = null;
+        btnHeaderEliminar.disabled = false;
+        btnHeaderEliminar.title = '';
 
         try {
             const url = `../controllers/UsuarioController.php?accion=leer&buscar=${encodeURIComponent(terminoBusqueda)}`;
@@ -90,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         usuarios.forEach(usuario => {
             const fila = document.createElement('tr');
             fila.dataset.id = usuario.id_empleado;
+            fila.dataset.rol = usuario.rol;
             fila.title = 'Clic para seleccionar | Doble clic para editar';
 
             const telefono = usuario.telefono ? escaparHTML(usuario.telefono) : '';
@@ -103,11 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             fila.addEventListener('click', () => {
-                seleccionarFila(fila, usuario.id_empleado);
+                seleccionarFila(fila, usuario.id_empleado, usuario.rol);
             });
 
             fila.addEventListener('dblclick', () => {
-                seleccionarFila(fila, usuario.id_empleado);
+                seleccionarFila(fila, usuario.id_empleado, usuario.rol);
                 abrirModalEditar(usuario.id_empleado);
             });
 
@@ -115,13 +120,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function seleccionarFila(filaElemento, id) {
+    function seleccionarFila(filaElemento, id, rol) {
         document.querySelectorAll('#tabla-usuarios-cuerpo tr').forEach(tr => {
             tr.classList.remove('fila-seleccionada');
         });
 
         filaElemento.classList.add('fila-seleccionada');
         usuarioSeleccionadoId = id;
+        usuarioSeleccionadoRol = rol;
+
+        // Si el usuario seleccionado es Administrador, bloquea el botón Eliminar
+        if (rol === 'Administrador') {
+            btnHeaderEliminar.disabled = true;
+            btnHeaderEliminar.title = 'No se puede eliminar a un usuario con rol Administrador';
+        } else {
+            btnHeaderEliminar.disabled = false;
+            btnHeaderEliminar.title = '';
+        }
     }
 
     // --------------------------------------------------------------------------
@@ -131,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         formUsuario.reset();
         inputId.value = '';
 
-        // Al crear, la contraseña es obligatoria
         inputClave.required = true;
         labelClave.textContent = 'Contraseña *:';
         inputClave.placeholder = 'Ingresa una contraseña';
@@ -156,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputCorreo.value = usuario.correo;
                 selectRol.value = usuario.rol;
 
-                // Al editar, la contraseña queda opcional para no obligar a cambiarla
                 inputClave.value = '';
                 inputClave.required = false;
                 labelClave.textContent = 'Nueva Contraseña (opcional):';
@@ -253,6 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
     btnHeaderEliminar.addEventListener('click', () => {
         if (!usuarioSeleccionadoId) {
             alert('Selecciona primero un usuario de la tabla haciendo clic sobre su fila.');
+            return;
+        }
+        if (usuarioSeleccionadoRol === 'Administrador') {
+            alert('No se puede eliminar a un usuario con el rol de Administrador.');
             return;
         }
         eliminarUsuario(usuarioSeleccionadoId);

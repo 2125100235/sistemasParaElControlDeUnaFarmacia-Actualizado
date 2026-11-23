@@ -113,7 +113,13 @@ class UsuarioController {
                 $id = intval($_POST['id_empleado'] ?? 0);
 
                 if ($id > 0) {
-                    if ($this->modelo->eliminar($id)) {
+                    $usuario = $this->modelo->obtenerPorId($id);
+
+                    if (!$usuario) {
+                        $respuesta['mensaje'] = 'El usuario no existe o ya fue eliminado.';
+                    } elseif ($usuario['rol'] === 'Administrador') {
+                        $respuesta['mensaje'] = 'No se puede eliminar a un usuario con el rol de Administrador.';
+                    } elseif ($this->modelo->eliminar($id)) {
                         $respuesta['exito'] = true;
                         $respuesta['mensaje'] = 'Usuario eliminado con éxito.';
                     } else {
