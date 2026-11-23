@@ -1225,19 +1225,13 @@ header.crud .nav-links.aCrud {
 /* 1. CSS de lo de productos, el formulario de editar*/
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(6px);
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 1000;
     padding: 20px;
-    box-sizing: border-box;
-    border-radius: 0 !important;
 }
 
 .modal-overlay.hidden {
@@ -1247,14 +1241,110 @@ header.crud .nav-links.aCrud {
 /* 2. Tarjeta del modal expandida sin barras de scroll */
 .modal-contenido {
     background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    padding: 28px 34px 32px; /* 32px abajo para dar espacio suficiente a los botones */
+    border-radius: 36px;
+    padding: 28px 36px 34px 36px;
     width: 100%;
     max-width: 680px;
-    height: auto !important; /* Crece automáticamente según el contenido */
-    box-sizing: border-box;
+    max-height: 92vh;
+    overflow-y: auto;
     position: relative;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.modal-contenido h2,
+#modal-titulo {
+    font-family: 'Asimovian', sans-serif;
+    color: var(--color-primario, #0f3460);
+    font-size: 1.45rem;
+    font-weight: normal;
+    text-align: center;
+    margin: 0 0 22px 0;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid #8c9ba5;
+}
+
+.modal-contenido form {
+    background-color: #dcdcdc;
+    border-radius: 26px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 22px;
+}
+
+.modal-contenido label,
+.campo-form label {
+    font-family: 'Asimovian', sans-serif;
+    color: #0d2137;
+    font-size: 0.95rem;
+    font-weight: normal;
+}
+
+.modal-contenido input:not([type="hidden"]):not([type="file"]),
+.modal-contenido select,
+.modal-contenido textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border: 1px solid #7a869a;
+    border-radius: 9px;
+    padding: 9px 14px;
+    font-family: 'Onest', sans-serif;
+    font-size: 0.95rem;
+    color: #1f2937;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-contenido input:not([type="hidden"]):not([type="file"]):focus,
+.modal-contenido select:focus,
+.modal-contenido textarea:focus {
+    border-color: var(--color-primario, #0f3460);
+    box-shadow: 0 0 0 2px rgba(15, 52, 96, 0.15);
+}
+
+.campo-form .btn-mini-archivo {
+    background-color: #89c4eb;
+    color: var(--color-primario, #0f3460);
+    font-family: 'Asimovian', sans-serif;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    padding: 9px 20px;
+}
+
+.campo-form .btn-mini-archivo:hover {
+    background-color: #6eb5e5;
+}
+
+/* Contenedor de botones Cancelar y Guardar abajo a la derecha */
+.modal-acciones {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+/* Botones tipo píldora en azul cielo con texto azul marino */
+.modal-contenido .btn-cancelar,
+.modal-contenido .btn-guardar {
+    background-color: #89c4eb;
+    color: var(--color-primario, #0f3460);
+    font-family: 'Asimovian', sans-serif;
+    font-size: 1rem;
+    font-weight: normal;
+    border: none;
+    border-radius: 22px;
+    padding: 9px 28px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.modal-contenido .btn-cancelar:hover,
+.modal-contenido .btn-guardar:hover {
+    background-color: #6eb5e5;
+    transform: translateY(-1px);
 }
 
 /* 3. Estructura interna de 2 columnas con CSS Grid */
@@ -1266,13 +1356,14 @@ header.crud .nav-links.aCrud {
 
 /* 4. Elementos que abarcan todo el ancho */
 .campo-full {
-    grid-column: span 2;
+    grid-column: 1 / -1;
 }
 
 /* 5. Inputs y select con estilo uniforme */
 .campo-form {
     display: flex;
     flex-direction: column;
+    gap: 6px;
 }
 
 .campo-form label {
@@ -1312,18 +1403,20 @@ header.crud .nav-links.aCrud {
 
 .modal-cerrar {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 22px;
+    right: 28px;
     background: none;
     border: none;
-    font-size: 26px;
-    font-weight: bold;
-    color: #777;
+    font-size: 1.6rem;
+    color: var(--color-primario, #0f3460);
     cursor: pointer;
+    line-height: 1;
+    transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
 .modal-cerrar:hover {
-    color: #ff5555;
+    transform: scale(1.15);
+    opacity: 0.75;
 }
 
 .modal-acciones {
