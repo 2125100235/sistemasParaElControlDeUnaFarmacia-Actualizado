@@ -51,6 +51,7 @@ CREATE TABLE empleado (
     telefono VARCHAR(15),
     rol ENUM('Administrador', 'Cajero', 'Almacenista') NOT NULL,
     estado TINYINT(1) NOT NULL DEFAULT 1 -- 1: Activo, 0: Inactivo (Baja lógica)
+    foto VARCHAR(100)
 );
 
 -- 5. TABLA VENTA (Encabezado de Transacción)
