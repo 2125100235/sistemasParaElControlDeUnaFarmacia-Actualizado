@@ -54,7 +54,6 @@ $foto     = !empty($_SESSION['foto']) ? $_SESSION['foto'] : 'fotoDefectoEmpleado
             <p><b>Rol:</b> <?php echo htmlspecialchars(ucfirst($rol)); ?></p>
             <p><b>Correo Electrónico:</b> <?php echo htmlspecialchars($correo); ?></p>
             <p><b>Teléfono:</b> <?php echo htmlspecialchars($telefono); ?></p>
-            <a href="../controllers/AuthController.php?accion=cerrar" id="acceder" style="text-align: center; text-decoration: none;">Cerrar Sesión</a>
         </section>
     </main>
 </body>

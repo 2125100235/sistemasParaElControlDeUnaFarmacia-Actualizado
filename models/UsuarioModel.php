@@ -7,6 +7,28 @@ class UsuarioModel {
         $this->db = $conexion;
     }
 
+    // Busca un empleado activo por su nombre (sin importar mayúsculas/minúsculas o espacios extra)
+    public function buscarEmpleadoPorNombre(string $nombre) {
+        $nombreLimpio = mb_strtolower(trim($nombre));
+        $stmt = $this->db->prepare(
+            "SELECT * FROM empleado 
+             WHERE LOWER(TRIM(nombre)) = ? 
+               AND estado = 1 
+             LIMIT 1"
+        );
+        $stmt->bind_param("s", $nombreLimpio);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $empleado = null;
+        if ($resultado && $resultado->num_rows === 1) {
+            $empleado = $resultado->fetch_assoc();
+        }
+
+        $stmt->close();
+        return $empleado;
+    }
+
     // Busca un empleado por su ID y nombre exacto (incluye la columna foto con SELECT *)
     public function buscarEmpleadoPorIdYNombre(int $id, string $nombre) {
         $stmt = $this->db->prepare("SELECT * FROM empleado WHERE id_empleado = ? AND nombre = ?");

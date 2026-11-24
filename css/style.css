@@ -1712,12 +1712,12 @@ aside.menu {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .usuario img {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
@@ -1726,18 +1726,53 @@ aside.menu {
 .info-usuario {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    padding-right: 6px;
 }
 
 .info-usuario h1 {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin: 0;
     line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .info-usuario h2 {
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     margin: 2px 0 0 0;
     color: var(--color-terciario);
     font-weight: normal;
     font-family: Onest, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botón Cerrar sesión separado del texto en la barra lateral */
+.menu .btn-cerrar-sesion-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 4px;
+    padding: 5px 10px;
+    background-color: #fab1ab;
+    color: var(--color-primario, #0f3460);
+    font-family: 'Asimovian', sans-serif;
+    font-size: 0.72rem;
+    font-weight: normal;
+    text-decoration: none;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.menu .btn-cerrar-sesion-menu:hover {
+    background-color: #e56e6e;
+    color: var(--color-primario, #0f3460);
+    transform: translateY(-1px);
 }

@@ -13,11 +13,6 @@
     <form action="../controllers/AuthController.php?accion=login" method="POST">
         <h1>Acceda al sistema</h1>
         <div>
-            <label for="id">ID</label><br>
-            <input type="text" id="id" name="id" required placeholder="Ej. 1">
-        </div>
-        <br>
-        <div>
             <label for="nombre">Nombre</label><br>
             <input type="text" id="nombre" name="nombre" required placeholder="Ej. Carlos">
         </div>

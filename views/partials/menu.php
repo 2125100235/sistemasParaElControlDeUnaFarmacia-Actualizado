@@ -62,7 +62,7 @@ $foto   = !empty($_SESSION['foto']) ? $_SESSION['foto'] : 'fotoDefectoEmpleado.p
     <?php endif; ?>
 
 <!-- Ficha del usuario dinámico -->
-    <div class="usuario"> 
+<div class="usuario"> 
         <img src="../assets/<?php echo htmlspecialchars($foto); ?>" 
              alt="Foto de perfil del usuario" 
              width="40" 
@@ -73,6 +73,9 @@ $foto   = !empty($_SESSION['foto']) ? $_SESSION['foto'] : 'fotoDefectoEmpleado.p
             </a>
             <h2><?php echo htmlspecialchars(ucfirst($rol)); ?></h2>
         </div>
+        <a href="../controllers/AuthController.php?accion=cerrar" class="btn-cerrar-sesion-menu" title="Cerrar sesión">
+            Cerrar sesión
+        </a>
     </div>
 </aside>
 <script src="../js/menuToggle.js"></script>

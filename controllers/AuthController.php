@@ -13,18 +13,17 @@ class AuthController {
         $this->modelo = new UsuarioModel($conexion);
     }
 
-    // 1. PROCESAR INICIO DE SESIÓN
+    // 1. PROCESAR INICIO DE SESIÓN (SOLO NOMBRE Y CONTRASEÑA)
     public function iniciarSesion() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header("Location: ../views/Control_De_Acceso.php");
             exit();
         }
 
-        $id     = (int) trim($_POST['id'] ?? 0);
         $nombre = trim($_POST['nombre'] ?? '');
         $clave  = trim($_POST['clave'] ?? '');
 
-        $empleado = $this->modelo->buscarEmpleadoPorIdYNombre($id, $nombre);
+        $empleado = $this->modelo->buscarEmpleadoPorNombre($nombre);
 
         if ($empleado) {
             // Validar contraseña (texto plano o hash encriptado)
@@ -38,6 +37,7 @@ class AuthController {
                 $_SESSION['nombre']           = $empleado['nombre'];
                 $_SESSION['apellido_paterno'] = $apPaterno;
                 $_SESSION['apellido_materno'] = $apMaterno;
+                // Compatibilidad con vistas que lean en camelCase
                 $_SESSION['apellidoPaterno']  = $apPaterno;
                 $_SESSION['apellidoMaterno']  = $apMaterno;
                 $_SESSION['correo']           = $empleado['correo'] ?? '';
@@ -73,7 +73,7 @@ class AuthController {
                 exit();
             }
         } else {
-            echo "<script>alert('El ID o Nombre del empleado no coinciden con ningún registro activo.'); window.location.href='../views/Control_De_Acceso.php';</script>";
+            echo "<script>alert('El nombre del empleado no coincide con ningún registro activo.'); window.location.href='../views/Control_De_Acceso.php';</script>";
             exit();
         }
     }
