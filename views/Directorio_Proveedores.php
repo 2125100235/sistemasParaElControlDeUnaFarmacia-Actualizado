@@ -74,13 +74,13 @@ require_once "../config/conexion.php";
                 <!-- Teléfono -->
                 <div class="campo-form">
                     <label for="telefono">Teléfono:</label>
-                    <input type="tel" id="telefono" name="telefono" maxlength="15" placeholder="Ej. 3336124578">
+                    <input type="tel" id="telefono" name="telefono" minlength="10" maxlength="10" pattern="[0-9]{10}"  placeholder="10 dígitos (ej. 3336124578)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);">
                 </div>
 
                 <!-- Correo -->
                 <div class="campo-form">
                     <label for="correo">Correo Electrónico:</label>
-                    <input type="email" id="correo" name="correo" maxlength="100" placeholder="contacto@proveedor.com">
+                   <input type="email" id="correo" name="correo" maxlength="100" pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$" placeholder="contacto@proveedor.com">
                 </div>
 
                 <!-- Dirección (Ocupa 2 columnas) -->

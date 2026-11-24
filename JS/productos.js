@@ -211,6 +211,33 @@ document.addEventListener('DOMContentLoaded', () => {
     formProducto.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        const nombre = inputNombre.value.trim();
+        const laboratorio = inputLaboratorio.value.trim();
+        const caducidad = inputCaducidad.value;
+        const precio = parseFloat(inputPrecio.value);
+        const existencia = Number(inputExistencia.value);
+
+        if (nombre.length < 2) {
+            alert('El nombre del producto debe tener al menos 2 caracteres.');
+            return;
+        }
+        if (laboratorio.length < 2) {
+            alert('El nombre del laboratorio es obligatorio.');
+            return;
+        }
+        if (!caducidad) {
+            alert('Selecciona una fecha de caducidad válida.');
+            return;
+        }
+        if (isNaN(precio) || precio <= 0) {
+            alert('El precio de venta debe ser mayor a $0.00.');
+            return;
+        }
+        if (!Number.isInteger(existencia) || existencia < 0) {
+            alert('La existencia debe ser un número entero mayor o igual a 0.');
+            return;
+        }
+
         const formData = new FormData(formProducto);
         const esEdicion = inputCodigo.value !== '';
         const accion = esEdicion ? 'actualizar' : 'crear';

@@ -106,13 +106,13 @@ require_once "../config/conexion.php";
             <!-- Precio de Venta (Bloqueado a >= 0) -->
             <div class="campo-form">
                 <label for="precio_venta">Precio de Venta ($) *:</label>
-                <input type="number" step="0.01" min="0" id="precio_venta" name="precio_venta" required placeholder="0.00" oninput="if(this.value < 0) this.value = 0;">
+               <input type="number" step="0.01" min="0.01" max="999999.99" id="precio_venta" name="precio_venta" required oninput="if(this.value < 0) this.value = '';">
             </div>
 
             <!-- Cantidad en Existencia (Bloqueado a >= 0) -->
             <div class="campo-form">
                 <label for="existencia">Cantidad en Existencia *:</label>
-                <input type="number" min="0" id="existencia" name="existencia" required placeholder="0" oninput="if(this.value < 0) this.value = 0;">
+                <input type="number" step="1" min="0" max="999999" id="existencia" name="existencia" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
             </div>
 
             <!-- Imagen con mini botón de selección (Ocupa 2 columnas) -->

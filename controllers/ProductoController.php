@@ -46,6 +46,8 @@ class ProductoController {
             'datos' => []
         ];
 
+        $tiposPermitidos = ['Genérico', 'Patente', 'Controlado', 'OTC / Libre Venta', 'Material Cuidado Personal'];
+
         switch ($accion) {
             case 'leer':
                 $buscar = trim($_GET['buscar'] ?? '');
@@ -74,15 +76,32 @@ class ProductoController {
                     'imagen'       => $resultadoImagen['nombre']
                 ];
 
-                if (!empty($datos['nombre']) && !empty($datos['laboratorio']) && !empty($datos['caducidad']) && $datos['precio'] >= 0 && $datos['existencia'] >= 0) {
+                $fechaObj = DateTime::createFromFormat('Y-m-d', $datos['caducidad'] ?? '');
+                $fechaValida = $fechaObj && $fechaObj->format('Y-m-d') === $datos['caducidad'];
+
+                if (empty($datos['nombre']) || empty($datos['laboratorio']) || empty($datos['caducidad'])) {
+                    $respuesta['mensaje'] = 'Completa todos los campos obligatorios (Nombre, Laboratorio, Caducidad, Precio y Existencia).';
+                } elseif (mb_strlen($datos['nombre']) < 2) {
+                    $respuesta['mensaje'] = 'El nombre del producto debe tener al menos 2 caracteres.';
+                } elseif (!in_array($datos['tipo'], $tiposPermitidos, true)) {
+                    $respuesta['mensaje'] = 'El tipo de medicamento seleccionado no es válido.';
+                } elseif (mb_strlen($datos['laboratorio']) < 2) {
+                    $respuesta['mensaje'] = 'El laboratorio debe tener al menos 2 caracteres.';
+                } elseif (!empty($datos['lote']) && !preg_match('/^[A-Za-z0-9\-_]{1,50}$/', $datos['lote'])) {
+                    $respuesta['mensaje'] = 'El lote solo puede contener letras, números, guiones y máximo 50 caracteres.';
+                } elseif (!$fechaValida) {
+                    $respuesta['mensaje'] = 'La fecha de caducidad no tiene un formato válido.';
+                } elseif ($datos['precio'] <= 0) {
+                    $respuesta['mensaje'] = 'El precio de venta debe ser mayor a $0.00.';
+                } elseif ($datos['existencia'] < 0) {
+                    $respuesta['mensaje'] = 'La existencia no puede ser negativa.';
+                } else {
                     if ($this->modelo->crear($datos)) {
                         $respuesta['exito'] = true;
                         $respuesta['mensaje'] = 'Producto agregado correctamente.';
                     } else {
                         $respuesta['mensaje'] = 'Error al insertar en la base de datos.';
                     }
-                } else {
-                    $respuesta['mensaje'] = 'Completa todos los campos obligatorios (Nombre, Laboratorio, Caducidad, Precio y Existencia).';
                 }
                 break;
 
@@ -124,15 +143,32 @@ class ProductoController {
                     'imagen'       => $resultadoImagen['nombre']
                 ];
 
-                if ($datos['codigo'] > 0 && !empty($datos['nombre']) && !empty($datos['laboratorio']) && !empty($datos['caducidad'])) {
+                $fechaObj = DateTime::createFromFormat('Y-m-d', $datos['caducidad'] ?? '');
+                $fechaValida = $fechaObj && $fechaObj->format('Y-m-d') === $datos['caducidad'];
+
+                if ($datos['codigo'] <= 0 || empty($datos['nombre']) || empty($datos['laboratorio']) || empty($datos['caducidad'])) {
+                    $respuesta['mensaje'] = 'Datos insuficientes para realizar la actualización.';
+                } elseif (mb_strlen($datos['nombre']) < 2) {
+                    $respuesta['mensaje'] = 'El nombre del producto debe tener al menos 2 caracteres.';
+                } elseif (!in_array($datos['tipo'], $tiposPermitidos, true)) {
+                    $respuesta['mensaje'] = 'El tipo de medicamento seleccionado no es válido.';
+                } elseif (mb_strlen($datos['laboratorio']) < 2) {
+                    $respuesta['mensaje'] = 'El laboratorio debe tener al menos 2 caracteres.';
+                } elseif (!empty($datos['lote']) && !preg_match('/^[A-Za-z0-9\-_]{1,50}$/', $datos['lote'])) {
+                    $respuesta['mensaje'] = 'El lote solo puede contener letras, números, guiones y máximo 50 caracteres.';
+                } elseif (!$fechaValida) {
+                    $respuesta['mensaje'] = 'La fecha de caducidad no tiene un formato válido.';
+                } elseif ($datos['precio'] <= 0) {
+                    $respuesta['mensaje'] = 'El precio de venta debe ser mayor a $0.00.';
+                } elseif ($datos['existencia'] < 0) {
+                    $respuesta['mensaje'] = 'La existencia no puede ser negativa.';
+                } else {
                     if ($this->modelo->actualizar($datos)) {
                         $respuesta['exito'] = true;
                         $respuesta['mensaje'] = 'Producto actualizado correctamente.';
                     } else {
                         $respuesta['mensaje'] = 'Error al actualizar el registro.';
                     }
-                } else {
-                    $respuesta['mensaje'] = 'Datos insuficientes para realizar la actualización.';
                 }
                 break;
 

@@ -36,6 +36,10 @@ class ProveedorController {
 
                 if (empty($datos['nombre'])) {
                     $respuesta['mensaje'] = 'El nombre del proveedor es obligatorio.';
+                } elseif (mb_strlen($datos['nombre']) < 2) {
+                    $respuesta['mensaje'] = 'El nombre del proveedor debe tener al menos 2 caracteres.';
+                } elseif ($datos['telefono'] !== null && !preg_match('/^[0-9]{10}$/', $datos['telefono'])) {
+                    $respuesta['mensaje'] = 'El teléfono debe tener exactamente 10 dígitos numéricos.';
                 } elseif ($datos['correo'] !== null && !filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)) {
                     $respuesta['mensaje'] = 'El formato del correo electrónico no es válido.';
                 } else {
@@ -75,6 +79,10 @@ class ProveedorController {
 
                 if ($datos['id_proveedor'] <= 0 || empty($datos['nombre'])) {
                     $respuesta['mensaje'] = 'Datos insuficientes para actualizar el proveedor.';
+                } elseif (mb_strlen($datos['nombre']) < 2) {
+                    $respuesta['mensaje'] = 'El nombre del proveedor debe tener al menos 2 caracteres.';
+                } elseif ($datos['telefono'] !== null && !preg_match('/^[0-9]{10}$/', $datos['telefono'])) {
+                    $respuesta['mensaje'] = 'El teléfono debe tener exactamente 10 dígitos numéricos.';
                 } elseif ($datos['correo'] !== null && !filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)) {
                     $respuesta['mensaje'] = 'El formato del correo electrónico no es válido.';
                 } else {

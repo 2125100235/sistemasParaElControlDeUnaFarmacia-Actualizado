@@ -68,19 +68,18 @@ require_once "../config/conexion.php";
                 <!-- Nombre completo (Ocupa 2 columnas) -->
                 <div class="campo-form campo-full">
                     <label for="nombre">Nombre del Cliente *:</label>
-                    <input type="text" id="nombre" name="nombre" maxlength="150" required placeholder="Ej. María Fernanda López">
-                </div>
+                   <input type="text" id="nombre" name="nombre" minlength="2" maxlength="120" required oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');">
 
                 <!-- Teléfono -->
                 <div class="campo-form">
                     <label for="telefono">Teléfono:</label>
-                    <input type="tel" id="telefono" name="telefono" maxlength="15" placeholder="Ej. 3312345678">
+                    <input type="tel" id="telefono" name="telefono" minlength="10" maxlength="10" pattern="[0-9]{10}" placeholder="10 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);">
                 </div>
 
-                <!-- RFC -->
+               <!-- RFC: mayúsculas automáticas, 12 o 13 caracteres -->
                 <div class="campo-form">
                     <label for="rfc">RFC:</label>
-                    <input type="text" id="rfc" name="rfc" maxlength="13" style="text-transform: uppercase;" placeholder="Ej. LOMF900512ABC">
+                    <input type="text" id="rfc" name="rfc" minlength="12" maxlength="13" pattern="^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$" placeholder="Ej. XAXX010101000" oninput="this.value = this.value.toUpperCase().replace(/[^A-ZÑ&0-9]/g, '').slice(0, 13);">
                 </div>
 
                 <!-- Dirección (Ocupa 2 columnas) -->

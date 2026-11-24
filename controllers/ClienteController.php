@@ -19,6 +19,9 @@ class ClienteController {
             'datos' => []
         ];
 
+        $regexLetras = '/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/u';
+        $regexRFC = '/^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/u';
+
         switch ($accion) {
             case 'leer':
                 $buscar = trim($_GET['buscar'] ?? '');
@@ -36,8 +39,12 @@ class ClienteController {
 
                 if (empty($datos['nombre'])) {
                     $respuesta['mensaje'] = 'El nombre del cliente es obligatorio.';
-                } elseif ($datos['rfc'] !== null && mb_strlen($datos['rfc']) > 13) {
-                    $respuesta['mensaje'] = 'El RFC no puede exceder los 13 caracteres.';
+                } elseif (mb_strlen($datos['nombre']) < 2 || !preg_match($regexLetras, $datos['nombre'])) {
+                    $respuesta['mensaje'] = 'El nombre del cliente debe tener al menos 2 caracteres y solo puede contener letras.';
+                } elseif ($datos['telefono'] !== null && !preg_match('/^[0-9]{10}$/', $datos['telefono'])) {
+                    $respuesta['mensaje'] = 'El teléfono debe tener exactamente 10 dígitos numéricos.';
+                } elseif ($datos['rfc'] !== null && !preg_match($regexRFC, $datos['rfc'])) {
+                    $respuesta['mensaje'] = 'El formato del RFC no es válido (debe tener 12 o 13 caracteres, ej. XAXX010101000).';
                 } else {
                     if ($this->modelo->crear($datos)) {
                         $respuesta['exito'] = true;
@@ -75,8 +82,12 @@ class ClienteController {
 
                 if ($datos['codigo'] <= 0 || empty($datos['nombre'])) {
                     $respuesta['mensaje'] = 'Datos insuficientes para actualizar el cliente.';
-                } elseif ($datos['rfc'] !== null && mb_strlen($datos['rfc']) > 13) {
-                    $respuesta['mensaje'] = 'El RFC no puede exceder los 13 caracteres.';
+                } elseif (mb_strlen($datos['nombre']) < 2 || !preg_match($regexLetras, $datos['nombre'])) {
+                    $respuesta['mensaje'] = 'El nombre del cliente debe tener al menos 2 caracteres y solo puede contener letras.';
+                } elseif ($datos['telefono'] !== null && !preg_match('/^[0-9]{10}$/', $datos['telefono'])) {
+                    $respuesta['mensaje'] = 'El teléfono debe tener exactamente 10 dígitos numéricos.';
+                } elseif ($datos['rfc'] !== null && !preg_match($regexRFC, $datos['rfc'])) {
+                    $respuesta['mensaje'] = 'El formato del RFC no es válido (debe tener 12 o 13 caracteres, ej. XAXX010101000).';
                 } else {
                     if ($this->modelo->actualizar($datos)) {
                         $respuesta['exito'] = true;

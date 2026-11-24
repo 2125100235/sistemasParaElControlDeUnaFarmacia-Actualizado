@@ -197,8 +197,48 @@ document.addEventListener('DOMContentLoaded', () => {
     formUsuario.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const formData = new FormData(formUsuario);
+        const regexLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+        const regexTelefono = /^[0-9]{10}$/;
+        const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+        const nombre = inputNombre.value.trim();
+        const apPaterno = inputApellidoPaterno.value.trim();
+        const apMaterno = inputApellidoMaterno.value.trim();
+        const telefono = inputTelefono.value.trim();
+        const correo = inputCorreo.value.trim();
+        const clave = inputClave.value;
         const esEdicion = inputId.value !== '';
+
+        if (nombre.length < 2 || !regexLetras.test(nombre)) {
+            alert('El nombre es obligatorio y solo debe contener letras.');
+            return;
+        }
+        if (apPaterno.length < 2 || !regexLetras.test(apPaterno)) {
+            alert('El apellido paterno es obligatorio y solo debe contener letras.');
+            return;
+        }
+        if (apMaterno !== '' && !regexLetras.test(apMaterno)) {
+            alert('El apellido materno solo debe contener letras.');
+            return;
+        }
+        if (telefono !== '' && !regexTelefono.test(telefono)) {
+            alert('El teléfono debe tener exactamente 10 números.');
+            return;
+        }
+        if (!regexCorreo.test(correo)) {
+            alert('Ingresa un correo electrónico válido (ejemplo@dominio.com).');
+            return;
+        }
+        if (!esEdicion && clave.length < 6) {
+            alert('La contraseña debe tener al menos 6 caracteres.');
+            return;
+        }
+        if (esEdicion && clave !== '' && clave.length < 6) {
+            alert('La nueva contraseña debe tener al menos 6 caracteres.');
+            return;
+        }
+
+        const formData = new FormData(formUsuario);
         const accion = esEdicion ? 'actualizar' : 'crear';
 
         try {

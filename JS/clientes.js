@@ -174,6 +174,27 @@ document.addEventListener('DOMContentLoaded', () => {
     formCliente.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        const regexLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+        const regexTelefono = /^[0-9]{10}$/;
+        const regexRFC = /^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/;
+
+        const nombre = inputNombre.value.trim();
+        const telefono = inputTelefono.value.trim();
+        const rfc = inputRfc.value.trim().toUpperCase();
+
+        if (nombre.length < 2 || !regexLetras.test(nombre)) {
+            alert('El nombre del cliente es obligatorio y solo debe contener letras.');
+            return;
+        }
+        if (telefono !== '' && !regexTelefono.test(telefono)) {
+            alert('El teléfono debe contener exactamente 10 dígitos numéricos.');
+            return;
+        }
+        if (rfc !== '' && !regexRFC.test(rfc)) {
+            alert('El RFC no es válido. Debe tener 12 o 13 caracteres (ej. XAXX010101000).');
+            return;
+        }
+
         const formData = new FormData(formCliente);
         const esEdicion = inputCodigo.value !== '';
         const accion = esEdicion ? 'actualizar' : 'crear';

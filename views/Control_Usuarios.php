@@ -68,31 +68,31 @@ require_once "../config/conexion.php";
                 <!-- Nombre -->
                 <div class="campo-form">
                     <label for="nombre">Nombre(s) *:</label>
-                    <input type="text" id="nombre" name="nombre" maxlength="50" required placeholder="Ej. Carlos">
+                  <input type="text" id="nombre" name="nombre" minlength="2" maxlength="50" required oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');">
                 </div>
 
                 <!-- Apellido Paterno -->
                 <div class="campo-form">
                     <label for="apellido_paterno">Apellido Paterno *:</label>
-                    <input type="text" id="apellido_paterno" name="apellido_paterno" maxlength="50" required placeholder="Ej. Vargas">
+                    <input type="text" id="apellido_paterno" name="apellido_paterno" maxlength="50" required placeholder="Ej. Vargas" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');">
                 </div>
 
                 <!-- Apellido Materno -->
                 <div class="campo-form">
                     <label for="apellido_materno">Apellido Materno:</label>
-                    <input type="text" id="apellido_materno" name="apellido_materno" maxlength="50" placeholder="Ej. Pérez">
+                   <input type="text" id="apellido_materno" name="apellido_materno" maxlength="50" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');">
                 </div>
 
                 <!-- Teléfono -->
                 <div class="campo-form">
                     <label for="telefono">Teléfono:</label>
-                    <input type="tel" id="telefono" name="telefono" maxlength="15" placeholder="Ej. 3324358416">
+                    <input type="tel" id="telefono" name="telefono" minlength="10" maxlength="10" pattern="[0-9]{10}" placeholder="10 dígitos (ej. 3312345678)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);">
                 </div>
 
                 <!-- Correo electrónico -->
                 <div class="campo-form">
                     <label for="correo">Correo Electrónico *:</label>
-                    <input type="email" id="correo" name="correo" maxlength="100" required placeholder="usuario@farmavive.com">
+                    <input type="email" id="correo" name="correo" maxlength="100" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$" placeholder="usuario@farmavive.com">
                 </div>
 
                 <!-- Rol (ENUM de la BD) -->
@@ -105,10 +105,10 @@ require_once "../config/conexion.php";
                     </select>
                 </div>
 
-                <!-- Contraseña (Ocupa 2 columnas) -->
+                <!--Contraseña: mínimo 6 caracteres -->
                 <div class="campo-form campo-full">
                     <label for="clave" id="label-clave">Contraseña *:</label>
-                    <input type="password" id="clave" name="clave" maxlength="255" required placeholder="Ingresa una contraseña">
+                    <input type="password" id="clave" name="clave" minlength="6" maxlength="255" required placeholder="Ingresa una contraseña">
                 </div>
 
                 <!-- Botones de Acción -->

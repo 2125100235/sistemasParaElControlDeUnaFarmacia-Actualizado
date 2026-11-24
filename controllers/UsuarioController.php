@@ -20,6 +20,7 @@ class UsuarioController {
         ];
 
         $rolesPermitidos = ['Administrador', 'Cajero', 'Almacenista'];
+        $regexLetras = '/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/u';
 
         switch ($accion) {
             case 'leer':
@@ -41,15 +42,25 @@ class UsuarioController {
 
                 if (empty($datos['nombre']) || empty($datos['apellido_paterno']) || empty($datos['correo']) || empty($datos['clave'])) {
                     $respuesta['mensaje'] = 'Completa los campos obligatorios (Nombre, Apellido Paterno, Correo y Contraseña).';
+                } elseif (mb_strlen($datos['nombre']) < 2 || !preg_match($regexLetras, $datos['nombre'])) {
+                    $respuesta['mensaje'] = 'El nombre es obligatorio, debe tener al menos 2 caracteres y solo puede contener letras.';
+                } elseif (mb_strlen($datos['apellido_paterno']) < 2 || !preg_match($regexLetras, $datos['apellido_paterno'])) {
+                    $respuesta['mensaje'] = 'El apellido paterno es obligatorio, debe tener al menos 2 caracteres y solo puede contener letras.';
+                } elseif (!empty($datos['apellido_materno']) && !preg_match($regexLetras, $datos['apellido_materno'])) {
+                    $respuesta['mensaje'] = 'El apellido materno solo puede contener letras.';
+                } elseif (!empty($datos['telefono']) && !preg_match('/^[0-9]{10}$/', $datos['telefono'])) {
+                    $respuesta['mensaje'] = 'El teléfono debe tener exactamente 10 dígitos numéricos.';
                 } elseif (!filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)) {
                     $respuesta['mensaje'] = 'El formato del correo electrónico no es válido.';
                 } elseif (!in_array($datos['rol'], $rolesPermitidos, true)) {
                     $respuesta['mensaje'] = 'Selecciona un rol válido.';
+                } elseif (mb_strlen($datos['clave']) < 6) {
+                    $respuesta['mensaje'] = 'La contraseña debe tener al menos 6 caracteres.';
                 } elseif ($this->modelo->existeCorreo($datos['correo'])) {
                     $respuesta['mensaje'] = 'Ese correo electrónico ya está registrado por otro usuario.';
                 } else {
-                    // Nota: Si tu login usa password_verify(), descomenta la siguiente línea:
-                    // $datos['clave'] = password_hash($datos['clave'], PASSWORD_DEFAULT);
+                    
+                   
 
                     if ($this->modelo->crear($datos)) {
                         $respuesta['exito'] = true;
@@ -90,10 +101,20 @@ class UsuarioController {
 
                 if ($datos['id_empleado'] <= 0 || empty($datos['nombre']) || empty($datos['apellido_paterno']) || empty($datos['correo'])) {
                     $respuesta['mensaje'] = 'Completa los campos obligatorios para actualizar el usuario.';
+                } elseif (mb_strlen($datos['nombre']) < 2 || !preg_match($regexLetras, $datos['nombre'])) {
+                    $respuesta['mensaje'] = 'El nombre es obligatorio, debe tener al menos 2 caracteres y solo puede contener letras.';
+                } elseif (mb_strlen($datos['apellido_paterno']) < 2 || !preg_match($regexLetras, $datos['apellido_paterno'])) {
+                    $respuesta['mensaje'] = 'El apellido paterno es obligatorio, debe tener al menos 2 caracteres y solo puede contener letras.';
+                } elseif (!empty($datos['apellido_materno']) && !preg_match($regexLetras, $datos['apellido_materno'])) {
+                    $respuesta['mensaje'] = 'El apellido materno solo puede contener letras.';
+                } elseif (!empty($datos['telefono']) && !preg_match('/^[0-9]{10}$/', $datos['telefono'])) {
+                    $respuesta['mensaje'] = 'El teléfono debe tener exactamente 10 dígitos numéricos.';
                 } elseif (!filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)) {
                     $respuesta['mensaje'] = 'El formato del correo electrónico no es válido.';
                 } elseif (!in_array($datos['rol'], $rolesPermitidos, true)) {
                     $respuesta['mensaje'] = 'Selecciona un rol válido.';
+                } elseif (!empty($datos['clave']) && mb_strlen($datos['clave']) < 6) {
+                    $respuesta['mensaje'] = 'La nueva contraseña debe tener al menos 6 caracteres.';
                 } elseif ($this->modelo->existeCorreo($datos['correo'], $datos['id_empleado'])) {
                     $respuesta['mensaje'] = 'Ese correo electrónico ya pertenece a otro usuario.';
                 } else {

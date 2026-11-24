@@ -168,6 +168,26 @@ document.addEventListener('DOMContentLoaded', () => {
     formProveedor.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        const regexTelefono = /^[0-9]{10}$/;
+        const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+        const nombre = inputNombre.value.trim();
+        const telefono = inputTelefono.value.trim();
+        const correo = inputCorreo.value.trim();
+
+        if (nombre.length < 2) {
+            alert('El nombre del proveedor debe tener al menos 2 caracteres.');
+            return;
+        }
+        if (telefono !== '' && !regexTelefono.test(telefono)) {
+            alert('El teléfono debe contener exactamente 10 dígitos numéricos.');
+            return;
+        }
+        if (correo !== '' && !regexCorreo.test(correo)) {
+            alert('Ingresa un correo electrónico válido con @ y dominio.');
+            return;
+        }
+
         const formData = new FormData(formProveedor);
         const esEdicion = inputId.value !== '';
         const accion = esEdicion ? 'actualizar' : 'crear';
