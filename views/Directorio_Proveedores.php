@@ -11,7 +11,7 @@ require_once "../config/conexion.php";
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <!-- Encabezado superior: Logo + Buscador + Eliminar / Agregar / Editar -->
+    <!-- Encabezado superior: Logo + Buscador + Eliminar / Agregar / Editar + Menú móvil -->
     <header class="crud">
         <a href="../index.php" class="logo">
             <img src="../assets/logo.svg" alt="FarmaVive Logo, volver al inicio" width="60">
@@ -26,6 +26,8 @@ require_once "../config/conexion.php";
             <button type="button" id="btn-header-agregar" class="btn-header-crud">Agregar</button>
             <button type="button" id="btn-header-editar" class="btn-header-crud">Editar</button>
         </nav>
+
+        <button type="button" id="menuToggleBtn" class="menu-toggle-crud" title="Abrir menú">☰</button>
     </header>
 
     <main>
