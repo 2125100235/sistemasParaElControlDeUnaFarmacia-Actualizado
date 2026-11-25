@@ -80,7 +80,7 @@ $clientes = $resultadoClientes ? $resultadoClientes->fetch_all(MYSQLI_ASSOC) : [
                         <label for="clienteInput">Cliente</label>
                         <input type="text" id="clienteInput" value="Público en general" readonly onclick="abrirModalClienteVenta()">
                         <input type="hidden" id="clienteCodigoInput" value="">
-                        <button type="button" id="btnAgregarClienteVenta" onclick="abrirModalClienteVenta()">Agregar cliente</button>
+                        <button type="button" id="btnAgregarClienteVenta" class="btn-agregar-cliente" onclick="abrirModalClienteVenta()">Agregar cliente</button>
                     </div>
 
                     <button id="cobrarBtn" type="button" onclick="finalizarVenta()">Registrar venta</button>
