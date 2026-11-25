@@ -5,6 +5,7 @@
 - @property {string} nombre
 - @property {number} precio
 - @property {number} existencia
+- @property {string|null} fecha_caducidad
  */
 
 // Definimos la estructura de datos que tendrá cada artículo en la nota de venta (reemplazará a T en la pila)
@@ -104,6 +105,16 @@ class ListaProductosCatalogo {
     }
 }
 
+// Función auxiliar para validar si la caducidad del producto está vencida
+function estaVencido(fechaCaducidad) {
+    if (!fechaCaducidad) return false;
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    return fechaCaducidad <= `${yyyy}-${mm}-${dd}`;
+}
+
 // Se crea la instancia global de la Lista Enlazada Simple para el catálogo de productos
 const catalogoLista = new ListaProductosCatalogo();
 
@@ -115,13 +126,20 @@ if (typeof productosDesdeBD !== 'undefined' && Array.isArray(productosDesdeBD)) 
         const precio = parseFloat(prod.precio_venta) || 0.0;
         // Convertimos la existencia a número entero o usamos 0 si viene vacía
         const existencia = parseInt(prod.existencia) || 0;
+        const fechaCaducidad = prod.fecha_caducidad || null;
+
+        // No mostrar al cajero productos sin stock o con caducidad vencida
+        if (existencia <= 0 || estaVencido(fechaCaducidad)) {
+            return;
+        }
 
         // Insertamos el objeto producto dentro de un Nodo<ProductoCatalogo> en la lista
         catalogoLista.insertar({
             codigo: prod.codigo,
             nombre: prod.nombre,
             precio: precio,
-            existencia: existencia
+            existencia: existencia,
+            fecha_caducidad: fechaCaducidad
         });
     });
 }
@@ -166,6 +184,22 @@ class PilaVenta {
         /** @type {Nodo<ItemVenta> | null} */ //Validacion
         this.tope = null; // Puntero que señala al elemento superior (cima) de la pila
         this.tamano = 0;  // Contador de elementos insertados en la pila
+    }
+
+    // Busca si el producto ya está en la nota de venta por su código
+    /**
+- @param {string|number} codigo
+- @returns {Nodo<ItemVenta> | null}
+     */
+    buscarPorCodigo(codigo) {
+        let actual = this.tope;
+        while (actual !== null) {
+            if (String(actual.dato.codigo) === String(codigo)) {
+                return actual;
+            }
+            actual = actual.siguiente;
+        }
+        return null;
     }
 
     // Agrega un nuevo nodo en la cima de la pila
@@ -431,20 +465,44 @@ function agregarProducto() {
         return;
     }
 
+    // Validamos que el producto no tenga caducidad vencida
+    if (estaVencido(nodoEncontrado.dato.fecha_caducidad)) {
+        alert(`El producto "${nodoEncontrado.dato.nombre}" tiene la caducidad vencida (${nodoEncontrado.dato.fecha_caducidad}).`);
+        return;
+    }
+
     // Validamos que el precio y la cantidad sean números mayores a cero
     if (isNaN(precio) || isNaN(cantidad) || cantidad <= 0 || precio <= 0) {
         alert("Ingrese datos válidos de precio y cantidad.");
         return;
     }
 
-    // Insertamos en la pila un objeto ItemVenta usando los datos de 'nodoEncontrado.dato'
-    ventaPila.push({
-        codigo: nodoEncontrado.dato.codigo,
-        nombre: nodoEncontrado.dato.nombre,
-        precio: precio,
-        cantidad: cantidad,
-        subtotal: precio * cantidad
-    });
+    // Verificamos si el producto ya está en la nota de venta
+    const nodoExistente = ventaPila.buscarPorCodigo(nodoEncontrado.dato.codigo);
+    const cantidadActual = nodoExistente ? nodoExistente.dato.cantidad : 0;
+    const nuevaCantidad = cantidadActual + cantidad;
+
+    // Validamos stock suficiente especificando exactamente qué producto es
+    if (nuevaCantidad > nodoEncontrado.dato.existencia) {
+        alert(`Stock insuficiente para el producto "${nodoEncontrado.dato.nombre}" (Disponible: ${nodoEncontrado.dato.existencia}).`);
+        return;
+    }
+
+    // Si ya está en la nota de venta actualizamos el existente; si no, lo agregamos
+    if (nodoExistente) {
+        nodoExistente.dato.cantidad = nuevaCantidad;
+        nodoExistente.dato.subtotal = precio * nuevaCantidad;
+        ventaPila.actualizarUI();
+    } else {
+        // Insertamos en la pila un objeto ItemVenta usando los datos de 'nodoEncontrado.dato'
+        ventaPila.push({
+            codigo: nodoEncontrado.dato.codigo,
+            nombre: nodoEncontrado.dato.nombre,
+            precio: precio,
+            cantidad: cantidad,
+            subtotal: precio * cantidad
+        });
+    }
 
     // Reseteamos los campos del formulario para capturar el siguiente producto
     inputBusqueda.value = "";
