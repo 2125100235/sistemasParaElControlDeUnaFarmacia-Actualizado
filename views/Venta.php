@@ -1,8 +1,12 @@
 <?php 
 // Requiere de la conexión a la base de datos
 require_once "../config/conexion.php"; 
-// Realiza la consulta a la base de datos MySQL
-$consulta = "SELECT codigo, nombre, precio_venta, existencia FROM producto WHERE estado = 1";
+// Realiza la consulta a la base de datos MySQL (excluye sin stock y caducados)
+$consulta = "SELECT codigo, nombre, precio_venta, existencia, fecha_caducidad 
+             FROM producto 
+             WHERE estado = 1 
+               AND existencia > 0 
+               AND (fecha_caducidad > CURDATE() OR fecha_caducidad IS NULL)";
 // Ejecutamos la consulta
 $resultado = $conexion->query($consulta);
 // Verifica si el resultado tiene un valor valido
