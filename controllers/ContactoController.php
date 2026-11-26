@@ -30,7 +30,7 @@ if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
 
 // Configura aquí la cuenta Gmail que enviará el correo
 $correoRemitente    = '2125100243@soy.utj.edu.mx';
-$passwordAplicacion = 'abcdefghijklmnop'; // 16 letras sin espacios
+$passwordAplicacion = 'mwvblxibkyrollav'; // 16 letras sin espacios
 $correoDestino      = '2125100235@soy.utj.edu.mx';
 
 $mail = new PHPMailer(true);
