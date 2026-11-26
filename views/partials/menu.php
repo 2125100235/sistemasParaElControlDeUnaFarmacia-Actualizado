@@ -25,6 +25,14 @@ function esActivo(array $archivos, string $actual): string {
             <h1>Ventas y facturación</h1>
         </a>
 
+         <a href="../views/Productos_Pantalla_Almacenista.php" class="<?php echo esActivo(['Productos_Pantalla_Almacenista.php'], $paginaActual); ?>">
+            <h1>Productos e Inventario</h1>
+        </a>
+        
+         <a href="../views/Control_Clientes.php" class="<?php echo esActivo(['Control_Clientes.php'], $paginaActual); ?>">
+            <h1>Control de Clientes</h1>
+        </a>
+
         <a href="../views/Politicas_Sistema.php" class="<?php echo esActivo(['Politicas_Sistema.php'], $paginaActual); ?>">
             <h1>Políticas del sistema</h1>
         </a>
