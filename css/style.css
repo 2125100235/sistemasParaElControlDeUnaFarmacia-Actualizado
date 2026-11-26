@@ -2239,3 +2239,147 @@ header.crud #menuToggleBtn,
         border-radius: 26px;
     }
 }
+
+@media (max-width: 1024px) {
+    header:has(.puntoVenta) {
+        height: auto;
+        min-height: 15vh;
+        padding: 10px 16px;
+        gap: 10px;
+    }
+
+    .puntoVenta {
+        gap: 10px;
+        padding-right: 6px;
+        font-size: 0.9rem;
+    }
+
+    #productoInput {
+        width: 185px;
+    }
+
+    #precioInput {
+        width: 105px;
+    }
+
+    #cantidadInput {
+        width: 75px;
+    }
+
+    #registrarBtn,
+    #deshacerBtn {
+        padding: 0 16px;
+        min-width: 95px;
+        font-size: 0.9rem;
+    }
+
+    .recuadroVenta {
+        width: 94%;
+        padding: 24px 28px;
+    }
+}
+
+@media (max-width: 820px) {
+    header:has(.puntoVenta) {
+        position: sticky;
+        top: 0;
+        height: auto;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    header:has(.puntoVenta) .puntoVenta {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 8px;
+        padding-right: 0;
+    }
+
+    header:has(.puntoVenta) .menuToggle {
+        order: 1;
+        margin-left: auto;
+    }
+
+    header:has(.puntoVenta) + main .contenido {
+        margin-top: 16px;
+        padding: 12px;
+    }
+
+    .puntoVenta div {
+        flex: 1 1 auto;
+        min-width: 85px;
+    }
+
+    .puntoVenta label {
+        font-size: 0.8rem;
+    }
+
+    #productoInput {
+        width: 100%;
+        min-width: 150px;
+    }
+
+    #precioInput,
+    #cantidadInput {
+        width: 100%;
+        min-width: 75px;
+    }
+
+    #registrarBtn,
+    #deshacerBtn {
+        flex: 1 1 110px;
+        height: 34px;
+        padding: 0 14px;
+        font-size: 0.88rem;
+    }
+
+    .recuadroVenta {
+        width: 100%;
+        min-height: auto;
+        padding: 20px 16px;
+        border-radius: 24px;
+    }
+
+    .tabla-venta-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .recuadroVenta table {
+        min-width: 500px;
+        border-spacing: 8px 8px;
+    }
+
+    .footer-venta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .totales {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .campo-cliente {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .campo-cliente input {
+        flex: 1 1 160px;
+        width: auto;
+    }
+
+    #cobrarBtn {
+        width: 100%;
+        padding: 11px 20px;
+        font-size: 0.95rem;
+    }
+}
